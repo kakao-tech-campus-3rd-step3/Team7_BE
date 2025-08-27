@@ -1,5 +1,5 @@
 package com.careerfit.application.domain;
 
-public enum ProcessingStatus {
+public enum ApplicationStatus {
     PREPARING, WRITING, APPLIED, INTERVIEWING, HIRED
 }
