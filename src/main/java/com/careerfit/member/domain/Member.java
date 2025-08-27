@@ -1,5 +1,9 @@
 package com.careerfit.member.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.careerfit.application.domain.Application;
 import com.careerfit.global.entity.TimeBaseEntity;
 import com.careerfit.login.domain.OAuthProviderType;
 
@@ -10,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -43,5 +48,8 @@ public class Member extends TimeBaseEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
+
+    @OneToMany(mappedBy = "member")
+    private List<Application> applications = new ArrayList<>();
 
 }
