@@ -24,3 +24,15 @@ jwt:
   refresh-token-validity-millis: ${REFRESH_TOKEN_VALIDITY:604800000}
   issuer: ${ISSUER:http://career-fit.com}
 
+kakao:
+  client-id: ${KAKAO_CLIENT_ID}
+  client-secret: ${KAKAO_CLIENT_SECRET}
+  authorize-uri: ${KAKAO_AUTAHORIZE_URI:https://kauth.kakao.com/oauth/authorize}
+  redirect-uri: ${KAKAO_REDIRECT_URI:http://localhost:8080/api/auth/kakao/callback}
+  urls:
+    base-auth: https://kauth.kakao.com
+    base-api: https://kapi.kakao.com
+    token: /oauth/token
+    authorize: /oauth/authorize
+    user-info: /v2/user/me
+    unlink: /v1/user/unlink
