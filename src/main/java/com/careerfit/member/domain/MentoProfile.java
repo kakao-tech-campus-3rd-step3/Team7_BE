@@ -10,14 +10,18 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "mento_profile")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 @Getter
-public class MemberProfile {
+public class MentoProfile {
 
     @Id
     private Long id;
@@ -56,5 +60,23 @@ public class MemberProfile {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public static MentoProfile of(int careerYears, String company, String jobPosition, String employmentCertificate, String education,
+        String expertise, String introduction){
+
+        return MentoProfile.builder()
+            .careerYears(careerYears)
+            .company(company)
+            .jobPosition(jobPosition)
+            .employmentCertificate(employmentCertificate)
+            .education(education)
+            .expertise(expertise)
+            .introduction(introduction)
+            .rating(null)
+            .reviewCount(0)
+            .menteeCount(0)
+            .avgResponseTime(null)
+            .pricePerSession(null)
+            .build();
+    }
 
 }

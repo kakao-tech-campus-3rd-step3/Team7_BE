@@ -9,12 +9,16 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "mentee_profile")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 @Getter
 public class MenteeProfile {
 
@@ -37,4 +41,14 @@ public class MenteeProfile {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public static MenteeProfile of(String university, String major, Integer graduationYear, String wishCompany, String wishPosition) {
+        return MenteeProfile.builder()
+            .university(university)
+            .major(major)
+            .graduationYear(graduationYear)
+            .wishCompany(wishCompany)
+            .wishPosition(wishPosition)
+            .build();
+    }
 }
