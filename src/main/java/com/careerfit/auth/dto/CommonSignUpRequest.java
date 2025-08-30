@@ -1,4 +1,4 @@
-package com.careerfit.member.dto;
+package com.careerfit.auth.dto;
 
 import org.hibernate.validator.constraints.URL;
 
@@ -15,7 +15,7 @@ public record CommonSignUpRequest(
     @URL
     String profileImage,
     @NotBlank
-    String oauthProvider,
+    String registrationId,
     @NotBlank
     String oauthId
 ) {
