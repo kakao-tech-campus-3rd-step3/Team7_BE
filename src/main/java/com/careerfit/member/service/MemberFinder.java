@@ -29,4 +29,8 @@ public class MemberFinder {
         return memberJpaRepository.findByProviderAndOauthId(OAuthProvider.from(registrationId), oauthId);
     }
 
+    public Optional<Member> getMemberWithOptional(String email) {
+        return memberJpaRepository.findByEmail(email);
+    }
+
 }
