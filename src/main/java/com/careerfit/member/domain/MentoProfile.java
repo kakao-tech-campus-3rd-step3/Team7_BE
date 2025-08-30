@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class MentoProfile {
+public class MentoProfile implements MemberProfile{
 
     @Id
     private Long id;
@@ -79,4 +79,8 @@ public class MentoProfile {
             .build();
     }
 
+    @Override
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }

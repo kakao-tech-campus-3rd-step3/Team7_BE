@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class MenteeProfile {
+public class MenteeProfile implements MemberProfile {
 
     @Id
     private Long id;
@@ -50,5 +50,10 @@ public class MenteeProfile {
             .wishCompany(wishCompany)
             .wishPosition(wishPosition)
             .build();
+    }
+
+    @Override
+    public void setMember(Member member) {
+        this.member = member;
     }
 }

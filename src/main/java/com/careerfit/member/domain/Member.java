@@ -60,28 +60,31 @@ public class Member extends TimeBaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Application> applications = new ArrayList<>();
 
-    @OneToOne(fetch =  FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private MentoProfile mentoProfile;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private MenteeProfile menteeProfile;
 
     public static Member mento(String email, String phoneNumber, String profileImageUrl, OAuthProvider oAuthProvider,
         String oauthId, MentoProfile mentoProfile) {
-        return Member.builder()
+        Member member = Member.builder()
             .email(email)
             .phoneNumber(phoneNumber)
             .profileImageUrl(profileImageUrl)
             .provider(oAuthProvider)
             .oauthId(oauthId)
             .memberRole(MemberRole.MENTO)
-            .mentoProfile(mentoProfile)
             .build();
+
+        member.setMemberProfile(mentoProfile);
+
+        return member;
     }
 
     public static Member mentee(String email, String phoneNumber, String profileImageUrl, OAuthProvider oAuthProvider,
         String oauthId, MenteeProfile menteeProfile) {
-        return Member.builder()
+        Member member = Member.builder()
             .email(email)
             .phoneNumber(phoneNumber)
             .profileImageUrl(profileImageUrl)
@@ -90,8 +93,18 @@ public class Member extends TimeBaseEntity {
             .memberRole(MemberRole.MENTEE)
             .menteeProfile(menteeProfile)
             .build();
+
+        member.setMemberProfile(menteeProfile);
+        return member;
     }
 
-    public setMemeberProfile()
+    private void setMemberProfile(MemberProfile memberProfile) {
+        if (memberProfile instanceof MentoProfile) {
+            this.mentoProfile = (MentoProfile) memberProfile;
+        } else if (memberProfile instanceof MenteeProfile) {
+            this.menteeProfile = (MenteeProfile) memberProfile;
+        }
+        memberProfile.setMember(this);
+    }
 
 }
