@@ -1,27 +1,28 @@
 package com.careerfit.auth.domain;
 
 import java.util.Collection;
-import java.util.Set;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.swing.text.html.Option;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import com.careerfit.member.domain.MemberRole;
+import com.careerfit.member.domain.Member;
 
 import lombok.Getter;
 
 @Getter
 public class CustomUserDetails implements UserDetails {
 
-    private Long userId;
-    private String password;
-    private MemberRole memberRole;
+    private Member member;
 
-    public CustomUserDetails(Long userId, MemberRole memberRole) {
-        this.userId = userId;
-        this.password = null;
-        this.memberRole = memberRole;
+    public CustomUserDetails(Member member) {
+        this.member = member;
     }
 
     @Override
@@ -46,17 +47,20 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Set.of(new SimpleGrantedAuthority(memberRole.getRole()));
+        if (member == null) {
+            return Collections.singleton(new SimpleGrantedAuthority("ROLE_GUEST"));
+        }
+        return Collections.singleton(new SimpleGrantedAuthority(member.getMemberRole().getRole()));
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return null;
     }
 
     @Override
     public String getUsername() {
-        return userId.toString();
+        return String.valueOf(member.getId());
     }
 
 }
