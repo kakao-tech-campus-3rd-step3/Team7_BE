@@ -31,11 +31,11 @@ public class ApplicationService {
 
         Application application = Application.builder()
                 .companyName(request.companyName())
-                .appliedPosition(request.applyPosition())
+                .applyPosition(request.applyPosition())
                 .deadLine(request.deadline())
-                .companyLocation(request.location())
+                .location(request.location())
                 .employmentType(request.employmentType())
-                .experienceRequirement(request.careerRequirement())
+                .careerRequirement(request.careerRequirement())
                 .member(member)
                 .build();
 

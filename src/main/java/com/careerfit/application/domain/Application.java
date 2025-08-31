@@ -36,17 +36,17 @@ public class Application {
     private String companyName;
 
     @Column(nullable = false)
-    private String appliedPosition;
+    private String applyPosition;
 
     @Column(nullable = false)
     private LocalDateTime deadLine;
 
-    private String companyLocation;
+    private String location;
 
     private String employmentType;
 
     @Lob
-    private String experienceRequirement;
+    private String careerRequirement;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
