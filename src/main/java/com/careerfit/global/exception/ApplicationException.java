@@ -1,5 +1,6 @@
 package com.careerfit.global.exception;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import lombok.Getter;
@@ -13,9 +14,11 @@ public class ApplicationException extends RuntimeException {
     public ApplicationException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
+        this.errorInfo = new HashMap<>();
     }
 
-    public void addErrorInfo(String key, Object value) {
+    public ApplicationException addErrorInfo(String key, Object value) {
         this.errorInfo.put(key, value);
+        return this;
     }
 }

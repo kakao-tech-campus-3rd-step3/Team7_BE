@@ -22,6 +22,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberFinder.getMemberOrThrow(Long.parseLong(username));
 
-        return new CustomUserDetails(member.getId(), member.getMemberRole());
+        return new CustomUserDetails(member);
     }
 }
