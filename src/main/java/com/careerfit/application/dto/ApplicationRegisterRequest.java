@@ -1,6 +1,7 @@
 package com.careerfit.application.dto;
 
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import org.hibernate.validator.constraints.URL;
@@ -19,7 +20,8 @@ public record ApplicationRegisterRequest(
 
         String employmentType,
 
-        String careerRequirement,
+        @Min(value = 0, message = "경력 연수는 0 이상이어야 합니다.")
+        Integer careerRequirement,
 
         @URL(message = "유효한 URL 형식이 아닙니다.")
         String url

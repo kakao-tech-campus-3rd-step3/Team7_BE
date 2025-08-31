@@ -46,7 +46,7 @@ public class Application {
     private String employmentType;
 
     @Lob
-    private String careerRequirement;
+    private Integer careerRequirement;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -8,7 +8,7 @@ public record JobPostingAnalysisResponse(
         LocalDateTime deadline,
         String location,
         String employmentType,
-        String careerRequirement
+        Integer careerRequirement
 ) {
 
 }
