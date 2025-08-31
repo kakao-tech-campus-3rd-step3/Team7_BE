@@ -1,5 +1,6 @@
 package com.careerfit.auth.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,13 +23,13 @@ public class SignUpController {
     private final AuthService authService;
 
     @PostMapping("/mento")
-    public ApiResponse<SignUpResponse> signUpMento(@Valid @RequestBody MentoSignUpRequest dto){
-        return ApiResponse.success(authService.signUpAsMento(dto));
+    public ResponseEntity<ApiResponse<SignUpResponse>> signUpMento(@Valid @RequestBody MentoSignUpRequest dto){
+        return ResponseEntity.ok(ApiResponse.success(authService.signUpAsMento(dto)));
     }
 
     @PostMapping("/mentee")
-    public ApiResponse<SignUpResponse> signUpMentee(@Valid @RequestBody MenteeSignUpRequest dto){
-        return ApiResponse.success(authService.signUpAsMentee(dto));
+    public ResponseEntity<ApiResponse<SignUpResponse>> signUpMentee(@Valid @RequestBody MenteeSignUpRequest dto){
+        return ResponseEntity.ok(ApiResponse.success(authService.signUpAsMentee(dto)));
     }
 
 }
