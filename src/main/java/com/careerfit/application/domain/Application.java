@@ -1,7 +1,6 @@
 package com.careerfit.application.domain;
 
 import com.careerfit.member.domain.Member;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,13 +15,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "application")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
+@Builder
 public class Application {
 
     @Id
@@ -33,17 +36,17 @@ public class Application {
     private String companyName;
 
     @Column(nullable = false)
-    private String appliedPosition;
+    private String applyPosition;
 
     @Column(nullable = false)
     private LocalDateTime deadLine;
 
-    private String companyLocation;
+    private String location;
 
     private String employmentType;
 
     @Lob
-    private String experienceRequirement;
+    private Integer careerRequirement;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
