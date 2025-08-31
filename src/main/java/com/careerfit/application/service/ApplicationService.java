@@ -2,6 +2,7 @@ package com.careerfit.application.service;
 
 import com.careerfit.application.client.AiServerClient;
 import com.careerfit.application.domain.Application;
+import com.careerfit.application.dto.ApplicationRegisterRequest;
 import com.careerfit.application.dto.JobPostingAnalysisResponse;
 import com.careerfit.application.dto.JobPostingUrlRequest;
 import com.careerfit.application.repository.ApplicationJpaRepository;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @RequiredArgsConstructor
 public class ApplicationService {
@@ -19,30 +21,24 @@ public class ApplicationService {
     private final ApplicationJpaRepository applicationJpaRepository;
     private final MemberFinder memberFinder;
 
-    @Transactional
-    public JobPostingAnalysisResponse analyzeAndSaveApplication(JobPostingUrlRequest request,
-            Long memberId) {
-        // 1. AI 서버에 URL을 보내고 분석 결과를 받아옵니다.
-        JobPostingAnalysisResponse analysisResponse = aiServerClient.analyzeUrl(request);
+    public JobPostingAnalysisResponse analyze(JobPostingUrlRequest request) {
+        return aiServerClient.analyzeUrl(request);
+    }
 
-        // 2. 현재 사용자(Member) 정보를 조회합니다.
+    @Transactional
+    public void registerApplication(ApplicationRegisterRequest request, Long memberId) {
         Member member = memberFinder.getMemberOrThrow(memberId);
 
-        // 3. 분석 결과를 Application 엔티티로 변환합니다.
         Application application = Application.builder()
-                .companyName(analysisResponse.companyName())
-                .appliedPosition(analysisResponse.applyPosition())
-                .deadLine(analysisResponse.deadline())
-                .companyLocation(analysisResponse.location())
-                .employmentType(analysisResponse.employmentType())
-                .experienceRequirement(analysisResponse.careerRequirement())
+                .companyName(request.companyName())
+                .appliedPosition(request.applyPosition())
+                .deadLine(request.deadline())
+                .companyLocation(request.location())
+                .employmentType(request.employmentType())
+                .experienceRequirement(request.careerRequirement())
                 .member(member)
                 .build();
 
-        // 4. 데이터베이스에 저장합니다.
         applicationJpaRepository.save(application);
-
-        // 5. 분석 결과를 컨트롤러에 다시 반환합니다.
-        return analysisResponse;
     }
 }
