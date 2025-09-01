@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CoverLetterService {
+public class CoverLetterCommandService {
 
     private final CoverLetterJpaRepository coverLetterJpaRepository;
     private final ApplicationFinder applicationFinder;

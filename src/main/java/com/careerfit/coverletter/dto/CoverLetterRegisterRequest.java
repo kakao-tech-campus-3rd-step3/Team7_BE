@@ -9,7 +9,7 @@ public record CoverLetterRegisterRequest(
     @NotBlank
     String title,
     @Valid
-    List<CoverLetterItemInfo> coverLetterItems
+    List<CoverLetterItemInfoRequest> coverLetterItems
 ) {
 
 }

@@ -2,7 +2,7 @@ package com.careerfit.coverletter.dto;
 
 import jakarta.validation.constraints.NotNull;
 
-public record CoverLetterItemInfo(
+public record CoverLetterItemInfoRequest(
     @NotNull
     String question,
     @NotNull
