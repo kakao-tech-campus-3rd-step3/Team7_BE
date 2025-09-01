@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careerfit.coverletter.dto.CoverLetterDetailResponse;
+import com.careerfit.coverletter.dto.CoverLetterListResponse;
 import com.careerfit.coverletter.dto.CoverLetterRegisterRequest;
 import com.careerfit.coverletter.service.CoverLetterCommandService;
 import com.careerfit.coverletter.service.CoverLetterQueryService;
@@ -44,6 +45,13 @@ public class CoverLetterController {
         CoverLetterDetailResponse coverLetterDetail = coverLetterQueryService.getCoverLetterDetail(
             documentId);
         return ResponseEntity.ok(ApiResponse.success(coverLetterDetail));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<CoverLetterListResponse>> getCoverLetterLit(@PathVariable(name = "applicationId") Long applicationId){
+        CoverLetterListResponse coverLetterList = coverLetterQueryService.getCoverLetterList(
+            applicationId);
+        return ResponseEntity.ok(ApiResponse.success(coverLetterList));
     }
 
 }

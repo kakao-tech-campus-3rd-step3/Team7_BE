@@ -13,11 +13,11 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 public class CoverLetterFinder {
 
     private final CoverLetterJpaRepository coverLetterJpaRepository;
 
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public CoverLetter findCoverLetter(Long documentId){
         return coverLetterJpaRepository.findById(documentId)
             .orElseThrow(()-> new ApplicationException(CoverLetterErrorCode.COVER_LETTER_NOT_FOUND));
