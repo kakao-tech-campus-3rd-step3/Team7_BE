@@ -1,6 +1,7 @@
 package com.careerfit.coverletter.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,12 @@ public class CoverLetterController {
     public ResponseEntity<ApiResponse<Void>> registerCoverLetter(@PathVariable(name = "applicationId") Long applicationId,
         @Valid @RequestBody CoverLetterRegisterRequest dto){
         coverLetterService.registerCoverLetter(applicationId, dto);
+        return ResponseEntity.ok(ApiResponse.success());
+    }
+
+    @DeleteMapping("{documentId}")
+    public ResponseEntity<ApiResponse<Void>> deleteCoverLetter(@PathVariable(name = "documentId") Long documentId){
+        coverLetterService.deleteCoverLetter(documentId);
         return ResponseEntity.ok(ApiResponse.success());
     }
 

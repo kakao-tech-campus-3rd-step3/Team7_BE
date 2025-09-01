@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CoverLetterService {
 
+    private final CoverLetterJpaRepository coverLetterJpaRepository;
     private final ApplicationFinder applicationFinder;
 
     @Transactional
@@ -32,5 +33,8 @@ public class CoverLetterService {
         application.addDocument(coverLetter);
     }
 
+    public void deleteCoverLetter(Long documentId){
+        coverLetterJpaRepository.deleteById(documentId);
+    }
 
 }
