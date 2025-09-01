@@ -1,0 +1,54 @@
+package com.careerfit.coverletter.domain;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.careerfit.document.domain.Document;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+@Entity
+@Table(name = "cover_letter")
+@DiscriminatorValue("COVER_LETTER")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@SuperBuilder
+@Getter
+public class CoverLetter extends Document {
+
+    @Builder.Default
+    @OneToMany(mappedBy = "coverLetter", cascade = CascadeType.ALL)
+    private List<CoverLetterItem> coverLetterItems = new ArrayList<>();
+
+    public static CoverLetter createCoverLetter(String title, List<CoverLetterItem> items) {
+        validateItemsNull(items);
+        CoverLetter coverLetter = CoverLetter.builder()
+            .title(title)
+            .build();
+
+        items.forEach(coverLetter::addCoverLetterItem);
+
+        return coverLetter;
+    }
+
+    private static void validateItemsNull(List<CoverLetterItem> items){
+        if(items==null){
+            throw new IllegalArgumentException("자기소개서의 문항은 null일 수 없습니다.");
+        }
+    }
+
+    public void addCoverLetterItem(CoverLetterItem coverLetterItem){
+        this.coverLetterItems.add(coverLetterItem);
+        coverLetterItem.setCoverLetter(this);
+    }
+}
