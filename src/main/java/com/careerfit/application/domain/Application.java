@@ -1,6 +1,12 @@
 package com.careerfit.application.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.careerfit.document.domain.Document;
 import com.careerfit.member.domain.Member;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -56,4 +63,12 @@ public class Application {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
+    private List<Document> documents = new ArrayList<>();
+
+    public void addDocument(Document document){
+        documents.add(document);
+        document.setApplication(this);
+    }
 }
