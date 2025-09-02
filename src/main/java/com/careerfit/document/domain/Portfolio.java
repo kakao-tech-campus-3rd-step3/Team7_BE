@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "portfolio")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Portfolio {
+public class Portfolio extends Document{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

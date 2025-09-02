@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "resume")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Resume {
+public class Resume extends Document{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
