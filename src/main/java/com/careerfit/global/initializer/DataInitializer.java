@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 
 @Component
-@Profile("local")
+@Profile({"local","prod"})
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
