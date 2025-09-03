@@ -5,6 +5,7 @@ import static java.lang.Long.parseLong;
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.careerfit.application.exception.ApplicationErrorCode;
 import com.careerfit.application.service.ApplicationFinder;
 import com.careerfit.document.domain.Portfolio;
 import com.careerfit.document.dto.CompleteUploadRequest;
@@ -12,6 +13,7 @@ import com.careerfit.document.dto.PortfolioCreateResponse;
 import com.careerfit.document.dto.PresignedUrlRequest;
 import com.careerfit.document.dto.PresignedUrlResponse;
 import com.careerfit.document.repository.PortfolioRepository;
+import com.careerfit.global.exception.ApplicationException;
 import java.net.URL;
 import java.util.Date;
 import java.util.UUID;
@@ -57,11 +59,17 @@ public class PortfolioService {
 
     // 파일 업로드 완료 처리 + entity 저장
     // CompleteUploadRequest에는 presignedUrl 발급 시에 전달받은 UniqueFileName 필드만 존재
-    public PortfolioCreateResponse completeUploadFile(CompleteUploadRequest request) {
+    public PortfolioCreateResponse completeUploadFile(Long requestApplicationId, CompleteUploadRequest request) {
         String filePath = request.uniqueFileName();
 
         String[] parts = filePath.split("/");
         Long applicationId = parseLong(parts[1]);
+
+        // /api/application/{requestApplicationId}/~와 presignedUrl에 담긴 applicationId가 다르면 예외 발생
+        if(!applicationId.equals(requestApplicationId)){
+            throw new ApplicationException(ApplicationErrorCode.APPLICATION_UNMATCHED);
+        }
+
         String[] nameParts = parts[3].split("_", 3);
         String documentTitle = nameParts[1];
         String originalFileName = nameParts[2];
