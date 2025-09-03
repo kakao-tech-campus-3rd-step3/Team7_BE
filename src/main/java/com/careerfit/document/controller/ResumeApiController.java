@@ -23,7 +23,7 @@ public class ResumeApiController {
     private final ResumeService resumeService;
 
     // 파일 업로드 요청: PresignedUrl 발급.
-    @PostMapping("/resume")
+    @PostMapping("/resumes")
     public ResponseEntity<ApiResponse<PresignedUrlResponse>> generatePresignedUrl(
         @PathVariable(name = "application-id") Long applicationId,
         @Valid @RequestBody PresignedUrlRequest request) {
@@ -33,7 +33,7 @@ public class ResumeApiController {
     }
 
     // 파일 업로드 완료 처리: 서버에 업로드 완료 여부를 전달하는 API, 여기서 파일 메타데이터를 DB에 저장.
-    @PostMapping("/resume/complete-upload")
+    @PostMapping("/resumes/complete-upload")
     public ResponseEntity<ApiResponse<?>> completeUploadResume(
         @PathVariable(name = "application-id") Long applicationId,
         @RequestBody CompleteUploadRequest request

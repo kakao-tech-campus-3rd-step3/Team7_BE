@@ -96,7 +96,10 @@ public class ResumeService {
     private String generateUniqueFileName(Long applicationId, String documentTitle,
         String originalFileName) {
         String uuid = UUID.randomUUID().toString();
-        return "applications/" + applicationId + PATH_SEPARATOR + "resume/" + uuid
+        return "applications"
+            + PATH_SEPARATOR + applicationId
+            + PATH_SEPARATOR + "resumes"
+            + PATH_SEPARATOR + uuid
             + NAME_SEPARATOR + documentTitle
             + NAME_SEPARATOR + originalFileName;
     }
