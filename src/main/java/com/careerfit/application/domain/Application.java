@@ -38,7 +38,6 @@ public class Application {
     @Column(nullable = false)
     private String applyPosition;
 
-    @Column(nullable = false)
     private LocalDateTime deadLine;
 
     private String location;

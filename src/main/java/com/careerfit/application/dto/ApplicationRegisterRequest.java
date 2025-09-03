@@ -1,6 +1,5 @@
 package com.careerfit.application.dto;
 
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -13,7 +12,6 @@ public record ApplicationRegisterRequest(
         @NotBlank(message = "지원 직무는 비어 있을 수 없습니다.")
         String applyPosition,
 
-        @Future(message = "마감일은 현재보다 미래 시점이어야 합니다.")
         LocalDateTime deadline,
 
         String location,

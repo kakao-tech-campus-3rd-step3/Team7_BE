@@ -32,7 +32,7 @@ public class ApplicationController {
             @RequestBody ApplicationRegisterRequest request,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        Long memberId = userDetails.getUserId();
+        Long memberId = userDetails.getMember().getId();
         applicationService.registerApplication(request, memberId);
         return ApiResponse.success();
     }
