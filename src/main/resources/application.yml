@@ -20,6 +20,9 @@ spring:
     init:
       mode: always
 
+  profiles:
+    active: local
+
 ai:
   server:
     base-url: http://localhost:8000 # AI 서버 개발자(현준님)에게 받은 실제 주소로 변경해야 합니다.
