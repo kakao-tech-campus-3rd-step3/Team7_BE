@@ -60,6 +60,10 @@ public class Application {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
+    private List<Document> documents = new ArrayList<>();
+
     public static Application of(ApplicationRegisterRequest request, Member member) {
         return Application.builder()
                 .companyName(request.companyName())
@@ -71,10 +75,6 @@ public class Application {
                 .applicationStatus(ApplicationStatus.PREPARING) // 기본 상태값 설정
                 .member(member)
                 .build();
-      
-    @Builder.Default
-    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
-    private List<Document> documents = new ArrayList<>();
 
     public void addDocument(Document document){
         documents.add(document);
