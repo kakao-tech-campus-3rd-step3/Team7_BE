@@ -29,15 +29,7 @@ public class ApplicationService {
     public void registerApplication(ApplicationRegisterRequest request, Long memberId) {
         Member member = memberFinder.getMemberOrThrow(memberId);
 
-        Application application = Application.builder()
-                .companyName(request.companyName())
-                .applyPosition(request.applyPosition())
-                .deadLine(request.deadline())
-                .location(request.location())
-                .employmentType(request.employmentType())
-                .careerRequirement(request.careerRequirement())
-                .member(member)
-                .build();
+        Application application = Application.of(request, member);
 
         applicationJpaRepository.save(application);
     }

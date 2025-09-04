@@ -1,8 +1,8 @@
 package com.careerfit.application.domain;
 
+import com.careerfit.application.dto.ApplicationRegisterRequest;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.careerfit.document.domain.Document;
 import com.careerfit.member.domain.Member;
 
@@ -16,7 +16,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -45,14 +44,12 @@ public class Application {
     @Column(nullable = false)
     private String applyPosition;
 
-    @Column(nullable = false)
     private LocalDateTime deadLine;
 
     private String location;
 
     private String employmentType;
 
-    @Lob
     private Integer careerRequirement;
 
     @Enumerated(EnumType.STRING)
@@ -66,6 +63,19 @@ public class Application {
     @Builder.Default
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
     private List<Document> documents = new ArrayList<>();
+
+    public static Application of(ApplicationRegisterRequest request, Member member) {
+        return Application.builder()
+            .companyName(request.companyName())
+            .applyPosition(request.applyPosition())
+            .deadLine(request.deadline())
+            .location(request.location())
+            .employmentType(request.employmentType())
+            .careerRequirement(request.careerRequirement())
+            .applicationStatus(ApplicationStatus.PREPARING) // 기본 상태값 설정
+            .member(member)
+            .build();
+    }
 
     public void addDocument(Document document){
         documents.add(document);
