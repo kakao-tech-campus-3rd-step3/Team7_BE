@@ -11,7 +11,7 @@ public record CoverLetterListResponse(
     public static CoverLetterListResponse of(List<CoverLetter> coverLetters) {
         List<CoverLetterInfoResponse> coverLetterInfoResponses =
             coverLetters.stream()
-            .map(CoverLetterInfoResponse::of)
+            .map(CoverLetterInfoResponse::from)
             .toList();
         return new CoverLetterListResponse(coverLetterInfoResponses);
     }

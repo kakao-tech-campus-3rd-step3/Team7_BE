@@ -12,7 +12,7 @@ public record CoverLetterDetailResponse(
     public static CoverLetterDetailResponse of(String title, List<CoverLetterItem> coverLetterItems) {
         List<CoverLetterItemInfoResponse> coverLetterItemInfoResponses =
             coverLetterItems.stream()
-            .map(CoverLetterItemInfoResponse::of)
+            .map(CoverLetterItemInfoResponse::from)
             .toList();
         return new CoverLetterDetailResponse(title, coverLetterItemInfoResponses);
     }

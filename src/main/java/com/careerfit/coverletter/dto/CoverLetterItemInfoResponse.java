@@ -7,7 +7,7 @@ public record CoverLetterItemInfoResponse(
     String answer,
     Integer answerLimit
 ) {
-    public static CoverLetterItemInfoResponse of(CoverLetterItem coverLetterItem){
+    public static CoverLetterItemInfoResponse from(CoverLetterItem coverLetterItem){
         return new CoverLetterItemInfoResponse(coverLetterItem.getQuestion(), coverLetterItem.getAnswer(), coverLetterItem.getAnswerLimit());
     }
 }

@@ -9,7 +9,7 @@ public record CoverLetterInfoResponse(
     String title,
     LocalDateTime createdDate
 ) {
-    public static CoverLetterInfoResponse of(CoverLetter coverLetter){
+    public static CoverLetterInfoResponse from(CoverLetter coverLetter){
         return new CoverLetterInfoResponse(coverLetter.getId(), coverLetter.getTitle(), coverLetter.getCreatedDate());
     }
 }
