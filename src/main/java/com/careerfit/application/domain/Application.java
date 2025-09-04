@@ -60,21 +60,22 @@ public class Application {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public static Application of(ApplicationRegisterRequest request, Member member) {
-        return Application.builder()
-                .companyName(request.companyName())
-                .applyPosition(request.applyPosition())
-                .deadLine(request.deadline())
-                .location(request.location())
-                .employmentType(request.employmentType())
-                .careerRequirement(request.careerRequirement())
-                .applicationStatus(ApplicationStatus.PREPARING) // 기본 상태값 설정
-                .member(member)
-                .build();
-      
     @Builder.Default
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
     private List<Document> documents = new ArrayList<>();
+
+    public static Application of(ApplicationRegisterRequest request, Member member) {
+        return Application.builder()
+            .companyName(request.companyName())
+            .applyPosition(request.applyPosition())
+            .deadLine(request.deadline())
+            .location(request.location())
+            .employmentType(request.employmentType())
+            .careerRequirement(request.careerRequirement())
+            .applicationStatus(ApplicationStatus.PREPARING) // 기본 상태값 설정
+            .member(member)
+            .build();
+    }
 
     public void addDocument(Document document){
         documents.add(document);
