@@ -81,12 +81,8 @@ public class ResumeService {
         String documentTitle = nameParts[1];
         String originalFileName = nameParts[2];
 
-        Resume resume = Resume.builder()
-            .originalFileName(originalFileName)
-            .storedFilePath(request.uniqueFileName())
-            .title(documentTitle)
-            .application(applicationFinder.getApplicationOrThrow(applicationId))
-            .build();
+        Resume resume = Resume.of(originalFileName, request.uniqueFileName(),
+            documentTitle, applicationFinder.getApplicationOrThrow(applicationId));
 
         resumeRepository.save(resume);
 
