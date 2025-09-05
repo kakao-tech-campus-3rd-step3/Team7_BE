@@ -32,7 +32,7 @@ public class Mentoring extends CreatedDateBaseEntity {
     private MentoringStatus mentoringStatus;
 
     @ManyToOne(fetch =  FetchType.LAZY)
-    @JoinColumn(name = "applicaiton_id")
+    @JoinColumn(name = "application_id")
     private Application application;
 
     @ManyToOne(fetch = FetchType.LAZY)
