@@ -1,5 +1,9 @@
 package com.careerfit.document.service;
 
+import static com.careerfit.global.util.DocumentUtil.APPLICATION_PREFIX;
+import static com.careerfit.global.util.DocumentUtil.NAME_SEPARATOR;
+import static com.careerfit.global.util.DocumentUtil.PATH_SEPARATOR;
+import static com.careerfit.global.util.DocumentUtil.RESUME_PREFIX;
 import static java.lang.Long.parseLong;
 
 import com.careerfit.application.exception.ApplicationErrorCode;
@@ -17,18 +21,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 @Service
 @RequiredArgsConstructor
 public class ResumeService {
-
-    private static final String PATH_SEPARATOR = "/";
-    private static final String NAME_SEPARATOR = "_";
 
     private final ResumeRepository resumeRepository;
     private final ApplicationFinder applicationFinder;
@@ -94,9 +93,9 @@ public class ResumeService {
     private String generateUniqueFileName(Long applicationId, String documentTitle,
         String originalFileName) {
         String uuid = UUID.randomUUID().toString();
-        return "applications"
+        return APPLICATION_PREFIX
             + PATH_SEPARATOR + applicationId
-            + PATH_SEPARATOR + "resumes"
+            + PATH_SEPARATOR + RESUME_PREFIX
             + PATH_SEPARATOR + uuid
             + NAME_SEPARATOR + documentTitle
             + NAME_SEPARATOR + originalFileName;

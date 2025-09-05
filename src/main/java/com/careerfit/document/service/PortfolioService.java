@@ -1,5 +1,9 @@
 package com.careerfit.document.service;
 
+import static com.careerfit.global.util.DocumentUtil.APPLICATION_PREFIX;
+import static com.careerfit.global.util.DocumentUtil.NAME_SEPARATOR;
+import static com.careerfit.global.util.DocumentUtil.PATH_SEPARATOR;
+import static com.careerfit.global.util.DocumentUtil.PORTFOLIO_PREFIX;
 import static java.lang.Long.parseLong;
 
 import com.careerfit.application.exception.ApplicationErrorCode;
@@ -24,9 +28,6 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 @Service
 @RequiredArgsConstructor
 public class PortfolioService {
-
-    private static final String PATH_SEPARATOR = "/";
-    private static final String NAME_SEPARATOR = "_";
 
     private final PortfolioRepository portfolioRepository;
     private final ApplicationFinder applicationFinder;
@@ -93,9 +94,9 @@ public class PortfolioService {
     private String generateUniqueFileName(Long applicationId, String documentTitle,
         String originalFileName) {
         String uuid = UUID.randomUUID().toString();
-        return "applications"
+        return APPLICATION_PREFIX
             + PATH_SEPARATOR + applicationId
-            + PATH_SEPARATOR + "portfolios"
+            + PATH_SEPARATOR + PORTFOLIO_PREFIX
             + PATH_SEPARATOR + uuid
             + NAME_SEPARATOR + documentTitle
             + NAME_SEPARATOR + originalFileName;
