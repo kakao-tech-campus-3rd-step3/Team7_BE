@@ -80,12 +80,8 @@ public class PortfolioService {
         String documentTitle = nameParts[1];
         String originalFileName = nameParts[2];
 
-        Portfolio portfolio = Portfolio.builder()
-            .originalFileName(originalFileName)
-            .storedFilePath(request.uniqueFileName())
-            .title(documentTitle)
-            .application(applicationFinder.getApplicationOrThrow(applicationId))
-            .build();
+        Portfolio portfolio = Portfolio.of(originalFileName, request.uniqueFileName(),
+            documentTitle, applicationFinder.getApplicationOrThrow(applicationId));
 
         portfolioRepository.save(portfolio);
 
