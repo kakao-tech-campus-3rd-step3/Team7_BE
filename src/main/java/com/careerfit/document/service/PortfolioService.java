@@ -15,6 +15,7 @@ import com.careerfit.document.dto.PresignedUrlRequest;
 import com.careerfit.document.dto.PresignedUrlResponse;
 import com.careerfit.document.repository.PortfolioRepository;
 import com.careerfit.global.exception.ApplicationException;
+import com.careerfit.global.util.DocumentUtil;
 import java.time.Duration;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -67,19 +68,15 @@ public class PortfolioService {
     // CompleteUploadRequest에는 presignedUrl 발급 시에 전달받은 UniqueFileName 필드만 존재
     public PortfolioCreateResponse completeUploadFile(Long requestApplicationId,
         CompleteUploadRequest request) {
-        String filePath = request.uniqueFileName();
 
-        String[] parts = filePath.split(PATH_SEPARATOR);
-        Long applicationId = parseLong(parts[1]);
+        Long applicationId = DocumentUtil.extractApplicationId(request.uniqueFileName());
+        String documentTitle = DocumentUtil.extractDocumentTitle(request.uniqueFileName());
+        String originalFileName = DocumentUtil.extractOriginalFileName(request.uniqueFileName());
 
         // /api/application/{requestApplicationId}/~와 presignedUrl에 담긴 applicationId가 다르면 예외 발생
         if (!applicationId.equals(requestApplicationId)) {
             throw new ApplicationException(ApplicationErrorCode.APPLICATION_UNMATCHED);
         }
-
-        String[] nameParts = parts[3].split(NAME_SEPARATOR, 3);
-        String documentTitle = nameParts[1];
-        String originalFileName = nameParts[2];
 
         Portfolio portfolio = Portfolio.of(originalFileName, request.uniqueFileName(),
             documentTitle, applicationFinder.getApplicationOrThrow(applicationId));
