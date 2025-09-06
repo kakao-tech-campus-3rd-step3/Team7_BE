@@ -20,8 +20,8 @@ public class Mentoring extends CreatedDateBaseEntity {
     @Column(nullable = false)
     private MentoringStatus mentoringStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "applicaiton_id")
+    @ManyToOne(fetch =  FetchType.LAZY)
+    @JoinColumn(name = "application_id")
     private Application application;
 
     @ManyToOne(fetch = FetchType.LAZY)
