@@ -15,7 +15,7 @@ public class AiServerClient {
     private final RestClient restClient;
 
     public AiServerClient(RestClient.Builder builder,
-            @Value("${ai.server.base-url}") String baseUrl) {
+                          @Value("${ai.server.base-url}") String baseUrl) {
         this.restClient = builder
                 .baseUrl(baseUrl)
                 .defaultStatusHandler(status -> status.is4xxClientError(), (req, res) -> {

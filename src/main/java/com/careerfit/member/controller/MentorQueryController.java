@@ -1,10 +1,10 @@
 package com.careerfit.member.controller;
 
 import com.careerfit.global.dto.ApiResponse;
-import com.careerfit.member.dto.MentorHeaderResponse;
-import com.careerfit.member.dto.MentorIntroductionResponse;
-import com.careerfit.member.dto.MentorListPageResponse;
-import com.careerfit.member.dto.MentorReviewResponse;
+import com.careerfit.member.dto.mento.MentorHeaderResponse;
+import com.careerfit.member.dto.mento.MentorIntroductionResponse;
+import com.careerfit.member.dto.mento.MentorListPageResponse;
+import com.careerfit.member.dto.mento.MentorReviewResponse;
 import com.careerfit.member.service.MentorQueryService;
 import org.springframework.web.bind.annotation.*;
 
