@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record LoginResponse(
-    boolean isExistingUser,
-    OAuthUserInfo oAuthUserInfo,
-    MemberRole memberType,
-    String accessToken,
-    String refreshToken
+        boolean isExistingUser,
+        OAuthUserInfo oAuthUserInfo,
+        MemberRole memberType,
+        String accessToken,
+        String refreshToken
 ) {
 
     public static LoginResponse forNewUser(OAuthUserInfo oAuthUserInfo) {

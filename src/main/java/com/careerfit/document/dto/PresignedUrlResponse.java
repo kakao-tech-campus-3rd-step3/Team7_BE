@@ -1,3 +1,4 @@
 package com.careerfit.document.dto;
 
-public record PresignedUrlResponse(String presignedUrl, String uniqueFileName) {}
+public record PresignedUrlResponse(String presignedUrl, String uniqueFileName) {
+}

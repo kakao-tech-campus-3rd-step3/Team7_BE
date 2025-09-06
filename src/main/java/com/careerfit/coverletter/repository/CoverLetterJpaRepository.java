@@ -1,10 +1,9 @@
 package com.careerfit.coverletter.repository;
 
-import java.util.List;
-
+import com.careerfit.coverletter.domain.CoverLetter;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.careerfit.coverletter.domain.CoverLetter;
+import java.util.List;
 
 public interface CoverLetterJpaRepository extends JpaRepository<CoverLetter, Long> {
 

@@ -1,19 +1,11 @@
 package com.careerfit.member.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.BatchSize;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "mento_profile")
@@ -21,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class MentoProfile implements MemberProfile{
+public class MentoProfile implements MemberProfile {
 
     @Id
     private Long id;
@@ -38,10 +30,27 @@ public class MentoProfile implements MemberProfile{
     @Column(nullable = false)
     private String employmentCertificate;
 
-    private String education;
+    @BatchSize(size= 100)
+    @ElementCollection
+    @CollectionTable(name = "mento_education", joinColumns = @JoinColumn(name = "mento_profile_id"))
+    @Column(name = "education")
+    @Builder.Default
+    private List<String> education = new ArrayList<>();
 
-    @Lob
-    private String expertise;
+    @BatchSize(size= 100)
+    @ElementCollection
+    @CollectionTable(name = "mento_certification", joinColumns = @JoinColumn(name = "mento_profile_id"))
+    @Column(name = "certificate")
+    @Builder.Default
+    private List<String> certifications = new ArrayList<>();
+
+    @BatchSize(size= 100)
+    @ElementCollection
+    @CollectionTable(name = "mento_expertise", joinColumns = @JoinColumn(name = "mento_profile_id"))
+    @Column(name = "expertise")
+    @Builder.Default
+    private List<String> expertise = new ArrayList<>();
+
 
     private String introduction;
 
@@ -51,8 +60,6 @@ public class MentoProfile implements MemberProfile{
 
     private int menteeCount;
 
-    private Double avgResponseTime;
-
     private Double pricePerSession;
 
     @MapsId
@@ -60,23 +67,38 @@ public class MentoProfile implements MemberProfile{
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public static MentoProfile of(int careerYears, String company, String jobPosition, String employmentCertificate, String education,
-        String expertise, String introduction){
+    @BatchSize(size= 100)
+    @OneToMany(mappedBy = "mentoProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<MentoCareer> mentoCareers = new ArrayList<>();
 
-        return MentoProfile.builder()
-            .careerYears(careerYears)
-            .company(company)
-            .jobPosition(jobPosition)
-            .employmentCertificate(employmentCertificate)
-            .education(education)
-            .expertise(expertise)
-            .introduction(introduction)
-            .rating(null)
-            .reviewCount(0)
-            .menteeCount(0)
-            .avgResponseTime(null)
-            .pricePerSession(null)
-            .build();
+    public static MentoProfile of(int careerYears, String company, String jobPosition, String employmentCertificate,
+                                  List<String> certifications, List<String> education, List<String> expertise,
+                                  String introduction, List<MentoCareer> mentoCareers) {
+
+        MentoProfile profile = MentoProfile.builder()
+                .careerYears(careerYears)
+                .company(company)
+                .jobPosition(jobPosition)
+                .employmentCertificate(employmentCertificate)
+                .certifications(certifications != null ? certifications : new ArrayList<>())
+                .education(education != null ? education : new ArrayList<>())
+                .expertise(expertise)
+                .introduction(introduction)
+                .rating(0.0)
+                .reviewCount(0)
+                .menteeCount(0)
+                .pricePerSession(0.0)
+                .mentoCareers(mentoCareers != null ? mentoCareers : new ArrayList<>())
+                .build();
+
+        if (mentoCareers != null) {
+            for (MentoCareer career : mentoCareers) {
+                career.setMentoProfile(profile);
+            }
+        }
+
+        return profile;
     }
 
     @Override

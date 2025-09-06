@@ -1,17 +1,15 @@
 package com.careerfit.member.service;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.careerfit.auth.domain.OAuthProvider;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.exception.MemberErrorCode;
 import com.careerfit.member.repository.MemberJpaRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +20,10 @@ public class MemberFinder {
 
     public Member getMemberOrThrow(Long memberId) {
         return memberJpaRepository.findById(memberId)
-            .orElseThrow(() -> new ApplicationException(MemberErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new ApplicationException(MemberErrorCode.MEMBER_NOT_FOUND));
     }
 
-    public Optional<Member> getMemberWithOptional(String registrationId, String oauthId){
+    public Optional<Member> getMemberWithOptional(String registrationId, String oauthId) {
         return memberJpaRepository.findByProviderAndOauthId(OAuthProvider.from(registrationId), oauthId);
     }
 

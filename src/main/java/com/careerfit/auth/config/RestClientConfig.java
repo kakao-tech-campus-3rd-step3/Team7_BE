@@ -15,6 +15,6 @@ public class RestClientConfig {
         factory.setReadTimeout(5000);
 
         return RestClient.builder()
-            .requestFactory(factory);
+                .requestFactory(factory);
     }
 }
