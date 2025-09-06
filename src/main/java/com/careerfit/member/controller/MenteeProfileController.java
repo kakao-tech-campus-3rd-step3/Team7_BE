@@ -1,8 +1,8 @@
 package com.careerfit.member.controller;
 
 import com.careerfit.global.dto.ApiResponse;
-import com.careerfit.member.dto.MenteeProfileInfo;
-import com.careerfit.member.dto.MenteeProfileUpdateRequest;
+import com.careerfit.member.dto.mentee.MenteeProfileInfo;
+import com.careerfit.member.dto.mentee.MenteeProfileUpdateRequest;
 import com.careerfit.member.service.MenteeProfileQueryService;
 import com.careerfit.member.service.MenteeProfileUpdateService;
 import lombok.RequiredArgsConstructor;
