@@ -35,4 +35,4 @@ cloud:
     s3:
       bucket: ${s3-bucket-name}
     region:
-      static: ap-northeast-2
+      region-value: ap-northeast-2
