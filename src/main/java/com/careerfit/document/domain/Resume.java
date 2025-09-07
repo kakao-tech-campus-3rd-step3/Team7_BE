@@ -1,6 +1,12 @@
 package com.careerfit.document.domain;
 
-import jakarta.persistence.*;
+import com.careerfit.application.domain.Application;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,4 +29,15 @@ public class Resume extends Document {
 
     @Column(unique = true, nullable = false)
     private String storedFilePath;
+
+    public static Resume of(String originalFileName, String storedFilePath, String documentTitle,
+                            Application application) {
+
+        return Resume.builder()
+                .originalFileName(originalFileName)
+                .storedFilePath(storedFilePath)
+                .title(documentTitle)
+                .application(application)
+                .build();
+    }
 }
