@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class MentoProfile implements MemberProfile{
+public class MentoProfile implements MemberProfile {
 
     @Id
     private Long id;
@@ -60,23 +60,29 @@ public class MentoProfile implements MemberProfile{
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public static MentoProfile of(int careerYears, String company, String jobPosition, String employmentCertificate, String education,
-        String expertise, String introduction){
+    public static MentoProfile of(int careerYears, String company, String jobPosition,
+            String employmentCertificate, String education,
+            String expertise, String introduction) {
 
         return MentoProfile.builder()
-            .careerYears(careerYears)
-            .company(company)
-            .jobPosition(jobPosition)
-            .employmentCertificate(employmentCertificate)
-            .education(education)
-            .expertise(expertise)
-            .introduction(introduction)
-            .rating(null)
-            .reviewCount(0)
-            .menteeCount(0)
-            .avgResponseTime(null)
-            .pricePerSession(null)
-            .build();
+                .careerYears(careerYears)
+                .company(company)
+                .jobPosition(jobPosition)
+                .employmentCertificate(employmentCertificate)
+                .education(education)
+                .expertise(expertise)
+                .introduction(introduction)
+                .rating(null)
+                .reviewCount(0)
+                .menteeCount(0)
+                .avgResponseTime(null)
+                .pricePerSession(null)
+                .build();
+    }
+
+    public void updateReviewStats(int reviewCount, Double rating) {
+        this.reviewCount = reviewCount;
+        this.rating = rating;
     }
 
     @Override
