@@ -53,4 +53,13 @@ public class Review extends TimeBaseEntity {
     public static Review create(Member mentee, Member mento, double rating, String content) {
         return new Review(mentee, mento, rating, content);
     }
+
+    public void update(Double rating, String content) {
+        if (rating != null) {
+            this.rating = rating;
+        }
+        if (content != null) {
+            this.content = content;
+        }
+    }
 }

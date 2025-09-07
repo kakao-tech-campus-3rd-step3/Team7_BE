@@ -7,8 +7,12 @@ import com.careerfit.member.exception.MemberErrorCode;
 import com.careerfit.member.repository.MemberJpaRepository;
 import com.careerfit.member.repository.MentoProfileJpaRepository;
 import com.careerfit.review.domain.Review;
+import com.careerfit.review.dto.ReviewGetResponse;
+import com.careerfit.review.dto.ReviewPatchRequest;
 import com.careerfit.review.dto.ReviewPostRequest;
 import com.careerfit.review.dto.ReviewPostResponse;
+import com.careerfit.review.dto.ReviewUpdateResponse;
+import com.careerfit.review.exception.ReviewErrorCode;
 import com.careerfit.review.repository.ReviewJpaRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +40,48 @@ public class ReviewService {
         return new ReviewPostResponse(savedReview.getId());
     }
 
+    @Transactional(readOnly = true)
+    public ReviewGetResponse getReviewsByMento(Long mentoId) {
+        MentoProfile mentoProfile = findMentoProfileByMemberId(mentoId);
+        List<Review> reviews = reviewJpaRepository.findByMento(mentoProfile.getMember());
+
+        List<ReviewGetResponse.ReviewDetail> reviewDetails = reviews.stream()
+                .map(review -> new ReviewGetResponse.ReviewDetail(
+                        review.getMentee().getId(),
+                        review.getMentee().getName(),
+                        review.getRating(),
+                        review.getContent(),
+                        review.getCreatedDate()
+                ))
+                .toList();
+
+        return new ReviewGetResponse(
+                mentoProfile.getReviewCount(),
+                mentoProfile.getRating(),
+                reviewDetails
+        );
+    }
+
+    public ReviewUpdateResponse updateReview(Long reviewId, Long menteeId,
+            ReviewPatchRequest request) {
+        Review review = findReviewById(reviewId);
+        validateReviewOwner(review, menteeId);
+
+        review.update(request.rating(), request.content());
+        updateMentoReviewStats(review.getMento());
+
+        return new ReviewUpdateResponse(review.getId());
+    }
+
+    public void deleteReview(Long reviewId, Long menteeId) {
+        Review review = findReviewById(reviewId);
+        validateReviewOwner(review, menteeId);
+        Member mento = review.getMento();
+
+        reviewJpaRepository.delete(review);
+        updateMentoReviewStats(mento);
+    }
+
     private void updateMentoReviewStats(Member mento) {
         List<Review> reviews = reviewJpaRepository.findByMento(mento);
 
@@ -60,5 +106,16 @@ public class ReviewService {
         return mentoProfileJpaRepository.findById(memberId)
                 .orElseThrow(
                         () -> new ApplicationException(MemberErrorCode.MENTO_PROFILE_NOT_FOUND));
+    }
+
+    private Review findReviewById(Long reviewId) {
+        return reviewJpaRepository.findById(reviewId)
+                .orElseThrow(() -> new ApplicationException(ReviewErrorCode.REVIEW_NOT_FOUND));
+    }
+
+    private void validateReviewOwner(Review review, Long currentMemberId) {
+        if (!review.getMentee().getId().equals(currentMemberId)) {
+            throw new ApplicationException(ReviewErrorCode.FORBIDDEN_ACCESS);
+        }
     }
 }
