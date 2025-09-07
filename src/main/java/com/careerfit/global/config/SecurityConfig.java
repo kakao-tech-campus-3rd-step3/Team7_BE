@@ -1,4 +1,4 @@
-package com.careerfit.auth.config;
+package com.careerfit.global.config;
 
 import java.util.Arrays;
 import java.util.List;

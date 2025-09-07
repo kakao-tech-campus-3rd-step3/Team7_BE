@@ -1,4 +1,4 @@
-package com.careerfit.auth.config;
+package com.careerfit.global.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
