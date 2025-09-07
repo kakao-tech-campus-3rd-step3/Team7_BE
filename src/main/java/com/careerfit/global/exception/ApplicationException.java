@@ -1,9 +1,9 @@
 package com.careerfit.global.exception;
 
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import lombok.Getter;
 
 @Getter
 public class ApplicationException extends RuntimeException {

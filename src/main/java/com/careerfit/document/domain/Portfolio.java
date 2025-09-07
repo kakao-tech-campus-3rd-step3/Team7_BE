@@ -31,13 +31,13 @@ public class Portfolio extends Document {
     private String storedFilePath;
 
     public static Portfolio of(String originalFileName, String storedFilePath, String documentTitle,
-        Application application) {
+                               Application application) {
 
         return Portfolio.builder()
-            .originalFileName(originalFileName)
-            .storedFilePath(storedFilePath)
-            .title(documentTitle)
-            .application(application)
-            .build();
+                .originalFileName(originalFileName)
+                .storedFilePath(storedFilePath)
+                .title(documentTitle)
+                .application(application)
+                .build();
     }
 }
