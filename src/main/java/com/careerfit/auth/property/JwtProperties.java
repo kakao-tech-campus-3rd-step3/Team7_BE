@@ -9,6 +9,5 @@ public record JwtProperties(
     long refreshTokenValidityMillis,
     String issuer
 ) {
-
 }
 
