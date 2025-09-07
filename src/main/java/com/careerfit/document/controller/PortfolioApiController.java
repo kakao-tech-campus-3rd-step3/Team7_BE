@@ -20,8 +20,8 @@ public class PortfolioApiController {
 
     @GetMapping("{portfolio-id}")
     public ResponseEntity<ApiResponse<FileInfoResponse>> getPortfolioInfo(
-        @PathVariable(name = "application-id") Long applicationId,
-        @PathVariable(name = "portfolio-id") Long portfolioId
+            @PathVariable(name = "application-id") Long applicationId,
+            @PathVariable(name = "portfolio-id") Long portfolioId
     ) {
         FileInfoResponse response = portfolioService.getPortfolioInfo(applicationId, portfolioId);
         return ResponseEntity.ok(ApiResponse.success(response));
@@ -29,8 +29,8 @@ public class PortfolioApiController {
 
     @DeleteMapping("{portfolio-id}")
     public ResponseEntity<ApiResponse<?>> deletePortfolio(
-        @PathVariable(name = "application-id") Long applicationId,
-        @PathVariable(name = "portfolio-id") Long portfolioId
+            @PathVariable(name = "application-id") Long applicationId,
+            @PathVariable(name = "portfolio-id") Long portfolioId
     ) {
         portfolioService.deletePortfolio(applicationId, portfolioId);
         return ResponseEntity.ok(ApiResponse.success());

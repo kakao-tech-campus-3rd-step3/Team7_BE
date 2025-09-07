@@ -1,8 +1,8 @@
 package com.careerfit.auth.dto;
 
 public record SignUpResponse(
-    Long memberId,
-    TokenInfo tokenInfo
+        Long memberId,
+        TokenInfo tokenInfo
 ) {
 
     public static SignUpResponse of(Long memberId, TokenInfo tokenInfo) {
