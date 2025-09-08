@@ -19,14 +19,18 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.careerfit.auth.filter.JwtValidationFilter;
+import com.careerfit.auth.handler.CustomLogoutSuccessHandler;
+import com.careerfit.auth.handler.JwtLogoutHandler;
 import com.careerfit.auth.handler.OAuth2LoginSuccessHandler;
 import com.careerfit.auth.service.CustomOAuth2UserService;
 
+import lombok.CustomLog;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -41,6 +45,8 @@ public class SecurityConfig {
     private final AccessDeniedHandler accessDeniedHandler;
     private final CustomOAuth2UserService userService;
     private final OAuth2LoginSuccessHandler loginSuccessHandler;
+    private final JwtLogoutHandler jwtLogoutHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -55,13 +61,18 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
             )
+            .logout(logout -> logout
+                .logoutUrl("/api/auth/logout")
+                .addLogoutHandler(jwtLogoutHandler)
+                .logoutSuccessHandler(customLogoutSuccessHandler)
+            )
             .oauth2Login(oauth2 -> oauth2
                 .userInfoEndpoint(userInfoEndpoint ->
                     userInfoEndpoint.userService(userService)
                 )
                 .successHandler(loginSuccessHandler)
             )
-            .addFilterBefore(jwtValidationFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtValidationFilter, LogoutFilter.class)
             .exceptionHandling(exceptions -> exceptions
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)
