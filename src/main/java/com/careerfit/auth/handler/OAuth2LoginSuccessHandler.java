@@ -1,7 +1,6 @@
 package com.careerfit.auth.handler;
 
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -10,12 +9,11 @@ import org.springframework.stereotype.Component;
 
 import com.careerfit.auth.domain.CustomOAuth2User;
 import com.careerfit.auth.domain.OAuthProvider;
-import com.careerfit.auth.domain.RefreshToken;
 import com.careerfit.auth.dto.LoginResponse;
 import com.careerfit.auth.dto.OAuthUserInfo;
-import com.careerfit.auth.dto.RefreshTokenInfo;
-import com.careerfit.auth.service.RefreshTokenService;
-import com.careerfit.auth.utils.JwtUtils;
+import com.careerfit.auth.dto.TokenInfo;
+import com.careerfit.auth.service.AuthService;
+import com.careerfit.auth.utils.JwtProvider;
 import com.careerfit.global.dto.ApiResponse;
 import com.careerfit.member.domain.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,9 +28,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final JwtUtils jwtUtils;
+    private final JwtProvider jwtProvider;
     private final ObjectMapper objectMapper;
-    private final RefreshTokenService refreshTokenService;
+    private final AuthService authService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -53,17 +51,13 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         } else {
             Member member = oAuth2User.getMember();
-
-            String accessToken = jwtUtils.createAccessToken(member.getId(), Set.of(member.getMemberRole().getRole()));
-            RefreshTokenInfo refreshTokenInfo = jwtUtils.createRefreshToken(member.getId());
-
-            refreshTokenService.cacheRefreshToken(refreshTokenInfo);
+            TokenInfo tokenInfo = authService.issueTokens(member);
 
             LoginResponse loginResponse = LoginResponse.forExistingUser(
                 oAuthUserInfo,
                 member.getMemberRole(),
-                accessToken,
-                refreshTokenInfo.refreshToken()
+                tokenInfo.accessToken(),
+                tokenInfo.refreshToken()
             );
             apiResponse = ApiResponse.success(loginResponse);
         }
