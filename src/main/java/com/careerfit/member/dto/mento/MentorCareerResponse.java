@@ -3,17 +3,18 @@ package com.careerfit.member.dto.mento;
 import com.careerfit.member.domain.MentorCareer;
 
 public record MentorCareerResponse(
-        String companyName,
-        String position,
-        String startDate,
-        String endDate
+    String companyName,
+    String position,
+    String startDate,
+    String endDate
 ) {
+
     public static MentorCareerResponse from(MentorCareer career) {
         return new MentorCareerResponse(
-                career.getCompanyName(),
-                career.getPosition(),
-                career.getStartDate(),
-                career.getEndDate()
+            career.getCompanyName(),
+            career.getPosition(),
+            career.getStartDate(),
+            career.getEndDate()
         );
     }
 }

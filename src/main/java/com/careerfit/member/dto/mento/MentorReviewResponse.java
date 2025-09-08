@@ -1,20 +1,23 @@
 package com.careerfit.member.dto.mento;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+import java.time.LocalDateTime;
+
 public record MentorReviewResponse(
-        int reviewCount,
-        double averageRating,
-        List<ReviewDetail> reviews
+    int reviewCount,
+    double averageRating,
+    List<ReviewDetail> reviews
 ) {
 
     public record ReviewDetail(
-            Long reviewerId,
-            String reviewerName,
-            double rating,
-            String content,
-            LocalDateTime createdAt
-    ) {}
+        Long reviewerId,
+        String reviewerName,
+        double rating,
+        String content,
+        LocalDateTime createdAt
+    ) {
+
+    }
 }
 
