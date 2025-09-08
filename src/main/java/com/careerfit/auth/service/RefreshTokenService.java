@@ -3,8 +3,6 @@ package com.careerfit.auth.service;
 import org.springframework.stereotype.Service;
 
 import com.careerfit.auth.domain.RefreshToken;
-import com.careerfit.auth.dto.RefreshTokenInfo;
-import com.careerfit.auth.property.JwtProperties;
 import com.careerfit.auth.repository.RefreshTokenRepository;
 import com.careerfit.auth.utils.JwtProvider;
 
@@ -20,6 +18,10 @@ public class RefreshTokenService {
     public void cacheRefreshToken(Long memberId, String refreshToken) {
         refreshTokenRepository.save(RefreshToken.of(memberId, refreshToken,
             jwtProvider.getRefreshTokenExpiration()));
+    }
+
+    public boolean existsByRefreshToken(String refreshToken) {
+        return refreshTokenRepository.existsByRefreshToken(refreshToken);
     }
 
 }

@@ -11,10 +11,13 @@ import com.careerfit.auth.domain.OAuthProvider;
 import com.careerfit.auth.dto.CommonSignUpRequest;
 import com.careerfit.auth.dto.MenteeSignUpRequest;
 import com.careerfit.auth.dto.MentorSignUpRequest;
+import com.careerfit.auth.dto.ReissueTokenRequest;
 import com.careerfit.auth.dto.SignUpResponse;
 import com.careerfit.auth.dto.TokenInfo;
 import com.careerfit.auth.exception.AuthErrorCode;
+import com.careerfit.auth.utils.JwtParser;
 import com.careerfit.auth.utils.JwtProvider;
+import com.careerfit.auth.utils.JwtValidator;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.MenteeProfile;
@@ -33,6 +36,8 @@ public class AuthService {
     private final MemberFinder memberFinder;
     private final JwtProvider jwtProvider;
     private final RefreshTokenService refreshTokenService;
+    private final JwtParser jwtParser;
+    private final JwtValidator jwtValidator;
 
     @Transactional
     public SignUpResponse signUpAsMentee(MenteeSignUpRequest dto) {
@@ -111,6 +116,17 @@ public class AuthService {
 
         return TokenInfo.of(jwtProvider.getTokenType(), accessToken, refreshToken,
             jwtProvider.getAccessTokenExpiration(), jwtProvider.getRefreshTokenExpiration());
+    }
+
+    public TokenInfo reissueTokens(ReissueTokenRequest reissueTokenRequest) {
+        String refreshToken = reissueTokenRequest.refreshToken();
+        if(!jwtValidator.validateToken(refreshToken) || !refreshTokenService.existsByRefreshToken(refreshToken)){
+            throw new ApplicationException(AuthErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        Long userId = jwtParser.getUserId(refreshToken);
+        Member member = memberFinder.getMemberOrThrow(userId);
+        return issueTokens(member);
     }
 
     private void validateDuplicateEmail(String email) {
