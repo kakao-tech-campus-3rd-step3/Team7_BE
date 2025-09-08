@@ -129,6 +129,10 @@ public class AuthService {
         return issueTokens(member);
     }
 
+    public void logout(Long userId){
+        refreshTokenService.deleteByMemberId(userId);
+    }
+
     private void validateDuplicateEmail(String email) {
         if (memberFinder.getMemberWithOptional(email).isPresent()) {
             throw new ApplicationException(AuthErrorCode.DUPLICATE_EMAIL)

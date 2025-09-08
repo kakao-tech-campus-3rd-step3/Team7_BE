@@ -24,4 +24,8 @@ public class RefreshTokenService {
         return refreshTokenRepository.existsByRefreshToken(refreshToken);
     }
 
+    public void deleteByMemberId(Long memberId){
+        refreshTokenRepository.deleteByUserId(memberId);
+    }
+
 }
