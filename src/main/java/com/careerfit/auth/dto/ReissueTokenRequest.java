@@ -1,9 +1,9 @@
 package com.careerfit.auth.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record ReissueTokenRequest(
-    @NotNull
+    @NotBlank
     String refreshToken
 ) {
 
