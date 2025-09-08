@@ -1,7 +1,7 @@
 package com.careerfit.member.dto.mento;
 
 import com.careerfit.member.domain.Member;
-import com.careerfit.member.domain.MentoProfile;
+import com.careerfit.member.domain.MentorProfile;
 
 public record MentorListResponse(
         Long id,
@@ -16,7 +16,7 @@ public record MentorListResponse(
         double pricePerSession
 ) {
     public static MentorListResponse from(Member member) {
-        MentoProfile profile = member.getMentoProfile();
+        MentorProfile profile = member.getMentoProfile();
         return new MentorListResponse(
                 member.getId(),
                 member.getName(),

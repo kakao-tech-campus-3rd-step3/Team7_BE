@@ -20,6 +20,6 @@ public class MentorFinder {
     }
 
     public Page<Member> getMentorList(String search, Pageable pageable) {
-        return memberJpaRepository.findByRoleAndSearch(MemberRole.MENTO, search, pageable);
+        return memberJpaRepository.findByRoleAndSearch(MemberRole.MENTOR, search, pageable);
     }
 }

@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "mento_profile")
+@Table(name = "mentor_profile")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class MentoProfile implements MemberProfile {
+public class MentorProfile implements MemberProfile {
 
     @Id
     private Long id;
@@ -32,21 +32,21 @@ public class MentoProfile implements MemberProfile {
 
     @BatchSize(size= 100)
     @ElementCollection
-    @CollectionTable(name = "mento_education", joinColumns = @JoinColumn(name = "mento_profile_id"))
+    @CollectionTable(name = "mentor_education", joinColumns = @JoinColumn(name = "mentor_profile_id"))
     @Column(name = "education")
     @Builder.Default
     private List<String> educations = new ArrayList<>();
 
     @BatchSize(size= 100)
     @ElementCollection
-    @CollectionTable(name = "mento_certification", joinColumns = @JoinColumn(name = "mento_profile_id"))
+    @CollectionTable(name = "mentor_certification", joinColumns = @JoinColumn(name = "mentor_profile_id"))
     @Column(name = "certificate")
     @Builder.Default
     private List<String> certifications = new ArrayList<>();
 
     @BatchSize(size= 100)
     @ElementCollection
-    @CollectionTable(name = "mento_expertise", joinColumns = @JoinColumn(name = "mento_profile_id"))
+    @CollectionTable(name = "mentor_expertise", joinColumns = @JoinColumn(name = "mentor_profile_id"))
     @Column(name = "expertise")
     @Builder.Default
     private List<String> expertises = new ArrayList<>();
@@ -67,15 +67,15 @@ public class MentoProfile implements MemberProfile {
     private Member member;
 
     @BatchSize(size= 100)
-    @OneToMany(mappedBy = "mentoProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<MentoCareer> mentoCareers = new ArrayList<>();
+    private List<MentorCareer> mentoCareers = new ArrayList<>();
 
-    public static MentoProfile of(int careerYears, String company, String jobPosition, String employmentCertificate,
+    public static MentorProfile of(int careerYears, String company, String jobPosition, String employmentCertificate,
                                   List<String> certifications, List<String> educations, List<String> expertises,
-                                  String introduction, List<MentoCareer> mentoCareers) {
+                                  String introduction, List<MentorCareer> mentoCareers) {
 
-        MentoProfile profile = MentoProfile.builder()
+        MentorProfile profile = MentorProfile.builder()
                 .careerYears(careerYears)
                 .company(company)
                 .jobPosition(jobPosition)
@@ -97,9 +97,9 @@ public class MentoProfile implements MemberProfile {
         return profile;
     }
 
-    public void addMentoCareer(MentoCareer mentoCareer) {
-        mentoCareer.setMentoProfile(this);
-        this.mentoCareers.add(mentoCareer);
+    public void addMentoCareer(MentorCareer mentorCareer) {
+        mentorCareer.setMentorProfile(this);
+        this.mentoCareers.add(mentorCareer);
     }
 
     @Override

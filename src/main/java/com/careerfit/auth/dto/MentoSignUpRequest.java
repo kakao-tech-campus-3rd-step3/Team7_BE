@@ -1,12 +1,13 @@
 package com.careerfit.auth.dto;
 
-import com.careerfit.member.domain.MentoCareer;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
+
+import com.careerfit.member.domain.MentorCareer;
 
 public record MentoSignUpRequest(
         @Valid
@@ -22,9 +23,9 @@ public record MentoSignUpRequest(
         @NotBlank
         String employmentCertificate,
         List<String> certifications,
-        List<String> education,
+        List<String> educations,
         List<String> expertises,
         String description,
-        List<MentoCareer> careers
+        List<MentorCareer> careers
 ) {
 }

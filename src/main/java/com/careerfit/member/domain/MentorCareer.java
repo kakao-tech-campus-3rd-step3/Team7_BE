@@ -4,12 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "mento_career")
+@Table(name = "mentor_career")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class MentoCareer {
+public class MentorCareer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +22,10 @@ public class MentoCareer {
     private String endDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mento_profile_id")
-    private MentoProfile mentoProfile;
+    @JoinColumn(name = "mentor_profile_id")
+    private MentorProfile mentorProfile;
 
-    public void setMentoProfile(MentoProfile mentoProfile) {
-        this.mentoProfile = mentoProfile;
+    public void setMentorProfile(MentorProfile mentorProfile) {
+        this.mentorProfile = mentorProfile;
     }
 }

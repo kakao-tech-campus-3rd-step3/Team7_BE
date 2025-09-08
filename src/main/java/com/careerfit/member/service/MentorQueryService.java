@@ -1,7 +1,7 @@
 package com.careerfit.member.service;
 
 import com.careerfit.member.domain.Member;
-import com.careerfit.member.domain.MentoProfile;
+import com.careerfit.member.domain.MentorProfile;
 import com.careerfit.member.dto.mento.*;
 import com.careerfit.review.domain.Review;
 import com.careerfit.review.domain.repository.ReviewJpaRepository;
@@ -50,7 +50,7 @@ public class MentorQueryService {
 
     public MentorHeaderResponse getMentorHeader(Long mentorId) {
         Member m = mentorFinder.getMentorById(mentorId);
-        MentoProfile p = m.getMentoProfile();
+        MentorProfile p = m.getMentoProfile();
 
         return new MentorHeaderResponse(
                 m.getId(),
@@ -66,7 +66,7 @@ public class MentorQueryService {
     }
 
     public MentorIntroductionResponse getMentorIntroduction(Long mentorId) {
-        MentoProfile p = mentorFinder.getMentorById(mentorId).getMentoProfile();
+        MentorProfile p = mentorFinder.getMentorById(mentorId).getMentoProfile();
 
         List<MentorCareerResponse> careerResponses = p.getMentoCareers().stream()
                 .map(MentorCareerResponse::from)

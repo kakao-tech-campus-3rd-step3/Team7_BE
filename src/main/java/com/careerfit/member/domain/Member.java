@@ -48,13 +48,13 @@ public class Member extends TimeBaseEntity {
     private List<Application> applications = new ArrayList<>();
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
-    private MentoProfile mentoProfile;
+    private MentorProfile mentoProfile;
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private MenteeProfile menteeProfile;
 
     public static Member mento(String email, String phoneNumber, String name, String profileImageUrl, OAuthProvider oAuthProvider,
-                               String oauthId, MentoProfile mentoProfile) {
+                               String oauthId, MentorProfile mentoProfile) {
         Member member = Member.builder()
                 .name(name)
                 .email(email)
@@ -62,7 +62,7 @@ public class Member extends TimeBaseEntity {
                 .profileImageUrl(profileImageUrl)
                 .provider(oAuthProvider)
                 .oauthId(oauthId)
-                .memberRole(MemberRole.MENTO)
+                .memberRole(MemberRole.MENTOR)
                 .build();
 
         member.setMemberProfile(mentoProfile);
@@ -91,8 +91,8 @@ public class Member extends TimeBaseEntity {
         if (memberProfile == null) {
             return;
         }
-        if (memberProfile instanceof MentoProfile) {
-            this.mentoProfile = (MentoProfile) memberProfile;
+        if (memberProfile instanceof MentorProfile) {
+            this.mentoProfile = (MentorProfile) memberProfile;
             this.mentoProfile.setMember(this);
         } else if (memberProfile instanceof MenteeProfile) {
             this.menteeProfile = (MenteeProfile) memberProfile;

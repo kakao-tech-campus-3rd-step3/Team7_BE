@@ -7,8 +7,8 @@ import com.careerfit.auth.utils.JwtUtils;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.MenteeProfile;
-import com.careerfit.member.domain.MentoCareer;
-import com.careerfit.member.domain.MentoProfile;
+import com.careerfit.member.domain.MentorCareer;
+import com.careerfit.member.domain.MentorProfile;
 import com.careerfit.member.repository.MemberJpaRepository;
 import com.careerfit.member.service.MemberFinder;
 import lombok.RequiredArgsConstructor;
@@ -65,9 +65,9 @@ public class AuthService {
         validateDuplicateEmail(commonInfo.email());
 
         OAuthProvider oAuthProvider = OAuthProvider.from(commonInfo.registrationId());
-        List<MentoCareer> mentoCareers = dto.careers() != null
+        List<MentorCareer> mentoCareers = dto.careers() != null
                 ? dto.careers().stream()
-                .map(c -> MentoCareer.builder()
+                .map(c -> MentorCareer.builder()
                         .companyName(c.getCompanyName())
                         .position(c.getPosition())
                         .startDate(c.getStartDate())
@@ -76,14 +76,14 @@ public class AuthService {
                 .toList()
                 : new ArrayList<>();
 
-        MentoProfile mentoProfile = MentoProfile.of(
+        MentorProfile mentorProfile = MentorProfile.of(
                 dto.career(),
                 dto.currentCompany(),
                 dto.currentPosition(),
                 dto.employmentCertificate(),
-                dto.certifications() != null ? dto.certifications() : new ArrayList<>(),
-                dto.education() != null ? dto.education() : new ArrayList<>(),
-                dto.expertises() != null ? dto.expertises() : new ArrayList<>(),
+                dto.certifications(),
+                dto.educations(),
+                dto.expertises(),
                 dto.description(),
                 mentoCareers
         );
@@ -95,7 +95,7 @@ public class AuthService {
                 commonInfo.profileImage(),
                 oAuthProvider,
                 commonInfo.oauthId(),
-                mentoProfile);
+                mentorProfile);
 
         memberJpaRepository.save(mento);
 
