@@ -107,7 +107,7 @@ public class AuthService {
         String accessToken = jwtProvider.createAccessToken(mentor.getId(),
             Set.of(mentor.getMemberRole().getRole()));
         String refreshToken = jwtProvider.createRefreshToken(mentor.getId());
-        refreshTokenService.cacheRefreshToken(refreshToken, mentor.getId());
+        refreshTokenService.cacheRefreshToken(mentor.getId(), refreshToken);
 
         return TokenInfo.of(jwtProvider.getTokenType(), accessToken, refreshToken,
             jwtProvider.getAccessTokenExpiration(), jwtProvider.getRefreshTokenExpiration());

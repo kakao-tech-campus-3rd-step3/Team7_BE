@@ -18,23 +18,23 @@ public class RefreshTokenRedisRepository implements RefreshTokenRepository {
     }
 
     @Override
-    public boolean existsByRefreshToken(final String refreshToken) {
+    public boolean existsByRefreshToken(String refreshToken) {
         return repository.existsByRefreshToken(refreshToken);
     }
 
     @Override
     public boolean existsByUserId(Long id) {
-        return repository.existsByUserId(id);
+        return repository.existsById(id);
     }
 
     @Override
-    public void delete(final RefreshToken refreshToken) {
+    public void delete(RefreshToken refreshToken) {
         repository.delete(refreshToken);
     }
 
     @Override
     public void deleteByUserId(Long id) {
-        repository.deleteByUserId(id);
+        repository.deleteById(id);
     }
 
 }

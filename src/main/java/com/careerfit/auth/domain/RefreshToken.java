@@ -10,21 +10,21 @@ import org.springframework.data.redis.core.index.Indexed;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
-@RedisHash(value = "refresh_token")
+@RedisHash(value = "refresh_token:user")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RefreshToken {
 
     @Id
-    private String refreshToken;
+    private Long userId;
 
     @Indexed
-    private Long userId;
+    private String refreshToken;
 
     @TimeToLive(unit = TimeUnit.MILLISECONDS)
     private Long expirationMillis;
 
-    public static RefreshToken of(String refreshToken, Long userId, Long expirationMillis) {
-        return new RefreshToken(refreshToken, userId, expirationMillis);
+    public static RefreshToken of(Long userId, String refreshToken, Long expirationMillis) {
+        return new RefreshToken(userId, refreshToken, expirationMillis);
     }
 
 }

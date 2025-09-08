@@ -17,8 +17,8 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtProvider jwtProvider;
 
-    public void cacheRefreshToken(String refreshToken, Long memberId) {
-        refreshTokenRepository.save(RefreshToken.of(refreshToken, memberId,
+    public void cacheRefreshToken(Long memberId, String refreshToken) {
+        refreshTokenRepository.save(RefreshToken.of(memberId, refreshToken,
             jwtProvider.getRefreshTokenExpiration()));
     }
 
