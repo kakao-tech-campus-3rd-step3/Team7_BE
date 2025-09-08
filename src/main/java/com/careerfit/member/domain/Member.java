@@ -81,12 +81,13 @@ public class Member extends TimeBaseEntity {
                 .oauthId(oauthId)
                 .memberRole(MemberRole.MENTEE)
                 .build();
+
         member.setMemberProfile(menteeProfile);
+
         return member;
     }
 
     public void setMemberProfile(MemberProfile memberProfile) {
-
         if (memberProfile == null) {
             return;
         }
