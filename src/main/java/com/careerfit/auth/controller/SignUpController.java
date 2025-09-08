@@ -1,7 +1,7 @@
 package com.careerfit.auth.controller;
 
 import com.careerfit.auth.dto.MenteeSignUpRequest;
-import com.careerfit.auth.dto.MentoSignUpRequest;
+import com.careerfit.auth.dto.MentorSignUpRequest;
 import com.careerfit.auth.dto.SignUpResponse;
 import com.careerfit.auth.service.AuthService;
 import com.careerfit.global.dto.ApiResponse;
@@ -20,9 +20,9 @@ public class SignUpController {
 
     private final AuthService authService;
 
-    @PostMapping("/mento")
-    public ResponseEntity<ApiResponse<SignUpResponse>> signUpMento(@Valid @RequestBody MentoSignUpRequest dto) {
-        return ResponseEntity.ok(ApiResponse.success(authService.signUpAsMento(dto)));
+    @PostMapping("/mentor")
+    public ResponseEntity<ApiResponse<SignUpResponse>> signUpMentor(@Valid @RequestBody MentorSignUpRequest dto) {
+        return ResponseEntity.ok(ApiResponse.success(authService.signUpAsMentor(dto)));
     }
 
     @PostMapping("/mentee")

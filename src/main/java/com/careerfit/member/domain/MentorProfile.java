@@ -88,8 +88,7 @@ public class MentorProfile implements MemberProfile {
     private List<MentorCareer> mentoCareers = new ArrayList<>();
 
     public static MentorProfile of(int careerYears, String company, String jobPosition,
-        String employmentCertificate,
-        List<String> certifications, List<String> educations, List<String> expertises,
+        String employmentCertificate, List<String> certifications, List<String> educations, List<String> expertises,
         String introduction, List<MentorCareer> mentoCareers) {
 
         MentorProfile profile = MentorProfile.builder()

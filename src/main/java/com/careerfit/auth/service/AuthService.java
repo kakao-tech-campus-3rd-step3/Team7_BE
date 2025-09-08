@@ -60,24 +60,20 @@ public class AuthService {
     }
 
     @Transactional
-    public SignUpResponse signUpAsMento(MentoSignUpRequest dto) {
+    public SignUpResponse signUpAsMentor(MentorSignUpRequest dto) {
         CommonSignUpRequest commonInfo = dto.commonInfo();
         validateDuplicateEmail(commonInfo.email());
 
         OAuthProvider oAuthProvider = OAuthProvider.from(commonInfo.registrationId());
-        List<MentorCareer> mentoCareers = dto.careers() != null
-                ? dto.careers().stream()
-                .map(c -> MentorCareer.builder()
-                        .companyName(c.getCompanyName())
-                        .position(c.getPosition())
-                        .startDate(c.getStartDate())
-                        .endDate(c.getEndDate())
-                        .build())
-                .toList()
-                : new ArrayList<>();
+
+        List<MentorCareer> careers = dto.careers().stream()
+            .map(career ->
+                MentorCareer.of(career.companyName(), career.position(), career.startDate(),
+                    career.endDate()))
+            .toList();
 
         MentorProfile mentorProfile = MentorProfile.of(
-                dto.career(),
+                dto.careerYears(),
                 dto.currentCompany(),
                 dto.currentPosition(),
                 dto.employmentCertificate(),
@@ -85,7 +81,7 @@ public class AuthService {
                 dto.educations(),
                 dto.expertises(),
                 dto.description(),
-                mentoCareers
+                careers
         );
 
         Member mento = Member.mento(
