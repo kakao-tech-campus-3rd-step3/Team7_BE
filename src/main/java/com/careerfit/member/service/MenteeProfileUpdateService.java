@@ -27,13 +27,13 @@ public class MenteeProfileUpdateService {
         MenteeProfile profile = member.getMenteeProfile();
 
         profile.updateProfile(
-                request.getUniversity(),
-                request.getMajor(),
-                request.getGraduationYear(),
-                request.getWishCompany(),
-                request.getWishPosition()
+                request.university(),
+                request.major(),
+                request.graduationYear(),
+                request.wishCompany(),
+                request.wishPosition()
         );
-        member.updateProfileImage(request.getProfileImage());
+        member.updateProfileImage(request.profileImage());
 
         return new MenteeProfileInfo(
                 member.getName(),

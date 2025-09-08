@@ -23,9 +23,8 @@ public class MenteeProfileController {
 
     @PatchMapping
     public ApiResponse<MenteeProfileInfo> updateMenteeProfile(@RequestParam Long memberId,
-                                                 @RequestBody MenteeProfileUpdateRequest request) {
-        MenteeProfileInfo updatedProfile = updateService.updateMenteeProfile(memberId, request);
-        return ApiResponse.success(updatedProfile);
+        @RequestBody MenteeProfileUpdateRequest request) {
+        return ApiResponse.success(updateService.updateMenteeProfile(memberId, request));
     }
 }
 
