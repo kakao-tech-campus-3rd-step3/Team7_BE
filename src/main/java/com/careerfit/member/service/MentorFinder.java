@@ -1,12 +1,14 @@
 package com.careerfit.member.service;
 
-import com.careerfit.member.domain.Member;
-import com.careerfit.member.domain.MemberRole;
-import com.careerfit.member.repository.MemberJpaRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import com.careerfit.member.domain.Member;
+import com.careerfit.member.domain.MemberRole;
+import com.careerfit.member.repository.MemberJpaRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +22,6 @@ public class MentorFinder {
     }
 
     public Page<Member> getMentorList(String search, Pageable pageable) {
-        return memberJpaRepository.findByRoleAndSearch(MemberRole.MENTO, search, pageable);
+        return memberJpaRepository.findByRoleAndSearch(MemberRole.MENTOR, search, pageable);
     }
 }
