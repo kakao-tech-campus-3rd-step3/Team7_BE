@@ -68,7 +68,7 @@ public class Member extends TimeBaseEntity {
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private MenteeProfile menteeProfile;
 
-    public static Member mento(String email, String phoneNumber, String name,
+    public static Member mentor(String email, String phoneNumber, String name,
         String profileImageUrl, OAuthProvider oAuthProvider,
         String oauthId, MentorProfile mentoProfile) {
         Member member = Member.builder()
