@@ -74,8 +74,8 @@ public class MentorQueryService {
 
         return new MentorIntroductionResponse(
                 p.getIntroduction(),
-                new ArrayList<>(p.getEducation()),
-                new ArrayList<>(p.getExpertise()),
+                new ArrayList<>(p.getEducations()),
+                new ArrayList<>(p.getExpertises()),
                 new ArrayList<>(p.getCertifications()),
                 careerResponses
         );

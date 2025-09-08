@@ -35,7 +35,7 @@ public class MentoProfile implements MemberProfile {
     @CollectionTable(name = "mento_education", joinColumns = @JoinColumn(name = "mento_profile_id"))
     @Column(name = "education")
     @Builder.Default
-    private List<String> education = new ArrayList<>();
+    private List<String> educations = new ArrayList<>();
 
     @BatchSize(size= 100)
     @ElementCollection
@@ -49,8 +49,7 @@ public class MentoProfile implements MemberProfile {
     @CollectionTable(name = "mento_expertise", joinColumns = @JoinColumn(name = "mento_profile_id"))
     @Column(name = "expertise")
     @Builder.Default
-    private List<String> expertise = new ArrayList<>();
-
+    private List<String> expertises = new ArrayList<>();
 
     private String introduction;
 
@@ -73,7 +72,7 @@ public class MentoProfile implements MemberProfile {
     private List<MentoCareer> mentoCareers = new ArrayList<>();
 
     public static MentoProfile of(int careerYears, String company, String jobPosition, String employmentCertificate,
-                                  List<String> certifications, List<String> education, List<String> expertise,
+                                  List<String> certifications, List<String> educations, List<String> expertises,
                                   String introduction, List<MentoCareer> mentoCareers) {
 
         MentoProfile profile = MentoProfile.builder()
@@ -82,23 +81,25 @@ public class MentoProfile implements MemberProfile {
                 .jobPosition(jobPosition)
                 .employmentCertificate(employmentCertificate)
                 .certifications(certifications != null ? certifications : new ArrayList<>())
-                .education(education != null ? education : new ArrayList<>())
-                .expertise(expertise)
+                .educations(educations != null ? educations : new ArrayList<>())
+                .expertises(expertises != null ? expertises : new ArrayList<>())
                 .introduction(introduction)
                 .rating(0.0)
                 .reviewCount(0)
                 .menteeCount(0)
                 .pricePerSession(0.0)
-                .mentoCareers(mentoCareers != null ? mentoCareers : new ArrayList<>())
                 .build();
 
         if (mentoCareers != null) {
-            for (MentoCareer career : mentoCareers) {
-                career.setMentoProfile(profile);
-            }
+            mentoCareers.forEach(profile::addMentoCareer);
         }
 
         return profile;
+    }
+
+    public void addMentoCareer(MentoCareer mentoCareer) {
+        mentoCareer.setMentoProfile(this);
+        this.mentoCareers.add(mentoCareer);
     }
 
     @Override
