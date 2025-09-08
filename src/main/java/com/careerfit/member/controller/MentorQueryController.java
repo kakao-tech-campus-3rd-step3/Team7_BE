@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careerfit.global.dto.ApiResponse;
-import com.careerfit.member.dto.mento.MentorHeaderResponse;
-import com.careerfit.member.dto.mento.MentorIntroductionResponse;
-import com.careerfit.member.dto.mento.MentorListPageResponse;
-import com.careerfit.member.dto.mento.MentorReviewResponse;
+import com.careerfit.member.dto.mentor.MentorHeaderResponse;
+import com.careerfit.member.dto.mentor.MentorIntroductionResponse;
+import com.careerfit.member.dto.mentor.MentorListPageResponse;
+import com.careerfit.member.dto.mentor.MentorReviewResponse;
 import com.careerfit.member.service.MentorQueryService;
 
 @RestController

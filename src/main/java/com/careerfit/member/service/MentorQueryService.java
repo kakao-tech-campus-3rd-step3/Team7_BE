@@ -12,12 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.MentorProfile;
-import com.careerfit.member.dto.mento.MentorCareerResponse;
-import com.careerfit.member.dto.mento.MentorHeaderResponse;
-import com.careerfit.member.dto.mento.MentorIntroductionResponse;
-import com.careerfit.member.dto.mento.MentorListPageResponse;
-import com.careerfit.member.dto.mento.MentorListResponse;
-import com.careerfit.member.dto.mento.MentorReviewResponse;
+import com.careerfit.member.dto.mentor.MentorCareerResponse;
+import com.careerfit.member.dto.mentor.MentorHeaderResponse;
+import com.careerfit.member.dto.mentor.MentorIntroductionResponse;
+import com.careerfit.member.dto.mentor.MentorListPageResponse;
+import com.careerfit.member.dto.mentor.MentorListResponse;
+import com.careerfit.member.dto.mentor.MentorReviewResponse;
 import com.careerfit.review.domain.Review;
 import com.careerfit.review.domain.repository.ReviewJpaRepository;
 

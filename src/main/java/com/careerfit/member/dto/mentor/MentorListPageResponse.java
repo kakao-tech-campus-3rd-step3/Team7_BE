@@ -1,4 +1,4 @@
-package com.careerfit.member.dto.mento;
+package com.careerfit.member.dto.mentor;
 
 import java.util.List;
 
