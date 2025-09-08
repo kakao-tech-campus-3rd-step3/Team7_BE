@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.careerfit.auth.dto.LoginResponse;
 import com.careerfit.auth.dto.ReissueTokenRequest;
 import com.careerfit.auth.dto.TokenInfo;
 import com.careerfit.auth.service.AuthService;
@@ -34,4 +33,5 @@ public class AuthController {
     public ResponseEntity<ApiResponse<TokenInfo>> reissueTokens(@Valid @RequestBody ReissueTokenRequest reissueTokenRequest) {
         return ResponseEntity.ok(ApiResponse.success(authService.reissueTokens(reissueTokenRequest)));
     }
+
 }
