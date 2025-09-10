@@ -2,9 +2,9 @@ package com.careerfit.document.service;
 
 import com.careerfit.document.domain.Portfolio;
 import com.careerfit.document.dto.FileInfoResponse;
-import com.careerfit.document.exception.FileException;
 import com.careerfit.document.exception.PortfolioErrorCode;
 import com.careerfit.document.repository.PortfolioRepository;
+import com.careerfit.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,21 +17,22 @@ public class PortfolioService {
 
     public FileInfoResponse getPortfolioInfo(Long applicationId, Long portfolioId) {
         Portfolio portfolio = portfolioFinder.findPortfolioOrThrow(portfolioId);
-
-        if (!portfolio.getApplication().getId().equals(applicationId)) {
-            throw new FileException(PortfolioErrorCode.PORTFOLIO_NOT_MATCHED);
-        }
+        verifyApplicationOwnership(applicationId, portfolio);
 
         return FileInfoResponse.fromPortfolio(portfolio);
     }
 
     public void deletePortfolio(Long applicationId, Long portfolioId){
         Portfolio portfolio = portfolioFinder.findPortfolioOrThrow(portfolioId);
-
-        if (!portfolio.getApplication().getId().equals(applicationId)) {
-            throw new FileException(PortfolioErrorCode.PORTFOLIO_NOT_MATCHED);
-        }
+        verifyApplicationOwnership(applicationId, portfolio);
 
         portfolioRepository.deleteById(portfolioId);
+    }
+
+    private void verifyApplicationOwnership(Long applicationId, Portfolio portfolio){
+        if (!portfolio.getApplication().getId().equals(applicationId)) {
+            throw new ApplicationException(PortfolioErrorCode.PORTFOLIO_NOT_MATCHED)
+                .addErrorInfo("request application Id", applicationId);
+        }
     }
 }
