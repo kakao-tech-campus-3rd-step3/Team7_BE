@@ -1,7 +1,6 @@
 package com.careerfit.auth.handler;
 
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -12,7 +11,9 @@ import com.careerfit.auth.domain.CustomOAuth2User;
 import com.careerfit.auth.domain.OAuthProvider;
 import com.careerfit.auth.dto.LoginResponse;
 import com.careerfit.auth.dto.OAuthUserInfo;
-import com.careerfit.auth.utils.JwtUtils;
+import com.careerfit.auth.dto.TokenInfo;
+import com.careerfit.auth.service.AuthService;
+import com.careerfit.auth.utils.JwtProvider;
 import com.careerfit.global.dto.ApiResponse;
 import com.careerfit.member.domain.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,14 +28,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final JwtUtils jwtUtils;
+    private final JwtProvider jwtProvider;
     private final ObjectMapper objectMapper;
+    private final AuthService authService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
         Authentication authentication) throws IOException, ServletException {
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-        ;
+
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
@@ -49,17 +51,13 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         } else {
             Member member = oAuth2User.getMember();
-            String accessToken = jwtUtils.createAccessToken(member.getId(),
-                Set.of(member.getMemberRole().getRole()));
-            String refreshToken = jwtUtils.createRefreshToken(member.getId());
-
-            // TODO: redis에 Refresh Token 저장...
+            TokenInfo tokenInfo = authService.issueTokens(member);
 
             LoginResponse loginResponse = LoginResponse.forExistingUser(
                 oAuthUserInfo,
                 member.getMemberRole(),
-                accessToken,
-                refreshToken
+                tokenInfo.accessToken(),
+                tokenInfo.refreshToken()
             );
             apiResponse = ApiResponse.success(loginResponse);
         }

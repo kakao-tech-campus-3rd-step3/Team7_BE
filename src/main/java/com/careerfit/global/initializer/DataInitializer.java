@@ -75,8 +75,8 @@ public class DataInitializer implements CommandLineRunner {
 
         // 2. 회원 생성
         // Member를 저장하면 Mento/MenteeProfile도 CascadeType.ALL에 의해 함께 저장
-        Member mento1 = Member.mento("mento1@naver.com", "010-1111-1111", "홍길동", null, OAuthProvider.KAKAO, "oauth_id_1", mentorProfile1);
-        Member mento2 = Member.mento("mento2@naver.com", "010-2222-2222", "이순신", null, OAuthProvider.KAKAO, "oauth_id_2", mentorProfile2);
+        Member mento1 = Member.mentor("mento1@naver.com", "010-1111-1111", "홍길동", null, OAuthProvider.KAKAO, "oauth_id_1", mentorProfile1);
+        Member mento2 = Member.mentor("mento2@naver.com", "010-2222-2222", "이순신", null, OAuthProvider.KAKAO, "oauth_id_2", mentorProfile2);
         Member mentee1 = Member.mentee("mentee1@gmail.com", "010-3333-3333", "김철수", null, OAuthProvider.KAKAO, "oauth_id_3", menteeProfile1);
         Member mentee2 = Member.mentee("mentee2@gmail.com", "010-4444-4444", "박영희", null, OAuthProvider.KAKAO, "oauth_id_4", menteeProfile2);
         memberRepository.saveAll(List.of(mento1, mento2, mentee1, mentee2));

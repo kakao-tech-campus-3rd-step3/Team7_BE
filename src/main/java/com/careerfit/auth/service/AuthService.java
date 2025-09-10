@@ -11,10 +11,13 @@ import com.careerfit.auth.domain.OAuthProvider;
 import com.careerfit.auth.dto.CommonSignUpRequest;
 import com.careerfit.auth.dto.MenteeSignUpRequest;
 import com.careerfit.auth.dto.MentorSignUpRequest;
+import com.careerfit.auth.dto.ReissueTokenRequest;
 import com.careerfit.auth.dto.SignUpResponse;
 import com.careerfit.auth.dto.TokenInfo;
 import com.careerfit.auth.exception.AuthErrorCode;
-import com.careerfit.auth.utils.JwtUtils;
+import com.careerfit.auth.utils.JwtParser;
+import com.careerfit.auth.utils.JwtProvider;
+import com.careerfit.auth.utils.JwtValidator;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.MenteeProfile;
@@ -31,7 +34,10 @@ public class AuthService {
 
     private final MemberJpaRepository memberJpaRepository;
     private final MemberFinder memberFinder;
-    private final JwtUtils jwtUtils;
+    private final JwtProvider jwtProvider;
+    private final RefreshTokenService refreshTokenService;
+    private final JwtParser jwtParser;
+    private final JwtValidator jwtValidator;
 
     @Transactional
     public SignUpResponse signUpAsMentee(MenteeSignUpRequest dto) {
@@ -39,6 +45,7 @@ public class AuthService {
         validateDuplicateEmail(commonInfo.email());
 
         OAuthProvider oAuthProvider = OAuthProvider.from(commonInfo.registrationId());
+
         MenteeProfile menteeProfile = MenteeProfile.of(
             dto.university(),
             dto.major(),
@@ -54,13 +61,10 @@ public class AuthService {
             oAuthProvider,
             commonInfo.oauthId(),
             menteeProfile);
-
         memberJpaRepository.save(mentee);
 
-        //TODO: redis에 refreshToken 저장
+        TokenInfo tokenInfo = issueTokens(mentee);
 
-        TokenInfo tokenInfo = jwtUtils.generateTokens(mentee.getId(),
-            Set.of(mentee.getMemberRole().getRole()));
         return SignUpResponse.of(mentee.getId(), tokenInfo);
     }
 
@@ -89,7 +93,7 @@ public class AuthService {
             careers
         );
 
-        Member mento = Member.mento(
+        Member mentor = Member.mentor(
             commonInfo.name(),
             commonInfo.email(),
             commonInfo.phoneNumber(),
@@ -97,14 +101,36 @@ public class AuthService {
             oAuthProvider,
             commonInfo.oauthId(),
             mentorProfile);
+        memberJpaRepository.save(mentor);
 
-        memberJpaRepository.save(mento);
+        TokenInfo tokenInfo = issueTokens(mentor);
 
-        //TODO: redis에 refreshToken 저장
+        return SignUpResponse.of(mentor.getId(), tokenInfo);
+    }
 
-        TokenInfo tokenInfo = jwtUtils.generateTokens(mento.getId(),
-            Set.of(mento.getMemberRole().getRole()));
-        return SignUpResponse.of(mento.getId(), tokenInfo);
+    public TokenInfo issueTokens(Member mentor) {
+        String accessToken = jwtProvider.createAccessToken(mentor.getId(),
+            Set.of(mentor.getMemberRole().getRole()));
+        String refreshToken = jwtProvider.createRefreshToken(mentor.getId());
+        refreshTokenService.cacheRefreshToken(mentor.getId(), refreshToken);
+
+        return TokenInfo.of(jwtProvider.getTokenType(), accessToken, refreshToken,
+            jwtProvider.getAccessTokenExpiration(), jwtProvider.getRefreshTokenExpiration());
+    }
+
+    public TokenInfo reissueTokens(ReissueTokenRequest reissueTokenRequest) {
+        String refreshToken = reissueTokenRequest.refreshToken();
+        if(!jwtValidator.validateToken(refreshToken) || !refreshTokenService.existsByRefreshToken(refreshToken)){
+            throw new ApplicationException(AuthErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        Long userId = jwtParser.getUserId(refreshToken);
+        Member member = memberFinder.getMemberOrThrow(userId);
+        return issueTokens(member);
+    }
+
+    public void logout(Long userId){
+        refreshTokenService.deleteByMemberId(userId);
     }
 
     private void validateDuplicateEmail(String email) {
