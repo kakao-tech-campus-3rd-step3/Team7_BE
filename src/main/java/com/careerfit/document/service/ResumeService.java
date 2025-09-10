@@ -1,15 +1,7 @@
 package com.careerfit.document.service;
 
-import static com.careerfit.global.util.DocumentUtil.APPLICATION_PREFIX;
-import static com.careerfit.global.util.DocumentUtil.NAME_SEPARATOR;
-import static com.careerfit.global.util.DocumentUtil.PATH_SEPARATOR;
-import static com.careerfit.global.util.DocumentUtil.PORTFOLIO_PREFIX;
-import static com.careerfit.global.util.DocumentUtil.RESUME_PREFIX;
-
 import com.careerfit.application.exception.ApplicationErrorCode;
 import com.careerfit.application.service.ApplicationFinder;
-import com.careerfit.document.domain.DocumentType;
-import com.careerfit.document.domain.Portfolio;
 import com.careerfit.document.domain.Resume;
 import com.careerfit.document.dto.CompleteUploadRequest;
 import com.careerfit.document.dto.FileCreateResponse;
@@ -18,7 +10,6 @@ import com.careerfit.document.exception.ResumeErrorCode;
 import com.careerfit.document.repository.ResumeRepository;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.global.util.DocumentUtil;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

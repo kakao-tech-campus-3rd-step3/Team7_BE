@@ -26,7 +26,7 @@ public class FileUploadApiController {
     @PostMapping
     public ResponseEntity<ApiResponse<PresignedUrlResponse>> generatePresignedUrl(
         @PathVariable(name = "application-id") Long applicationId,
-        @RequestParam(name = "documentType", required = true) DocumentType documentType,
+        @RequestParam(name = "documentType") DocumentType documentType,
         @Valid @RequestBody PresignedUrlRequest request) {
 
         PresignedUrlResponse response = fileUploadService.generatePresignedUrl(

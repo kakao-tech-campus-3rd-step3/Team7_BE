@@ -6,20 +6,10 @@ import static com.careerfit.global.util.DocumentUtil.PATH_SEPARATOR;
 import static com.careerfit.global.util.DocumentUtil.PORTFOLIO_PREFIX;
 import static com.careerfit.global.util.DocumentUtil.RESUME_PREFIX;
 
-import com.careerfit.application.exception.ApplicationErrorCode;
-import com.careerfit.application.service.ApplicationFinder;
 import com.careerfit.document.config.AwsProperties;
 import com.careerfit.document.domain.DocumentType;
-import com.careerfit.document.domain.Portfolio;
-import com.careerfit.document.domain.Resume;
-import com.careerfit.document.dto.CompleteUploadRequest;
-import com.careerfit.document.dto.FileCreateResponse;
 import com.careerfit.document.dto.PresignedUrlRequest;
 import com.careerfit.document.dto.PresignedUrlResponse;
-import com.careerfit.document.repository.PortfolioRepository;
-import com.careerfit.document.repository.ResumeRepository;
-import com.careerfit.global.exception.ApplicationException;
-import com.careerfit.global.util.DocumentUtil;
 import java.time.Duration;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +21,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 @Service
 @RequiredArgsConstructor
 public class FileUploadService {
+
     private final AwsProperties awsProperties;
 
     private final S3Presigner s3Presigner;

@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ResumeFinder {
+
     private final ResumeRepository resumeRepository;
 
-    public Resume findResumeOrThrow(Long resumeId){
+    public Resume findResumeOrThrow(Long resumeId) {
         return resumeRepository.findById(resumeId)
-            .orElseThrow(()-> new ApplicationException(ResumeErrorCode.RESUME_NOT_FOUND));
+            .orElseThrow(() -> new ApplicationException(ResumeErrorCode.RESUME_NOT_FOUND));
     }
 }

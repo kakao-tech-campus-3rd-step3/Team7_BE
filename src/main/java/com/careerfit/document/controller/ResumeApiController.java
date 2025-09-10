@@ -35,8 +35,8 @@ public class ResumeApiController {
 
     @GetMapping("{resume-id}")
     public ResponseEntity<ApiResponse<FileInfoResponse>> getResumeInfo(
-            @PathVariable(name = "application-id") Long applicationId,
-            @PathVariable(name = "resume-id") Long resumeId
+        @PathVariable(name = "application-id") Long applicationId,
+        @PathVariable(name = "resume-id") Long resumeId
     ) {
         FileInfoResponse response = resumeService.getResumeInfo(applicationId, resumeId);
         return ResponseEntity.ok(ApiResponse.success(response));
@@ -44,8 +44,8 @@ public class ResumeApiController {
 
     @DeleteMapping("/{resume-id}")
     public ResponseEntity<ApiResponse<?>> deleteResume(
-            @PathVariable(name = "application-id") Long applicationId,
-            @PathVariable(name = "resume-id") Long resumeId
+        @PathVariable(name = "application-id") Long applicationId,
+        @PathVariable(name = "resume-id") Long resumeId
     ) {
         resumeService.deleteResume(applicationId, resumeId);
         return ResponseEntity.ok(ApiResponse.success());
