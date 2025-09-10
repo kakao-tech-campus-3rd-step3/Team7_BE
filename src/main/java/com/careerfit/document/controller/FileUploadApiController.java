@@ -43,7 +43,7 @@ public class FileUploadApiController {
     public ResponseEntity<ApiResponse<?>> completeUploadResume(
         @PathVariable(name = "application-id") Long applicationId,
         @RequestParam(name = "documentType", required = true) DocumentType documentType,
-        @RequestBody CompleteUploadRequest request
+        @Valid @RequestBody CompleteUploadRequest request
     ) {
         FileCreateResponse response = fileUploadService.completeUploadFile(
             applicationId,
