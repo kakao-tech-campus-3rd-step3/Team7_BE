@@ -1,5 +1,6 @@
 package com.careerfit.document.config;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
@@ -7,8 +8,11 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "cloud.aws")
 @Validated
 public record AwsProperties(
+    @Valid
     Credentials credentials,
+    @Valid
     S3 s3,
+    @Valid
     Region region
 ) {
 
