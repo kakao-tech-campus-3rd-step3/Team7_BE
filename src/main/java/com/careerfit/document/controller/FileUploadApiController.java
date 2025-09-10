@@ -1,8 +1,6 @@
 package com.careerfit.document.controller;
 
 import com.careerfit.document.domain.DocumentType;
-import com.careerfit.document.dto.CompleteUploadRequest;
-import com.careerfit.document.dto.FileCreateResponse;
 import com.careerfit.document.dto.PresignedUrlRequest;
 import com.careerfit.document.dto.PresignedUrlResponse;
 import com.careerfit.document.service.FileUploadService;
@@ -32,20 +30,6 @@ public class FileUploadApiController {
         @Valid @RequestBody PresignedUrlRequest request) {
 
         PresignedUrlResponse response = fileUploadService.generatePresignedUrl(
-            applicationId,
-            documentType,
-            request);
-        return ResponseEntity.ok(ApiResponse.success(response));
-    }
-
-    // 파일 업로드 완료 처리: 서버에 업로드 완료 여부를 전달하는 API, 여기서 파일 메타데이터를 DB에 저장.
-    @PostMapping("/complete-upload")
-    public ResponseEntity<ApiResponse<?>> completeUploadResume(
-        @PathVariable(name = "application-id") Long applicationId,
-        @RequestParam(name = "documentType", required = true) DocumentType documentType,
-        @Valid @RequestBody CompleteUploadRequest request
-    ) {
-        FileCreateResponse response = fileUploadService.completeUploadFile(
             applicationId,
             documentType,
             request);
