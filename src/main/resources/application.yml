@@ -23,9 +23,6 @@ spring:
       host: ${REDIS_HOST}
       port: 6379
 
-  profiles:
-    active: local
-
 ai:
   server:
     base-url: ${AI_SERVER_URL} # AI 서버 개발자(현준님)에게 받은 실제 주소로 변경해야 합니다.
