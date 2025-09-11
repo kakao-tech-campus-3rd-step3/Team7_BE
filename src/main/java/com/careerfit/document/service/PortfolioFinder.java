@@ -6,9 +6,12 @@ import com.careerfit.document.repository.PortfolioRepository;
 import com.careerfit.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class PortfolioFinder {
 
     private final PortfolioRepository portfolioRepository;

@@ -12,6 +12,7 @@ import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.global.util.DocumentUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class ResumeService {
     private final ResumeRepository resumeRepository;
     private final ApplicationFinder applicationFinder;
 
+    @Transactional
     public FileInfoResponse getResumeInfo(Long applicationId, Long resumeId) {
         Resume resume = resumeFinder.findResumeOrThrow(resumeId);
 
