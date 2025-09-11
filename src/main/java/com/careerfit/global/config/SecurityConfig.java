@@ -1,9 +1,8 @@
-package com.careerfit.auth.config;
+package com.careerfit.global.config;
 
-import com.careerfit.auth.filter.JwtValidationFilter;
-import com.careerfit.auth.handler.OAuth2LoginSuccessHandler;
-import com.careerfit.auth.service.CustomOAuth2UserService;
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -20,12 +19,19 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.List;
+import com.careerfit.auth.filter.JwtValidationFilter;
+import com.careerfit.auth.handler.CustomLogoutSuccessHandler;
+import com.careerfit.auth.handler.JwtLogoutHandler;
+import com.careerfit.auth.handler.OAuth2LoginSuccessHandler;
+import com.careerfit.auth.service.CustomOAuth2UserService;
+
+import lombok.CustomLog;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -39,31 +45,38 @@ public class SecurityConfig {
     private final AccessDeniedHandler accessDeniedHandler;
     private final CustomOAuth2UserService userService;
     private final OAuth2LoginSuccessHandler loginSuccessHandler;
+    private final JwtLogoutHandler jwtLogoutHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(AbstractHttpConfigurer::disable)
-                .headers(headers -> headers
-                        .defaultsDisabled()
-                        .frameOptions(FrameOptionsConfig::sameOrigin)
+            .csrf(AbstractHttpConfigurer::disable)
+            .headers(headers -> headers
+                .defaultsDisabled()
+                .frameOptions(FrameOptionsConfig::sameOrigin)
+            )
+            .sessionManagement(
+                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .anyRequest().permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/api/auth/logout")
+                .addLogoutHandler(jwtLogoutHandler)
+                .logoutSuccessHandler(customLogoutSuccessHandler)
+            )
+            .oauth2Login(oauth2 -> oauth2
+                .userInfoEndpoint(userInfoEndpoint ->
+                    userInfoEndpoint.userService(userService)
                 )
-                .sessionManagement(
-                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
-                )
-                .oauth2Login(oauth2 -> oauth2
-                        .userInfoEndpoint(userInfoEndpoint ->
-                                userInfoEndpoint.userService(userService)
-                        )
-                        .successHandler(loginSuccessHandler)
-                )
-                .addFilterBefore(jwtValidationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exceptions -> exceptions
-                        .authenticationEntryPoint(authenticationEntryPoint)
-                        .accessDeniedHandler(accessDeniedHandler)
-                );
+                .successHandler(loginSuccessHandler)
+            )
+            .addFilterBefore(jwtValidationFilter, LogoutFilter.class)
+            .exceptionHandling(exceptions -> exceptions
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
+            );
 
         return http.build();
     }
@@ -78,12 +91,12 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:3000"));
         config.setAllowedMethods(Arrays.asList(
-                HttpMethod.GET.name(),
-                HttpMethod.POST.name(),
-                HttpMethod.PATCH.name(),
-                HttpMethod.PUT.name(),
-                HttpMethod.DELETE.name(),
-                HttpMethod.OPTIONS.name()
+            HttpMethod.GET.name(),
+            HttpMethod.POST.name(),
+            HttpMethod.PATCH.name(),
+            HttpMethod.PUT.name(),
+            HttpMethod.DELETE.name(),
+            HttpMethod.OPTIONS.name()
         ));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

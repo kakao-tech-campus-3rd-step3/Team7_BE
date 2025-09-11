@@ -1,14 +1,16 @@
 package com.careerfit.auth.domain;
 
-import com.careerfit.member.domain.Member;
-import lombok.Getter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import com.careerfit.member.domain.Member;
+
+import lombok.Getter;
 
 @Getter
 public class CustomOAuth2User implements OAuth2User {
@@ -30,7 +32,8 @@ public class CustomOAuth2User implements OAuth2User {
     /*
     소셜 로그인용
      */
-    public CustomOAuth2User(Member member, Map<String, Object> attributes, String userNameAttributeName, boolean isNewUser) {
+    public CustomOAuth2User(Member member, Map<String, Object> attributes,
+        String userNameAttributeName, boolean isNewUser) {
         this.member = member;
         this.attributes = attributes;
         this.userNameAttributeName = userNameAttributeName;

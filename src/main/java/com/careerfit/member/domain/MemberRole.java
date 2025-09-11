@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum MemberRole {
-    MENTEE("ROLE_MENTEE"), MENTO("ROLE_MENTO");
+    MENTEE("ROLE_MENTEE"), MENTOR("ROLE_MENTOR");
 
     private final String role;
 }

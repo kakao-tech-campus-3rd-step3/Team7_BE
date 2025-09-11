@@ -1,4 +1,4 @@
-package com.careerfit.auth.config;
+package com.careerfit.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +15,6 @@ public class RestClientConfig {
         factory.setReadTimeout(5000);
 
         return RestClient.builder()
-                .requestFactory(factory);
+            .requestFactory(factory);
     }
 }

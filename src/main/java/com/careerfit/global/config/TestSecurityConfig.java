@@ -1,4 +1,4 @@
-package com.careerfit.auth.config;
+package com.careerfit.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +18,9 @@ public class TestSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
-                );
+            .authorizeHttpRequests(auth -> auth
+                .anyRequest().permitAll()
+            );
         return http.build();
     }
 

@@ -1,13 +1,13 @@
 package com.careerfit.member.service;
 
 import com.careerfit.member.domain.Member;
-import com.careerfit.member.domain.MentoProfile;
-import com.careerfit.member.dto.mento.MentorCareerResponse;
-import com.careerfit.member.dto.mento.MentorHeaderResponse;
-import com.careerfit.member.dto.mento.MentorIntroductionResponse;
-import com.careerfit.member.dto.mento.MentorListPageResponse;
-import com.careerfit.member.dto.mento.MentorListResponse;
-import com.careerfit.member.dto.mento.MentorReviewResponse;
+import com.careerfit.member.domain.MentorProfile;
+import com.careerfit.member.dto.mentor.MentorCareerResponse;
+import com.careerfit.member.dto.mentor.MentorHeaderResponse;
+import com.careerfit.member.dto.mentor.MentorIntroductionResponse;
+import com.careerfit.member.dto.mentor.MentorListPageResponse;
+import com.careerfit.member.dto.mentor.MentorListResponse;
+import com.careerfit.member.dto.mentor.MentorReviewResponse;
 import com.careerfit.review.domain.Review;
 import com.careerfit.review.repository.ReviewJpaRepository;
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class MentorQueryService {
 
     public MentorHeaderResponse getMentorHeader(Long mentorId) {
         Member m = mentorFinder.getMentorById(mentorId);
-        MentoProfile p = m.getMentoProfile();
+        MentorProfile p = m.getMentoProfile();
 
         return new MentorHeaderResponse(
                 m.getId(),
@@ -73,7 +73,7 @@ public class MentorQueryService {
     }
 
     public MentorIntroductionResponse getMentorIntroduction(Long mentorId) {
-        MentoProfile p = mentorFinder.getMentorById(mentorId).getMentoProfile();
+        MentorProfile p = mentorFinder.getMentorById(mentorId).getMentoProfile();
 
         List<MentorCareerResponse> careerResponses = p.getMentoCareers().stream()
                 .map(MentorCareerResponse::from)
@@ -81,8 +81,8 @@ public class MentorQueryService {
 
         return new MentorIntroductionResponse(
                 p.getIntroduction(),
-                new ArrayList<>(p.getEducation()),
-                new ArrayList<>(p.getExpertise()),
+                new ArrayList<>(p.getEducations()),
+                new ArrayList<>(p.getExpertises()),
                 new ArrayList<>(p.getCertifications()),
                 careerResponses
         );
