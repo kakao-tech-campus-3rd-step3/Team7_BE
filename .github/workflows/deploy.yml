@@ -71,6 +71,6 @@ jobs:
             export DOCKER_IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/career-fit-app"
             export IMAGE_TAG="${{ github.sha }}"
             docker pull $DOCKER_IMAGE_NAME:$IMAGE_TAG
-            docker-compose down
-            docker-compose up -d
-            docker image prune -f
+            docker compose --env-file .env pull
+            docker compose --env-file .env down
+            docker compose --env-file .env up -d
