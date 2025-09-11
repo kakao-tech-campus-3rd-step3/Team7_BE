@@ -1,13 +1,12 @@
 spring:
   config:
     import:
-      - optional:file:.env[.properties]
       - security-config.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/career_fit
-    username: ${DB_USER:root}
-    password: ${DB_PASSWORD:}
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     show-sql: true
     hibernate:
@@ -21,22 +20,19 @@ spring:
       mode: always
   data:
     redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
-
-  profiles:
-    active: local
+      host: ${REDIS_HOST}
+      port: 6379
 
 ai:
   server:
-    base-url: http://localhost:8000 # AI 서버 개발자(현준님)에게 받은 실제 주소로 변경해야 합니다.
+    base-url: ${AI_SERVER_URL} # AI 서버 개발자(현준님)에게 받은 실제 주소로 변경해야 합니다.
 
 cloud:
   aws:
     credentials:
-      access-key: ${s3-access-key}
-      secret-key: ${s3-secret-key}
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
     s3:
-      bucket: ${s3-bucket-name}
+      bucket: ${S3_BUCKET_NAME}
     region:
       region-value: ap-northeast-2
