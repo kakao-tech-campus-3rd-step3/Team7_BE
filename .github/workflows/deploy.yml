@@ -1,4 +1,4 @@
-name: Career-fit CD Pipeline - Dev
+name: Career-fit CD Pipeline
 
 on:
   workflow_dispatch:
