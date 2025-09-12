@@ -10,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum MemberErrorCode implements ErrorCode {
-    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER-001", "회원이 존재하지 않습니다.");
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER-001", "회원이 존재하지 않습니다."),
+    MENTO_PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER-002", "해당 멘토 프로필을 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;
