@@ -103,9 +103,8 @@ public class ReviewService {
     }
 
     private MentorProfile findMentorProfileByMemberId(Long memberId) {
-        return mentorProfileJpaRepository.findById(memberId)
-                .orElseThrow(
-                        () -> new ApplicationException(MemberErrorCode.MENTO_PROFILE_NOT_FOUND));
+        return mentorProfileJpaRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new ApplicationException(MemberErrorCode.MENTO_PROFILE_NOT_FOUND));
     }
 
     private Review findReviewById(Long reviewId) {
