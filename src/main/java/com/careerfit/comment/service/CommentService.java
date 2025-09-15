@@ -21,7 +21,7 @@ public class CommentService {
 
     // comment 생성
     @Transactional
-    public Comment createComment(
+    public void createComment(
         Long documentId,
         Long memberId,
         CommentCreateRequest request
@@ -30,7 +30,7 @@ public class CommentService {
         Member member = memberFinder.getMemberOrThrow(memberId);
         Comment comment = Comment.of(document, member, request);
 
-        return commentRepository.save(comment);
+        commentRepository.save(comment);
     }
 
 }
