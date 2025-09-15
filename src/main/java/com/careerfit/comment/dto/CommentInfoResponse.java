@@ -5,15 +5,15 @@ import com.careerfit.comment.domain.Coordinate;
 import com.careerfit.document.dto.DocumentInfoResponse;
 import com.careerfit.member.dto.MemberInfoResponse;
 
-public record CommentResponse(
+public record CommentInfoResponse(
     Long id,
     String content,
     Coordinate coordinate,
     MemberInfoResponse writerInfo,
     DocumentInfoResponse documentInfo
 ) {
-    public static CommentResponse from(Comment comment){
-        return new CommentResponse(
+    public static CommentInfoResponse from(Comment comment){
+        return new CommentInfoResponse(
             comment.getId(),
             comment.getContent(),
             comment.getCoordinate(),
