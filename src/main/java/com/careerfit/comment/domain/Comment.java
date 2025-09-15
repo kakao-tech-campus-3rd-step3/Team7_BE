@@ -1,5 +1,6 @@
 package com.careerfit.comment.domain;
 
+import com.careerfit.comment.dto.CommentCreateRequest;
 import com.careerfit.document.domain.Document;
 import com.careerfit.global.entity.TimeBaseEntity;
 import com.careerfit.member.domain.Member;
@@ -34,4 +35,12 @@ public class Comment extends TimeBaseEntity {
     @JoinColumn(name = "document_id")
     private Document document;
 
+    public static Comment of(Document document, Member member, CommentCreateRequest request) {
+        return Comment.builder()
+            .content(request.content())
+            .coordinate(request.coordinate())
+            .member(member)
+            .document(document)
+            .build();
+    }
 }
