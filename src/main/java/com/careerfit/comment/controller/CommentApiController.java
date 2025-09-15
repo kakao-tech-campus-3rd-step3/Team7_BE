@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/documents/{documentId}/comments")
 public class CommentApiController {
 
-    private final CommentService commentService;
+    private final CommentCommandService commentCommandService;
+    private final CommentQueryService commentQueryService;
 
     // comment 생성
     @PostMapping
@@ -28,7 +29,7 @@ public class CommentApiController {
         @RequestParam Long memberId,
         @RequestBody CommentCreateRequest request
     ) {
-        commentService.createComment(documentId, memberId, request);
+        commentCommandService.createComment(documentId, memberId, request);
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ApiResponse.success());
     }

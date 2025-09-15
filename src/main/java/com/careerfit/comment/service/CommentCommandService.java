@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
+public class CommentCommandService {
 
     private final CommentRepository commentRepository;
     private final DocumentFinder documentFinder;
