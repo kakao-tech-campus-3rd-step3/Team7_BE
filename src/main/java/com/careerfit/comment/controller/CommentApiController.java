@@ -11,6 +11,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,5 +80,16 @@ public class CommentApiController {
     }
 
     // comment 삭제
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteComment(
+        @PathVariable Long documentId,
+        @PathVariable Long commentId,
+        // 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
+        @RequestParam Long memberId
+    ) {
+        commentCommandService.deleteComment(commentId, memberId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+            .build();
+    }
 
 }
