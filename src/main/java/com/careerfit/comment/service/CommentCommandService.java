@@ -2,6 +2,8 @@ package com.careerfit.comment.service;
 
 import com.careerfit.comment.domain.Comment;
 import com.careerfit.comment.dto.CommentCreateRequest;
+import com.careerfit.comment.dto.CommentInfoResponse;
+import com.careerfit.comment.dto.CommentUpdateRequest;
 import com.careerfit.comment.repository.CommentRepository;
 import com.careerfit.document.domain.Document;
 import com.careerfit.document.service.DocumentFinder;
@@ -18,6 +20,7 @@ public class CommentCommandService {
     private final CommentRepository commentRepository;
     private final DocumentFinder documentFinder;
     private final MemberFinder memberFinder;
+    private final CommentFinder commentFinder;
 
     // comment 생성
     @Transactional
@@ -33,4 +36,14 @@ public class CommentCommandService {
         commentRepository.save(comment);
     }
 
+    @Transactional
+    public CommentInfoResponse updateComment(
+        Long commentId,
+        Long memberId,
+        CommentUpdateRequest request
+    ) {
+        Comment comment = commentFinder.findCommentOrThrow(commentId);
+        comment.updateContent(request.content());
+        return CommentInfoResponse.from(comment);
+    }
 }
