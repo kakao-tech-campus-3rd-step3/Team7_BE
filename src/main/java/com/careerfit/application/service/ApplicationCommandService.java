@@ -54,4 +54,12 @@ public class ApplicationCommandService {
         application.updateContent(request);
 
     }
+
+    public void deleteApplication(Long applicationId) {
+        if (!applicationJpaRepository.existsById(applicationId)) {
+            throw new ApplicationException(ApplicationErrorCode.APPLICATION_NOT_FOUND);
+        }
+
+        applicationJpaRepository.deleteById(applicationId);
+    }
 }
