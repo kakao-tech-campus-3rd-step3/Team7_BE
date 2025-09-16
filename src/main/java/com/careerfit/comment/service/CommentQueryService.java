@@ -8,17 +8,19 @@ import com.careerfit.global.exception.ApplicationException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CommentQueryService {
 
     private final CommentRepository commentRepository;
+    private final CommentFinder commentFinder;
 
     // comment 단건 조회
     public CommentInfoResponse findComment(Long commentId, Long memberId) {
-        Comment comment = commentRepository.findById(commentId)
-            .orElseThrow(() -> new ApplicationException(CommentErrorCode.COMMENT_NOT_FOUND));
+        Comment comment = commentFinder.findCommentOrThrow(commentId);
 
         // 멘토나, 해당 문서를 소유한 멘티만 해당 코멘트를 조회할 수 있도록 검증 로직 추가 필요: 이후 추가 예정
 
