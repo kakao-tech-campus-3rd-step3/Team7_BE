@@ -43,4 +43,8 @@ public class Comment extends TimeBaseEntity {
             .document(document)
             .build();
     }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }
