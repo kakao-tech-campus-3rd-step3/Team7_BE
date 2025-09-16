@@ -2,10 +2,14 @@ package com.careerfit.application.service;
 
 import com.careerfit.application.client.AiServerClient;
 import com.careerfit.application.domain.Application;
+import com.careerfit.application.dto.ApplicationContentUpdateRequest;
 import com.careerfit.application.dto.ApplicationRegisterRequest;
+import com.careerfit.application.dto.ApplicationStatusUpdateRequest;
 import com.careerfit.application.dto.JobPostingAnalysisResponse;
 import com.careerfit.application.dto.JobPostingUrlRequest;
+import com.careerfit.application.exception.ApplicationErrorCode;
 import com.careerfit.application.repository.ApplicationJpaRepository;
+import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.service.MemberFinder;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ApplicationService {
+public class ApplicationCommandService {
 
     private final AiServerClient aiServerClient;
     private final ApplicationJpaRepository applicationJpaRepository;
@@ -32,5 +36,22 @@ public class ApplicationService {
         Application application = Application.of(request, member);
 
         applicationJpaRepository.save(application);
+    }
+
+    public void updateStatus(Long applicationId, ApplicationStatusUpdateRequest request) {
+        Application application = applicationJpaRepository.findById(applicationId)
+                .orElseThrow(
+                        () -> new ApplicationException(ApplicationErrorCode.APPLICATION_NOT_FOUND));
+
+        application.updateStatus(request.newStatus());
+    }
+
+    public void updateContent(Long applicationId, ApplicationContentUpdateRequest request) {
+        Application application = applicationJpaRepository.findById(applicationId)
+                .orElseThrow(
+                        () -> new ApplicationException(ApplicationErrorCode.APPLICATION_NOT_FOUND));
+
+        application.updateContent(request);
+
     }
 }
