@@ -1,9 +1,9 @@
-package com.careerfit.document.controller;
+package com.careerfit.portfolio.controller;
 
 import com.careerfit.document.dto.CompleteUploadRequest;
 import com.careerfit.document.dto.FileCreateResponse;
 import com.careerfit.document.dto.FileInfoResponse;
-import com.careerfit.document.service.PortfolioService;
+import com.careerfit.portfolio.service.PortfolioService;
 import com.careerfit.global.dto.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,15 +1,16 @@
-package com.careerfit.document.service;
+package com.careerfit.portfolio.service;
 
 import com.careerfit.application.exception.ApplicationErrorCode;
 import com.careerfit.application.service.ApplicationFinder;
-import com.careerfit.document.domain.Portfolio;
+import com.careerfit.portfolio.domain.Portfolio;
 import com.careerfit.document.dto.CompleteUploadRequest;
 import com.careerfit.document.dto.FileCreateResponse;
 import com.careerfit.document.dto.FileInfoResponse;
-import com.careerfit.document.exception.PortfolioErrorCode;
-import com.careerfit.document.repository.PortfolioRepository;
+import com.careerfit.portfolio.exception.PortfolioErrorCode;
+import com.careerfit.portfolio.repository.PortfolioRepository;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.global.util.DocumentUtil;
+import com.careerfit.portfolio.service.PortfolioFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

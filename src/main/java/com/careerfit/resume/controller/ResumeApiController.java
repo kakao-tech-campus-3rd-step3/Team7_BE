@@ -1,9 +1,9 @@
-package com.careerfit.document.controller;
+package com.careerfit.resume.controller;
 
 import com.careerfit.document.dto.CompleteUploadRequest;
 import com.careerfit.document.dto.FileCreateResponse;
 import com.careerfit.document.dto.FileInfoResponse;
-import com.careerfit.document.service.ResumeService;
+import com.careerfit.resume.service.ResumeService;
 import com.careerfit.global.dto.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

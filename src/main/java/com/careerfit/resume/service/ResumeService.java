@@ -1,15 +1,16 @@
-package com.careerfit.document.service;
+package com.careerfit.resume.service;
 
 import com.careerfit.application.exception.ApplicationErrorCode;
 import com.careerfit.application.service.ApplicationFinder;
-import com.careerfit.document.domain.Resume;
+import com.careerfit.resume.domain.Resume;
 import com.careerfit.document.dto.CompleteUploadRequest;
 import com.careerfit.document.dto.FileCreateResponse;
 import com.careerfit.document.dto.FileInfoResponse;
-import com.careerfit.document.exception.ResumeErrorCode;
-import com.careerfit.document.repository.ResumeRepository;
+import com.careerfit.resume.exception.ResumeErrorCode;
+import com.careerfit.resume.repository.ResumeRepository;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.global.util.DocumentUtil;
+import com.careerfit.resume.service.ResumeFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

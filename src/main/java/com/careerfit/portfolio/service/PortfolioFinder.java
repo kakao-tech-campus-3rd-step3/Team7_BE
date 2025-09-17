@@ -1,8 +1,8 @@
-package com.careerfit.document.service;
+package com.careerfit.portfolio.service;
 
-import com.careerfit.document.domain.Portfolio;
-import com.careerfit.document.exception.PortfolioErrorCode;
-import com.careerfit.document.repository.PortfolioRepository;
+import com.careerfit.portfolio.domain.Portfolio;
+import com.careerfit.portfolio.exception.PortfolioErrorCode;
+import com.careerfit.portfolio.repository.PortfolioRepository;
 import com.careerfit.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

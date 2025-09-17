@@ -1,6 +1,7 @@
-package com.careerfit.document.domain;
+package com.careerfit.portfolio.domain;
 
 import com.careerfit.application.domain.Application;
+import com.careerfit.document.domain.Document;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -11,12 +12,12 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "resume")
-@DiscriminatorValue("RESUME")
+@Table(name = "portfolio")
+@DiscriminatorValue("PORTFOLIO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
 @Getter
-public class Resume extends Document {
+public class Portfolio extends Document {
 
     // 파일 경로가 다르다면 이름은 중복되어도 괜찮습니다. unique 옵션 제외한 건 의도한 거에요.
     @Column(nullable = false)
@@ -25,10 +26,10 @@ public class Resume extends Document {
     @Column(unique = true, nullable = false)
     private String storedFilePath;
 
-    public static Resume of(String originalFileName, String storedFilePath, String documentTitle,
+    public static Portfolio of(String originalFileName, String storedFilePath, String documentTitle,
         Application application) {
 
-        return Resume.builder()
+        return Portfolio.builder()
             .originalFileName(originalFileName)
             .storedFilePath(storedFilePath)
             .title(documentTitle)

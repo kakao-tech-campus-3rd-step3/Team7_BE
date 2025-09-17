@@ -2,7 +2,7 @@ package com.careerfit.review.service;
 
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
-import com.careerfit.member.domain.MentoProfile;
+import com.careerfit.member.domain.MentorProfile;
 import com.careerfit.member.exception.MemberErrorCode;
 import com.careerfit.member.repository.MemberJpaRepository;
 import com.careerfit.member.repository.MentoProfileJpaRepository;
@@ -42,7 +42,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewGetResponse getReviewsByMento(Long mentoId) {
-        MentoProfile mentoProfile = findMentoProfileByMemberId(mentoId);
+        MentorProfile mentoProfile = findMentorProfileByMemberId(mentoId);
         List<Review> reviews = reviewJpaRepository.findByMento(mentoProfile.getMember());
 
         List<ReviewGetResponse.ReviewDetail> reviewDetails = reviews.stream()
@@ -93,8 +93,8 @@ public class ReviewService {
 
         double roundedRating = Math.round(averageRating * 10.0) / 10.0;
 
-        MentoProfile mentoProfile = findMentoProfileByMemberId(mento.getId());
-        mentoProfile.updateReviewStats(reviewCount, roundedRating);
+        MentorProfile mentorProfile = findMentorProfileByMemberId(mento.getId());
+        mentorProfile.updateReviewStats(reviewCount, roundedRating);
     }
 
     private Member findMemberById(Long memberId) {
@@ -102,7 +102,7 @@ public class ReviewService {
                 .orElseThrow(() -> new ApplicationException(MemberErrorCode.MEMBER_NOT_FOUND));
     }
 
-    private MentoProfile findMentoProfileByMemberId(Long memberId) {
+    private MentorProfile findMentorProfileByMemberId(Long memberId) {
         return mentoProfileJpaRepository.findById(memberId)
                 .orElseThrow(
                         () -> new ApplicationException(MemberErrorCode.MENTO_PROFILE_NOT_FOUND));

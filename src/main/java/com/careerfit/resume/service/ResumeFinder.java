@@ -1,8 +1,8 @@
-package com.careerfit.document.service;
+package com.careerfit.resume.service;
 
-import com.careerfit.document.domain.Resume;
-import com.careerfit.document.exception.ResumeErrorCode;
-import com.careerfit.document.repository.ResumeRepository;
+import com.careerfit.resume.domain.Resume;
+import com.careerfit.resume.exception.ResumeErrorCode;
+import com.careerfit.resume.repository.ResumeRepository;
 import com.careerfit.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

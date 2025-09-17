@@ -1,4 +1,4 @@
-package com.careerfit.document.exception;
+package com.careerfit.portfolio.exception;
 
 import com.careerfit.global.exception.ErrorCode;
 import lombok.Getter;
