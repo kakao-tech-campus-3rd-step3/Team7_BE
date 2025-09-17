@@ -122,4 +122,8 @@ public class MentorProfile implements MemberProfile {
     public void setMember(Member member) {
         this.member = member;
     }
-}
+
+    public void updateReviewStats(int reviewCount, Double rating) {
+        this.reviewCount = reviewCount;
+        this.rating = rating;
+    }}

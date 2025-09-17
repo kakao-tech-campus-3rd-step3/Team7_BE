@@ -56,8 +56,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             LoginResponse loginResponse = LoginResponse.forExistingUser(
                 oAuthUserInfo,
                 member.getMemberRole(),
-                tokenInfo.accessToken(),
-                tokenInfo.refreshToken()
+                tokenInfo
             );
             apiResponse = ApiResponse.success(loginResponse);
         }
