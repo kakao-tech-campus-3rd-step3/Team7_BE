@@ -33,8 +33,8 @@ public class CoverLetter extends Document {
     }
 
     private static void validateItemsNull(List<CoverLetterItem> items) {
-        if (items == null) {
-            throw new IllegalArgumentException("자기소개서의 문항은 null일 수 없습니다.");
+        if (items == null || items.isEmpty()) {
+            throw new IllegalArgumentException("자기소개서의 문항이 없을 수 없습니다.");
         }
     }
 
