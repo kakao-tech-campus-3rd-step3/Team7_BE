@@ -24,12 +24,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "mentor_profile")
+@Table(name = "mento_profile")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class MentorProfile implements MemberProfile {
+public class MentoProfile implements MemberProfile {
 
     @Id
     private Long id;
@@ -69,7 +69,7 @@ public class MentorProfile implements MemberProfile {
 
     private String introduction;
 
-    private Double rating;
+    private Double averageRating;
 
     private int reviewCount;
 
@@ -85,13 +85,13 @@ public class MentorProfile implements MemberProfile {
     @BatchSize(size = 100)
     @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<MentorCareer> mentoCareers = new ArrayList<>();
+    private List<MentoCareer> mentoCareers = new ArrayList<>();
 
-    public static MentorProfile of(int careerYears, String company, String jobPosition,
-        String employmentCertificate, List<String> certifications, List<String> educations, List<String> expertises,
-        String introduction, List<MentorCareer> mentoCareers) {
+    public static MentoProfile of(int careerYears, String company, String jobPosition,
+                                  String employmentCertificate, List<String> certifications, List<String> educations, List<String> expertises,
+                                  String introduction, List<MentoCareer> mentoCareers, Double averageRating) {
 
-        MentorProfile profile = MentorProfile.builder()
+        MentoProfile profile = MentoProfile.builder()
             .careerYears(careerYears)
             .company(company)
             .jobPosition(jobPosition)
@@ -100,7 +100,7 @@ public class MentorProfile implements MemberProfile {
             .educations(educations != null ? educations : new ArrayList<>())
             .expertises(expertises != null ? expertises : new ArrayList<>())
             .introduction(introduction)
-            .rating(0.0)
+            .averageRating(averageRating)
             .reviewCount(0)
             .menteeCount(0)
             .pricePerSession(0.0)
@@ -113,13 +113,18 @@ public class MentorProfile implements MemberProfile {
         return profile;
     }
 
-    public void addMentoCareer(MentorCareer mentorCareer) {
-        mentorCareer.setMentorProfile(this);
-        this.mentoCareers.add(mentorCareer);
+    public void addMentoCareer(MentoCareer mentoCareer) {
+        mentoCareer.setMentoProfile(this);
+        this.mentoCareers.add(mentoCareer);
     }
 
     @Override
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public void updateReviewStats(int reviewCount, double roundedRating) {
+        this.reviewCount = reviewCount;
+        this.averageRating = roundedRating;
     }
 }

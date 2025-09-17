@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,12 +15,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "mentor_career")
+@Table(name = "mento_career")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class MentorCareer {
+public class MentoCareer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +32,10 @@ public class MentorCareer {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mentor_profile_id")
-    private MentorProfile mentorProfile;
+    private MentoProfile mentoProfile;
 
-    public static MentorCareer of(String companyName, String position, String startDate, String endDate) {
-        return MentorCareer.builder()
+    public static MentoCareer of(String companyName, String position, String startDate, String endDate) {
+        return MentoCareer.builder()
             .companyName(companyName)
             .position(position)
             .startDate(startDate)
@@ -44,7 +43,7 @@ public class MentorCareer {
             .build();
     }
 
-    public void setMentorProfile(MentorProfile mentorProfile) {
-        this.mentorProfile = mentorProfile;
+    public void setMentoProfile(MentoProfile mentoProfile) {
+        this.mentoProfile = mentoProfile;
     }
 }
