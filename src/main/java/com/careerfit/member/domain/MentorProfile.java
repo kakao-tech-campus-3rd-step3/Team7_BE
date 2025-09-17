@@ -123,8 +123,7 @@ public class MentorProfile implements MemberProfile {
         this.member = member;
     }
 
-    public void updateReviewStats(int reviewCount, double roundedRating) {
+    public void updateReviewStats(int reviewCount, Double rating) {
         this.reviewCount = reviewCount;
-        this.averageRating = roundedRating;
-    }
-}
+        this.rating = rating;
+    }}

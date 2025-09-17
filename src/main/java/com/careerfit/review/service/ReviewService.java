@@ -42,8 +42,8 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewGetResponse getReviewsByMento(Long mentoId) {
-        MentorProfile mentorProfile = findMentoProfileByMemberId(mentoId);
-        List<Review> reviews = reviewJpaRepository.findByMento(mentorProfile.getMember());
+        MentorProfile mentoProfile = findMentorProfileByMemberId(mentoId);
+        List<Review> reviews = reviewJpaRepository.findByMento(mentoProfile.getMember());
 
         List<ReviewGetResponse.ReviewDetail> reviewDetails = reviews.stream()
                 .map(review -> new ReviewGetResponse.ReviewDetail(
@@ -93,7 +93,8 @@ public class ReviewService {
 
         double roundedRating = Math.round(averageRating * 10.0) / 10.0;
 
-        MentorProfile mentorProfile = findMentoProfileByMemberId(mento.getId());
+
+        MentorProfile mentorProfile = findMentorProfileByMemberId(mento.getId());
         mentorProfile.updateReviewStats(reviewCount, roundedRating);
     }
 
@@ -102,10 +103,9 @@ public class ReviewService {
                 .orElseThrow(() -> new ApplicationException(MemberErrorCode.MEMBER_NOT_FOUND));
     }
 
-    private MentorProfile findMentoProfileByMemberId(Long memberId) {
-        return mentorProfileJpaRepository.findById(memberId)
-                .orElseThrow(
-                        () -> new ApplicationException(MemberErrorCode.MENTO_PROFILE_NOT_FOUND));
+    private MentorProfile findMentorProfileByMemberId(Long memberId) {
+        return mentorProfileJpaRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new ApplicationException(MemberErrorCode.MENTO_PROFILE_NOT_FOUND));
     }
 
     private Review findReviewById(Long reviewId) {

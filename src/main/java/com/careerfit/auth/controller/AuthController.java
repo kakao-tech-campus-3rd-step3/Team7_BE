@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerDocs {
 
     private final AuthService authService;
 
@@ -30,8 +30,10 @@ public class AuthController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<ApiResponse<TokenInfo>> reissueTokens(@Valid @RequestBody ReissueTokenRequest reissueTokenRequest) {
-        return ResponseEntity.ok(ApiResponse.success(authService.reissueTokens(reissueTokenRequest)));
+    public ResponseEntity<ApiResponse<TokenInfo>> reissueTokens(
+        @Valid @RequestBody ReissueTokenRequest reissueTokenRequest) {
+        return ResponseEntity.ok(
+            ApiResponse.success(authService.reissueTokens(reissueTokenRequest)));
     }
 
 }
