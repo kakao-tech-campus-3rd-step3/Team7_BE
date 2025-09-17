@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ApplicationCommandService {
 
@@ -29,7 +30,6 @@ public class ApplicationCommandService {
         return aiServerClient.analyzeUrl(request);
     }
 
-    @Transactional
     public void registerApplication(ApplicationRegisterRequest request, Long memberId) {
         Member member = memberFinder.getMemberOrThrow(memberId);
 
