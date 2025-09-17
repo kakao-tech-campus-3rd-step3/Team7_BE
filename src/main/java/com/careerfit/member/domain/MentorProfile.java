@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class MentoProfile implements MemberProfile {
+public class MentorProfile implements MemberProfile {
 
     @Id
     private Long id;
@@ -85,13 +85,13 @@ public class MentoProfile implements MemberProfile {
     @BatchSize(size = 100)
     @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<MentoCareer> mentoCareers = new ArrayList<>();
+    private List<MentorCareer> mentorCareers = new ArrayList<>();
 
-    public static MentoProfile of(int careerYears, String company, String jobPosition,
-                                  String employmentCertificate, List<String> certifications, List<String> educations, List<String> expertises,
-                                  String introduction, List<MentoCareer> mentoCareers, Double averageRating) {
+    public static MentorProfile of(int careerYears, String company, String jobPosition,
+                                   String employmentCertificate, List<String> certifications, List<String> educations, List<String> expertises,
+                                   String introduction, List<MentorCareer> mentorCareers, Double averageRating) {
 
-        MentoProfile profile = MentoProfile.builder()
+        MentorProfile profile = MentorProfile.builder()
             .careerYears(careerYears)
             .company(company)
             .jobPosition(jobPosition)
@@ -106,16 +106,16 @@ public class MentoProfile implements MemberProfile {
             .pricePerSession(0.0)
             .build();
 
-        if (mentoCareers != null) {
-            mentoCareers.forEach(profile::addMentoCareer);
+        if (mentorCareers != null) {
+            mentorCareers.forEach(profile::addMentoCareer);
         }
 
         return profile;
     }
 
-    public void addMentoCareer(MentoCareer mentoCareer) {
-        mentoCareer.setMentoProfile(this);
-        this.mentoCareers.add(mentoCareer);
+    public void addMentoCareer(MentorCareer mentorCareer) {
+        mentorCareer.setMentorProfile(this);
+        this.mentorCareers.add(mentorCareer);
     }
 
     @Override

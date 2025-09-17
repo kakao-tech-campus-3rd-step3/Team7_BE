@@ -5,7 +5,7 @@ public record MentorHeaderResponse(
     String name,
     String company,
     String jobPosition,
-    double rating,
+    double averageRating,
     int reviewsCount,
     int experience,
     int menteesCount

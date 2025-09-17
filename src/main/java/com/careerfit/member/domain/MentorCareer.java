@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class MentoCareer {
+public class MentorCareer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +32,10 @@ public class MentoCareer {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mentor_profile_id")
-    private MentoProfile mentoProfile;
+    private MentorProfile mentorProfile;
 
-    public static MentoCareer of(String companyName, String position, String startDate, String endDate) {
-        return MentoCareer.builder()
+    public static MentorCareer of(String companyName, String position, String startDate, String endDate) {
+        return MentorCareer.builder()
             .companyName(companyName)
             .position(position)
             .startDate(startDate)
@@ -43,7 +43,7 @@ public class MentoCareer {
             .build();
     }
 
-    public void setMentoProfile(MentoProfile mentoProfile) {
-        this.mentoProfile = mentoProfile;
+    public void setMentorProfile(MentorProfile mentorProfile) {
+        this.mentorProfile = mentorProfile;
     }
 }
