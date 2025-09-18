@@ -90,7 +90,7 @@ public class MentorQueryService {
 
     public MentorReviewResponse getMentorReviews(Long mentorId) {
         Member mentor = mentorFinder.getMentorById(mentorId);
-        List<Review> reviews = reviewRepository.findByMento(mentor);
+        List<Review> reviews = reviewRepository.findByMentor(mentor);
 
         List<MentorReviewResponse.ReviewDetail> reviewDetails = reviews.stream()
                 .map(r -> new MentorReviewResponse.ReviewDetail(

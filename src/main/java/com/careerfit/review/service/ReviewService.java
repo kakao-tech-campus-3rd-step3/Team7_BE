@@ -28,22 +28,22 @@ public class ReviewService {
     private final MemberJpaRepository memberJpaRepository;
     private final MentorProfileJpaRepository mentorProfileJpaRepository;
 
-    public ReviewPostResponse createReview(Long menteeId, Long mentoId, ReviewPostRequest request) {
+    public ReviewPostResponse createReview(Long menteeId, Long mentorId, ReviewPostRequest request) {
         Member mentee = findMemberById(menteeId);
-        Member mento = findMemberById(mentoId);
+        Member mentor = findMemberById(mentorId);
 
-        Review review = Review.create(mentee, mento, request.rating(), request.content());
+        Review review = Review.create(mentee, mentor, request.rating(), request.content());
         Review savedReview = reviewJpaRepository.save(review);
 
-        updateMentoReviewStats(mento);
+        updateMentoReviewStats(mentor);
 
         return new ReviewPostResponse(savedReview.getId());
     }
 
     @Transactional(readOnly = true)
-    public ReviewGetResponse getReviewsByMento(Long mentoId) {
-        MentorProfile mentoProfile = findMentorProfileByMemberId(mentoId);
-        List<Review> reviews = reviewJpaRepository.findByMento(mentoProfile.getMember());
+    public ReviewGetResponse getReviewsByMentor(Long mentorId) {
+        MentorProfile mentorProfile = findMentorProfileByMemberId(mentorId);
+        List<Review> reviews = reviewJpaRepository.findByMentor(mentorProfile.getMember());
 
         List<ReviewGetResponse.ReviewDetail> reviewDetails = reviews.stream()
                 .map(review -> new ReviewGetResponse.ReviewDetail(
@@ -68,7 +68,7 @@ public class ReviewService {
         validateReviewOwner(review, menteeId);
 
         review.update(request.rating(), request.content());
-        updateMentoReviewStats(review.getMento());
+        updateMentoReviewStats(review.getMentor());
 
         return new ReviewUpdateResponse(review.getId());
     }
@@ -76,14 +76,14 @@ public class ReviewService {
     public void deleteReview(Long reviewId, Long menteeId) {
         Review review = findReviewById(reviewId);
         validateReviewOwner(review, menteeId);
-        Member mento = review.getMento();
+        Member mento = review.getMentor();
 
         reviewJpaRepository.delete(review);
         updateMentoReviewStats(mento);
     }
 
     private void updateMentoReviewStats(Member mento) {
-        List<Review> reviews = reviewJpaRepository.findByMento(mento);
+        List<Review> reviews = reviewJpaRepository.findByMentor(mento);
 
         int reviewCount = reviews.size();
         double averageRating = reviews.stream()

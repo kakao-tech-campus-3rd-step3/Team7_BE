@@ -24,7 +24,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "mento_profile")
+@Table(name = "mentor_profile")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
@@ -125,5 +125,5 @@ public class MentorProfile implements MemberProfile {
 
     public void updateReviewStats(int reviewCount, Double rating) {
         this.reviewCount = reviewCount;
-        this.rating = rating;
+        this.averageRating = rating;
     }}
