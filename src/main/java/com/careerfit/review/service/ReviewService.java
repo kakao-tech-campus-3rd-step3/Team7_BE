@@ -56,8 +56,8 @@ public class ReviewService {
                 .toList();
 
         return new ReviewGetResponse(
-                mentoProfile.getReviewCount(),
-                mentoProfile.getRating(),
+                mentorProfile.getReviewCount(),
+                mentorProfile.getAverageRating(),
                 reviewDetails
         );
     }
@@ -92,6 +92,7 @@ public class ReviewService {
                 .orElse(0.0);
 
         double roundedRating = Math.round(averageRating * 10.0) / 10.0;
+
 
         MentorProfile mentorProfile = findMentorProfileByMemberId(mento.getId());
         mentorProfile.updateReviewStats(reviewCount, roundedRating);
