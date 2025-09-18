@@ -5,7 +5,7 @@ import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.MentorProfile;
 import com.careerfit.member.exception.MemberErrorCode;
 import com.careerfit.member.repository.MemberJpaRepository;
-import com.careerfit.member.repository.MentoProfileJpaRepository;
+import com.careerfit.member.repository.MentorProfileJpaRepository;
 import com.careerfit.review.domain.Review;
 import com.careerfit.review.dto.ReviewGetResponse;
 import com.careerfit.review.dto.ReviewPatchRequest;
@@ -26,7 +26,7 @@ public class ReviewService {
 
     private final ReviewJpaRepository reviewJpaRepository;
     private final MemberJpaRepository memberJpaRepository;
-    private final MentoProfileJpaRepository mentoProfileJpaRepository;
+    private final MentorProfileJpaRepository mentorProfileJpaRepository;
 
     public ReviewPostResponse createReview(Long menteeId, Long mentoId, ReviewPostRequest request) {
         Member mentee = findMemberById(menteeId);
@@ -103,9 +103,8 @@ public class ReviewService {
     }
 
     private MentorProfile findMentorProfileByMemberId(Long memberId) {
-        return mentoProfileJpaRepository.findById(memberId)
-                .orElseThrow(
-                        () -> new ApplicationException(MemberErrorCode.MENTO_PROFILE_NOT_FOUND));
+        return mentorProfileJpaRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new ApplicationException(MemberErrorCode.MENTO_PROFILE_NOT_FOUND));
     }
 
     private Review findReviewById(Long reviewId) {

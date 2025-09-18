@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -30,7 +29,6 @@ import com.careerfit.auth.handler.JwtLogoutHandler;
 import com.careerfit.auth.handler.OAuth2LoginSuccessHandler;
 import com.careerfit.auth.service.CustomOAuth2UserService;
 
-import lombok.CustomLog;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -48,6 +46,14 @@ public class SecurityConfig {
     private final JwtLogoutHandler jwtLogoutHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
+    private static final String[] WHITELIST = {
+        "/favicon.ico",
+        "/error",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -59,6 +65,7 @@ public class SecurityConfig {
             .sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(WHITELIST).permitAll()
                 .anyRequest().permitAll()
             )
             .logout(logout -> logout
@@ -106,4 +113,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
 }
