@@ -1,8 +1,8 @@
 package com.careerfit.document.dto;
 
 import com.careerfit.document.domain.DocumentType;
-import com.careerfit.document.domain.Portfolio;
-import com.careerfit.document.domain.Resume;
+import com.careerfit.portfolio.domain.Portfolio;
+import com.careerfit.resume.domain.Resume;
 
 public record FileCreateResponse(
     Long id,
