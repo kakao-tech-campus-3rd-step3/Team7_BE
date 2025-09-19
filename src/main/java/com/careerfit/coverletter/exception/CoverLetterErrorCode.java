@@ -1,11 +1,9 @@
 package com.careerfit.coverletter.exception;
 
-import org.springframework.http.HttpStatus;
-
 import com.careerfit.global.exception.ErrorCode;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor

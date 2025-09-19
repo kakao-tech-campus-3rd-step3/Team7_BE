@@ -17,6 +17,7 @@ public enum OAuthProvider {
         return Arrays.stream(values())
             .filter(provider -> provider.getRegistrationId().equalsIgnoreCase(registrationId))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 소셜 로그인입니다: " + registrationId));
+            .orElseThrow(
+                () -> new IllegalArgumentException("지원하지 않는 소셜 로그인입니다: " + registrationId));
     }
 }

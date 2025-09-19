@@ -29,7 +29,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         log.error(accessDeniedException.getMessage(), accessDeniedException);
 
         AuthErrorCode errorCode = AuthErrorCode.ACCESS_DENIED;
-        ApiResponse<Void> apiResponse = ApiResponse.error(errorCode.getCode(), errorCode.getMessage());
+        ApiResponse<Void> apiResponse = ApiResponse.error(errorCode.getCode(),
+            errorCode.getMessage());
 
         response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

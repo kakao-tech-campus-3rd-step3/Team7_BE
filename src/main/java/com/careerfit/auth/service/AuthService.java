@@ -1,5 +1,6 @@
 package com.careerfit.auth.service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -7,17 +8,21 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.careerfit.auth.domain.OAuthProvider;
+import com.careerfit.auth.dto.CommonSignUpRequest;
+import com.careerfit.auth.dto.MenteeSignUpRequest;
+import com.careerfit.auth.dto.MentorSignUpRequest;
+import com.careerfit.auth.dto.ReissueTokenRequest;
 import com.careerfit.auth.dto.SignUpResponse;
 import com.careerfit.auth.dto.TokenInfo;
 import com.careerfit.auth.exception.AuthErrorCode;
-import com.careerfit.auth.utils.JwtUtils;
+import com.careerfit.auth.utils.JwtParser;
+import com.careerfit.auth.utils.JwtProvider;
+import com.careerfit.auth.utils.JwtValidator;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.MenteeProfile;
-import com.careerfit.member.domain.MentoProfile;
-import com.careerfit.auth.dto.CommonSignUpRequest;
-import com.careerfit.auth.dto.MenteeSignUpRequest;
-import com.careerfit.auth.dto.MentoSignUpRequest;
+import com.careerfit.member.domain.MentorCareer;
+import com.careerfit.member.domain.MentorProfile;
 import com.careerfit.member.repository.MemberJpaRepository;
 import com.careerfit.member.service.MemberFinder;
 
@@ -29,7 +34,10 @@ public class AuthService {
 
     private final MemberJpaRepository memberJpaRepository;
     private final MemberFinder memberFinder;
-    private final JwtUtils jwtUtils;
+    private final JwtProvider jwtProvider;
+    private final RefreshTokenService refreshTokenService;
+    private final JwtParser jwtParser;
+    private final JwtValidator jwtValidator;
 
     @Transactional
     public SignUpResponse signUpAsMentee(MenteeSignUpRequest dto) {
@@ -37,6 +45,7 @@ public class AuthService {
         validateDuplicateEmail(commonInfo.email());
 
         OAuthProvider oAuthProvider = OAuthProvider.from(commonInfo.registrationId());
+
         MenteeProfile menteeProfile = MenteeProfile.of(
             dto.university(),
             dto.major(),
@@ -45,56 +54,87 @@ public class AuthService {
             dto.wishPositions());
 
         Member mentee = Member.mentee(
+            commonInfo.name(),
             commonInfo.email(),
             commonInfo.phoneNumber(),
             commonInfo.profileImage(),
             oAuthProvider,
             commonInfo.oauthId(),
             menteeProfile);
-
         memberJpaRepository.save(mentee);
 
-        //TODO: redis에 refreshToken 저장
+        TokenInfo tokenInfo = issueTokens(mentee);
 
-        TokenInfo tokenInfo = jwtUtils.generateTokens(mentee.getId(),
-            Set.of(mentee.getMemberRole().getRole()));
         return SignUpResponse.of(mentee.getId(), tokenInfo);
     }
 
     @Transactional
-    public SignUpResponse signUpAsMento(MentoSignUpRequest dto){
+    public SignUpResponse signUpAsMentor(MentorSignUpRequest dto) {
         CommonSignUpRequest commonInfo = dto.commonInfo();
         validateDuplicateEmail(commonInfo.email());
 
         OAuthProvider oAuthProvider = OAuthProvider.from(commonInfo.registrationId());
-        MentoProfile mentoProfile = MentoProfile.of(
-            dto.career(),
+
+        List<MentorCareer> careers = dto.careers().stream()
+            .map(career ->
+                MentorCareer.of(career.companyName(), career.position(), career.startDate(),
+                    career.endDate()))
+            .toList();
+
+        MentorProfile mentorProfile = MentorProfile.of(
+            dto.careerYears(),
             dto.currentCompany(),
             dto.currentPosition(),
-            dto.certificate(),
-            dto.education(),
+            dto.employmentCertificate(),
+            dto.certifications(),
+            dto.educations(),
             dto.expertises(),
-            dto.description());
+            dto.description(),
+            careers
+        );
 
-        Member mento = Member.mento(
+        Member mentor = Member.mentor(
+            commonInfo.name(),
             commonInfo.email(),
             commonInfo.phoneNumber(),
             commonInfo.profileImage(),
             oAuthProvider,
             commonInfo.oauthId(),
-            mentoProfile);
+            mentorProfile);
+        memberJpaRepository.save(mentor);
 
-        memberJpaRepository.save(mento);
+        TokenInfo tokenInfo = issueTokens(mentor);
 
-        //TODO: redis에 refreshToken 저장
-
-        TokenInfo tokenInfo = jwtUtils.generateTokens(mento.getId(),
-            Set.of(mento.getMemberRole().getRole()));
-        return SignUpResponse.of(mento.getId(), tokenInfo);
+        return SignUpResponse.of(mentor.getId(), tokenInfo);
     }
 
-    private void validateDuplicateEmail(String email){
-        if(memberFinder.getMemberWithOptional(email).isPresent()) {
+    public TokenInfo issueTokens(Member mentor) {
+        String accessToken = jwtProvider.createAccessToken(mentor.getId(),
+            Set.of(mentor.getMemberRole().getRole()));
+        String refreshToken = jwtProvider.createRefreshToken(mentor.getId());
+        refreshTokenService.cacheRefreshToken(mentor.getId(), refreshToken);
+
+        return TokenInfo.of(jwtProvider.getTokenType(), accessToken, refreshToken,
+            jwtProvider.getAccessTokenExpiration(), jwtProvider.getRefreshTokenExpiration());
+    }
+
+    public TokenInfo reissueTokens(ReissueTokenRequest reissueTokenRequest) {
+        String refreshToken = reissueTokenRequest.refreshToken();
+        if(!jwtValidator.validateToken(refreshToken) || !refreshTokenService.existsByRefreshToken(refreshToken)){
+            throw new ApplicationException(AuthErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        Long userId = jwtParser.getUserId(refreshToken);
+        Member member = memberFinder.getMemberOrThrow(userId);
+        return issueTokens(member);
+    }
+
+    public void logout(Long userId){
+        refreshTokenService.deleteByMemberId(userId);
+    }
+
+    private void validateDuplicateEmail(String email) {
+        if (memberFinder.getMemberWithOptional(email).isPresent()) {
             throw new ApplicationException(AuthErrorCode.DUPLICATE_EMAIL)
                 .addErrorInfo("email", email);
         }

@@ -31,7 +31,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String providerId = String.valueOf(attributes.get(userNameAttributeName));
 
-        Optional<Member> userOptional = memberFinder.getMemberWithOptional(registrationId, providerId);
+        Optional<Member> userOptional = memberFinder.getMemberWithOptional(registrationId,
+            providerId);
 
         return userOptional.map(
                 member -> new CustomOAuth2User(member, attributes, userNameAttributeName, false))

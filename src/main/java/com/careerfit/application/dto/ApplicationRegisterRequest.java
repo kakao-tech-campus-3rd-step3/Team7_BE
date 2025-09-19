@@ -2,8 +2,9 @@ package com.careerfit.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
-import java.time.LocalDateTime;
 import org.hibernate.validator.constraints.URL;
+
+import java.time.LocalDateTime;
 
 public record ApplicationRegisterRequest(
         @NotBlank(message = "회사명은 비어 있을 수 없습니다.")

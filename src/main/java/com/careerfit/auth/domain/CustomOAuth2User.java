@@ -32,7 +32,8 @@ public class CustomOAuth2User implements OAuth2User {
     /*
     소셜 로그인용
      */
-    public CustomOAuth2User(Member member, Map<String, Object> attributes, String userNameAttributeName, boolean isNewUser) {
+    public CustomOAuth2User(Member member, Map<String, Object> attributes,
+        String userNameAttributeName, boolean isNewUser) {
         this.member = member;
         this.attributes = attributes;
         this.userNameAttributeName = userNameAttributeName;

@@ -1,4 +1,4 @@
-package com.careerfit.auth.config;
+package com.careerfit.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@Profile({"test","local","default"})
+@Profile({"test", "local", "default"})
 @EnableWebSecurity
 public class TestSecurityConfig {
 

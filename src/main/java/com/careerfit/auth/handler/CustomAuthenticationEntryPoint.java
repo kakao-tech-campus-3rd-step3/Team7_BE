@@ -29,10 +29,11 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         log.error(authException.getMessage(), authException);
 
         AuthErrorCode errorCode = AuthErrorCode.UNAUTHORIZED;
-        ApiResponse<Void> apiResponse = ApiResponse.error(errorCode.getCode(), errorCode.getMessage());
+        ApiResponse<Void> apiResponse = ApiResponse.error(errorCode.getCode(),
+            errorCode.getMessage());
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setContentType("application/json;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
 
         String jsonResponse = objectMapper.writeValueAsString(apiResponse);

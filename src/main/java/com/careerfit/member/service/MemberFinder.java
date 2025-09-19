@@ -25,8 +25,9 @@ public class MemberFinder {
             .orElseThrow(() -> new ApplicationException(MemberErrorCode.MEMBER_NOT_FOUND));
     }
 
-    public Optional<Member> getMemberWithOptional(String registrationId, String oauthId){
-        return memberJpaRepository.findByProviderAndOauthId(OAuthProvider.from(registrationId), oauthId);
+    public Optional<Member> getMemberWithOptional(String registrationId, String oauthId) {
+        return memberJpaRepository.findByProviderAndOauthId(OAuthProvider.from(registrationId),
+            oauthId);
     }
 
     public Optional<Member> getMemberWithOptional(String email) {

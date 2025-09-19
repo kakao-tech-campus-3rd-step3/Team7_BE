@@ -15,16 +15,16 @@ public record OAuthUserInfo(
     String name,
     String profileImage,
     String oauthId
-)
-{
-    public static OAuthUserInfo of(OAuthProvider oAuthProvider, Map<String, Object> attributes){
+) {
+
+    public static OAuthUserInfo of(OAuthProvider oAuthProvider, Map<String, Object> attributes) {
         return switch (oAuthProvider) {
             case KAKAO -> ofKakao(attributes);
             default -> throw new ApplicationException(AuthErrorCode.UNSUPPORTED_OAUTH2_PROVIDER);
         };
     }
 
-    public static OAuthUserInfo ofKakao(Map<String,Object> attributes){
+    public static OAuthUserInfo ofKakao(Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = Optional.ofNullable(
                 (Map<String, Object>) attributes.get("kakao_account"))
             .orElse(Map.of());

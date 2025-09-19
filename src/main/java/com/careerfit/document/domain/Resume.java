@@ -1,5 +1,6 @@
 package com.careerfit.document.domain;
 
+import com.careerfit.application.domain.Application;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,4 +29,15 @@ public class Resume extends Document {
 
     @Column(unique = true, nullable = false)
     private String storedFilePath;
+
+    public static Resume of(String originalFileName, String storedFilePath, String documentTitle,
+                            Application application) {
+
+        return Resume.builder()
+                .originalFileName(originalFileName)
+                .storedFilePath(storedFilePath)
+                .title(documentTitle)
+                .application(application)
+                .build();
+    }
 }
