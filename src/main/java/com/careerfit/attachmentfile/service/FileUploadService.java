@@ -1,4 +1,4 @@
-package com.careerfit.document.service;
+package com.careerfit.attachmentfile.service;
 
 import static com.careerfit.global.util.DocumentUtil.APPLICATION_PREFIX;
 import static com.careerfit.global.util.DocumentUtil.NAME_SEPARATOR;
@@ -6,10 +6,10 @@ import static com.careerfit.global.util.DocumentUtil.PATH_SEPARATOR;
 import static com.careerfit.global.util.DocumentUtil.PORTFOLIO_PREFIX;
 import static com.careerfit.global.util.DocumentUtil.RESUME_PREFIX;
 
-import com.careerfit.document.config.AwsProperties;
+import com.careerfit.global.config.AwsProperties;
 import com.careerfit.document.domain.DocumentType;
-import com.careerfit.document.dto.PresignedUrlRequest;
-import com.careerfit.document.dto.PresignedUrlResponse;
+import com.careerfit.attachmentfile.dto.PresignedUrlRequest;
+import com.careerfit.attachmentfile.dto.PresignedUrlResponse;
 import java.time.Duration;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

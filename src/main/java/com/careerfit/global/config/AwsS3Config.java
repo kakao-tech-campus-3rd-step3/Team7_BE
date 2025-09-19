@@ -1,4 +1,4 @@
-package com.careerfit.document.config;
+package com.careerfit.global.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -1,9 +1,9 @@
-package com.careerfit.document.controller;
+package com.careerfit.attachmentfile.controller;
 
 import com.careerfit.document.domain.DocumentType;
-import com.careerfit.document.dto.PresignedUrlRequest;
-import com.careerfit.document.dto.PresignedUrlResponse;
-import com.careerfit.document.service.FileUploadService;
+import com.careerfit.attachmentfile.dto.PresignedUrlRequest;
+import com.careerfit.attachmentfile.dto.PresignedUrlResponse;
+import com.careerfit.attachmentfile.service.FileUploadService;
 import com.careerfit.global.dto.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class FileUploadApiController {
     @PostMapping
     public ResponseEntity<ApiResponse<PresignedUrlResponse>> generatePresignedUrl(
         @PathVariable(name = "application-id") Long applicationId,
-        @RequestParam(name = "documentType") DocumentType documentType,
+        @RequestParam(name = "document-type") DocumentType documentType,
         @Valid @RequestBody PresignedUrlRequest request) {
 
         PresignedUrlResponse response = fileUploadService.generatePresignedUrl(
