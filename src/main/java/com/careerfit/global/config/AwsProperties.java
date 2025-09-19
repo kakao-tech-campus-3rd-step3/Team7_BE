@@ -1,4 +1,4 @@
-package com.careerfit.document.config;
+package com.careerfit.global.config;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package com.careerfit.document.dto;
+package com.careerfit.attachmentfile.dto;
 
 public record CompleteUploadRequest(String uniqueFileName) {
 }
