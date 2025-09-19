@@ -8,16 +8,15 @@ public record LoginResponse(
     boolean isExistingUser,
     OAuthUserInfo oAuthUserInfo,
     MemberRole memberType,
-    String accessToken,
-    String refreshToken
+    TokenInfo tokenInfo
 ) {
 
     public static LoginResponse forNewUser(OAuthUserInfo oAuthUserInfo) {
-        return new LoginResponse(false, oAuthUserInfo, null, null, null);
+        return new LoginResponse(false, oAuthUserInfo, null, null);
     }
 
     public static LoginResponse forExistingUser(OAuthUserInfo oAuthUserInfo, MemberRole memberRole,
-        String accessToken, String refreshToken) {
-        return new LoginResponse(true, oAuthUserInfo, memberRole, accessToken, refreshToken);
+        TokenInfo tokenInfo) {
+        return new LoginResponse(true, oAuthUserInfo, memberRole, tokenInfo);
     }
 }

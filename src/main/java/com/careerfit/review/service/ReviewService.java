@@ -2,10 +2,10 @@ package com.careerfit.review.service;
 
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
-import com.careerfit.member.domain.MentoProfile;
+import com.careerfit.member.domain.MentorProfile;
 import com.careerfit.member.exception.MemberErrorCode;
 import com.careerfit.member.repository.MemberJpaRepository;
-import com.careerfit.member.repository.MentoProfileJpaRepository;
+import com.careerfit.member.repository.MentorProfileJpaRepository;
 import com.careerfit.review.domain.Review;
 import com.careerfit.review.dto.ReviewGetResponse;
 import com.careerfit.review.dto.ReviewPatchRequest;
@@ -26,24 +26,24 @@ public class ReviewService {
 
     private final ReviewJpaRepository reviewJpaRepository;
     private final MemberJpaRepository memberJpaRepository;
-    private final MentoProfileJpaRepository mentoProfileJpaRepository;
+    private final MentorProfileJpaRepository mentorProfileJpaRepository;
 
-    public ReviewPostResponse createReview(Long menteeId, Long mentoId, ReviewPostRequest request) {
+    public ReviewPostResponse createReview(Long menteeId, Long mentorId, ReviewPostRequest request) {
         Member mentee = findMemberById(menteeId);
-        Member mento = findMemberById(mentoId);
+        Member mentor = findMemberById(mentorId);
 
-        Review review = Review.create(mentee, mento, request.rating(), request.content());
+        Review review = Review.create(mentee, mentor, request.rating(), request.content());
         Review savedReview = reviewJpaRepository.save(review);
 
-        updateMentoReviewStats(mento);
+        updateMentoReviewStats(mentor);
 
         return new ReviewPostResponse(savedReview.getId());
     }
 
     @Transactional(readOnly = true)
-    public ReviewGetResponse getReviewsByMento(Long mentoId) {
-        MentoProfile mentoProfile = findMentoProfileByMemberId(mentoId);
-        List<Review> reviews = reviewJpaRepository.findByMento(mentoProfile.getMember());
+    public ReviewGetResponse getReviewsByMentor(Long mentorId) {
+        MentorProfile mentorProfile = findMentorProfileByMemberId(mentorId);
+        List<Review> reviews = reviewJpaRepository.findByMentor(mentorProfile.getMember());
 
         List<ReviewGetResponse.ReviewDetail> reviewDetails = reviews.stream()
                 .map(review -> new ReviewGetResponse.ReviewDetail(
@@ -56,8 +56,8 @@ public class ReviewService {
                 .toList();
 
         return new ReviewGetResponse(
-                mentoProfile.getReviewCount(),
-                mentoProfile.getRating(),
+                mentorProfile.getReviewCount(),
+                mentorProfile.getAverageRating(),
                 reviewDetails
         );
     }
@@ -68,7 +68,7 @@ public class ReviewService {
         validateReviewOwner(review, menteeId);
 
         review.update(request.rating(), request.content());
-        updateMentoReviewStats(review.getMento());
+        updateMentoReviewStats(review.getMentor());
 
         return new ReviewUpdateResponse(review.getId());
     }
@@ -76,14 +76,14 @@ public class ReviewService {
     public void deleteReview(Long reviewId, Long menteeId) {
         Review review = findReviewById(reviewId);
         validateReviewOwner(review, menteeId);
-        Member mento = review.getMento();
+        Member mento = review.getMentor();
 
         reviewJpaRepository.delete(review);
         updateMentoReviewStats(mento);
     }
 
     private void updateMentoReviewStats(Member mento) {
-        List<Review> reviews = reviewJpaRepository.findByMento(mento);
+        List<Review> reviews = reviewJpaRepository.findByMentor(mento);
 
         int reviewCount = reviews.size();
         double averageRating = reviews.stream()
@@ -93,8 +93,9 @@ public class ReviewService {
 
         double roundedRating = Math.round(averageRating * 10.0) / 10.0;
 
-        MentoProfile mentoProfile = findMentoProfileByMemberId(mento.getId());
-        mentoProfile.updateReviewStats(reviewCount, roundedRating);
+
+        MentorProfile mentorProfile = findMentorProfileByMemberId(mento.getId());
+        mentorProfile.updateReviewStats(reviewCount, roundedRating);
     }
 
     private Member findMemberById(Long memberId) {
@@ -102,10 +103,9 @@ public class ReviewService {
                 .orElseThrow(() -> new ApplicationException(MemberErrorCode.MEMBER_NOT_FOUND));
     }
 
-    private MentoProfile findMentoProfileByMemberId(Long memberId) {
-        return mentoProfileJpaRepository.findById(memberId)
-                .orElseThrow(
-                        () -> new ApplicationException(MemberErrorCode.MENTO_PROFILE_NOT_FOUND));
+    private MentorProfile findMentorProfileByMemberId(Long memberId) {
+        return mentorProfileJpaRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new ApplicationException(MemberErrorCode.MENTO_PROFILE_NOT_FOUND));
     }
 
     private Review findReviewById(Long reviewId) {

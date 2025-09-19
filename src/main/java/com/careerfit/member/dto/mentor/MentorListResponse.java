@@ -10,14 +10,14 @@ public record MentorListResponse(
     String company,
     String jobPosition,
     int careerYears,
-    double rating,
+    double averageRating,
     int reviewsCount,
     int menteesCount,
     double pricePerSession
 ) {
 
     public static MentorListResponse from(Member member) {
-        MentorProfile profile = member.getMentoProfile();
+        MentorProfile profile = member.getMentorProfile();
         return new MentorListResponse(
             member.getId(),
             member.getName(),
@@ -25,7 +25,7 @@ public record MentorListResponse(
             profile.getCompany(),
             profile.getJobPosition(),
             profile.getCareerYears(),
-            profile.getRating(),
+            profile.getAverageRating(),
             profile.getReviewCount(),
             profile.getMenteeCount(),
             profile.getPricePerSession()

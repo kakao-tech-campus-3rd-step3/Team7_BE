@@ -34,19 +34,19 @@ public class ReviewController {
      */
     @GetMapping("/mentors/{mentoId}/reviews")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<ReviewGetResponse> getReviewsByMento(@PathVariable Long mentoId) {
-        ReviewGetResponse response = reviewService.getReviewsByMento(mentoId);
+    public ApiResponse<ReviewGetResponse> getReviewsByMento(@PathVariable Long mentorId) {
+        ReviewGetResponse response = reviewService.getReviewsByMentor(mentorId);
         return ApiResponse.success(response);
     }
 
-    @PostMapping("/mentors/{mentoId}/reviews")
+    @PostMapping("/mentors/{mentorId}/reviews")
     public ResponseEntity<ApiResponse<ReviewPostResponse>> createReview(
-            @PathVariable Long mentoId,
+            @PathVariable Long mentorId,
             @RequestParam Long memberId,
             @Valid @RequestBody ReviewPostRequest request
     ) {
         Long menteeId = memberId;
-        ReviewPostResponse response = reviewService.createReview(menteeId, mentoId, request);
+        ReviewPostResponse response = reviewService.createReview(menteeId, mentorId, request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(response));
     }

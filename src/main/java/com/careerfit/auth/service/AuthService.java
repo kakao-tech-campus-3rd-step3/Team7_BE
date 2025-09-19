@@ -3,6 +3,7 @@ package com.careerfit.auth.service;
 import java.util.List;
 import java.util.Set;
 
+import com.careerfit.member.domain.MentorProfile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,7 +23,6 @@ import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.MenteeProfile;
 import com.careerfit.member.domain.MentorCareer;
-import com.careerfit.member.domain.MentorProfile;
 import com.careerfit.member.repository.MemberJpaRepository;
 import com.careerfit.member.service.MemberFinder;
 
@@ -90,7 +90,8 @@ public class AuthService {
             dto.educations(),
             dto.expertises(),
             dto.description(),
-            careers
+            careers,
+            0.0 // 회원가입이기 때문에 아직 리뷰 기록이 없으므로 0.0임.
         );
 
         Member mentor = Member.mentor(

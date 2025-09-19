@@ -36,22 +36,22 @@ public class Review extends TimeBaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mento_id")
-    private Member mento;
+    @JoinColumn(name = "mentor_id")
+    private Member mentor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mentee_id")
     private Member mentee;
 
-    private Review(Member mentee, Member mento, double rating, String content) {
+    private Review(Member mentee, Member mentor, double rating, String content) {
         this.mentee = mentee;
-        this.mento = mento;
+        this.mentor = mentor;
         this.rating = rating;
         this.content = content;
     }
 
-    public static Review create(Member mentee, Member mento, double rating, String content) {
-        return new Review(mentee, mento, rating, content);
+    public static Review create(Member mentee, Member mentor, double rating, String content) {
+        return new Review(mentee, mentor, rating, content);
     }
 
     public void update(Double rating, String content) {

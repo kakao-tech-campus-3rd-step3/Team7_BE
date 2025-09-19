@@ -67,9 +67,9 @@ public class DataInitializer implements CommandLineRunner {
 
 
         MentorProfile mentorProfile1 = MentorProfile.of(10, "Google", "시니어 백엔드 개발자",
-                "path/to/cert1.pdf", List.of("정보처리기사", "SQLD"), List.of("서울대학교 컴퓨터공학과 학사 (2002-2008)", "서울대학교 컴퓨터공학과 석사 (2008-2010)"), List.of("Java", "Spring Boot", "JPA"), "구글 시니어 개발자입니다.", career1);
+                "path/to/cert1.pdf", List.of("정보처리기사", "SQLD"), List.of("서울대학교 컴퓨터공학과 학사 (2002-2008)", "서울대학교 컴퓨터공학과 석사 (2008-2010)"), List.of("Java", "Spring Boot", "JPA"), "구글 시니어 개발자입니다.", career1,0.0);
         MentorProfile mentorProfile2 = MentorProfile.of(8, "Naver", "프론트엔드 리드",
-                "path/to/cert2.pdf", List.of("정보처리기사", "빅데이터분석기사", "Adsp", "SQLD"), List.of("상명대학교 소프트웨어학과 학사 (2004-2006)", "연세대 소프트웨어학과 학사 (2006-2010)"), List.of("React", "TypeScript"), "네이버 프론트엔드 리드입니다.", career2);
+                "path/to/cert2.pdf", List.of("정보처리기사", "빅데이터분석기사", "Adsp", "SQLD"), List.of("상명대학교 소프트웨어학과 학사 (2004-2006)", "연세대 소프트웨어학과 학사 (2006-2010)"), List.of("React", "TypeScript"), "네이버 프론트엔드 리드입니다.", career2,0.0);
         MenteeProfile menteeProfile1 = MenteeProfile.of("서울대학교", "컴퓨터공학과", 2026, List.of("카카오","라인","네이버"), List.of("백엔드","서버 개발"));
         MenteeProfile menteeProfile2 = MenteeProfile.of("연세대학교", "소프트웨어학과", 2027, List.of("쿠팡","당근"), List.of("iOS"));
 
