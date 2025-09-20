@@ -2,9 +2,12 @@ package com.careerfit.attachmentfile.domain;
 
 import com.careerfit.application.domain.Application;
 import com.careerfit.document.domain.Document;
+import com.careerfit.document.domain.DocumentType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,14 +29,19 @@ public class AttachmentFile extends Document {
     @Column(unique = true, nullable = false)
     private String storedFilePath;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private DocumentType attachmentFileType;
+
     public static AttachmentFile of(String originalFileName, String storedFilePath, String documentTitle,
-        Application application) {
+        Application application, DocumentType attachmentFileType) {
 
         return AttachmentFile.builder()
             .originalFileName(originalFileName)
             .storedFilePath(storedFilePath)
             .title(documentTitle)
             .application(application)
+            .attachmentFileType(attachmentFileType)
             .build();
     }
 }
