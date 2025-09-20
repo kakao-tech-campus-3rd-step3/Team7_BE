@@ -6,35 +6,46 @@ import static com.careerfit.global.util.DocumentUtil.PATH_SEPARATOR;
 import static com.careerfit.global.util.DocumentUtil.PORTFOLIO_PREFIX;
 import static com.careerfit.global.util.DocumentUtil.RESUME_PREFIX;
 
-import com.careerfit.global.config.AwsProperties;
+import com.careerfit.attachmentfile.domain.AttachmentFile;
+import com.careerfit.attachmentfile.dto.FileUploadRequest;
+import com.careerfit.attachmentfile.dto.PutPresignedUrlResponse;
 import com.careerfit.document.domain.DocumentType;
-import com.careerfit.attachmentfile.dto.PresignedUrlRequest;
-import com.careerfit.attachmentfile.dto.PresignedUrlResponse;
+import com.careerfit.global.config.AwsProperties;
 import java.time.Duration;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 @Service
 @RequiredArgsConstructor
-public class FileUploadService {
+@Transactional
+public class S3CommandService {
 
     private final AwsProperties awsProperties;
-
     private final S3Presigner s3Presigner;
+    private final S3Client s3Client;
+    private final AttachmentFileFinder attachmentFileFinder;
 
-    public PresignedUrlResponse generatePresignedUrl(Long applicationId, DocumentType documentType,
-        PresignedUrlRequest presignedUrlRequest) {
+
+    // 파일 업로드
+    public PutPresignedUrlResponse generatePutPresignedUrl(
+        Long applicationId,
+        DocumentType documentType,
+        FileUploadRequest fileUploadRequest
+    ) {
         String uniqueFileName = generateUniqueFileName(applicationId, documentType,
-            presignedUrlRequest.documentTitle(), presignedUrlRequest.fileName());
+            fileUploadRequest.documentTitle(), fileUploadRequest.fileName());
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
             .bucket(awsProperties.s3().bucket())
             .key(uniqueFileName)
-            .contentType(presignedUrlRequest.fileType())
+            .contentType(fileUploadRequest.fileType())
             .build();
 
         PutObjectPresignRequest putObjectPresignRequest = PutObjectPresignRequest.builder()
@@ -45,11 +56,28 @@ public class FileUploadService {
         String presignedUrl = s3Presigner.presignPutObject(putObjectPresignRequest)
             .url().toString();
 
-        return new PresignedUrlResponse(presignedUrl, uniqueFileName);
+        return new PutPresignedUrlResponse(presignedUrl, uniqueFileName);
     }
 
+    // 파일 삭제
+    public void deleteFile(
+        Long applicationId,
+        Long attachmentFileId
+    ) {
+        AttachmentFile attachmentFile = attachmentFileFinder.findAttachmentFileOrThrow(
+            attachmentFileId);
+        AttachmentFileVerifier.verifyApplicationOwnership(applicationId, attachmentFile);
+
+        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+            .bucket(awsProperties.s3().bucket())
+            .key(attachmentFile.getStoredFilePath())
+            .build();
+        s3Client.deleteObject(deleteObjectRequest);
+    }
+
+
     // UUID를 이용해 uniqueFileName을 생성하는 메서드입니다.
-    // applications/{applicationId}/portfolios(or resumes)/uuid_documentTitle_originalFileName
+    // applications/{applicationId}/attachment-files/uuid_documentTitle_originalFileName
     private String generateUniqueFileName(
         Long applicationId,
         DocumentType documentType,
@@ -70,4 +98,5 @@ public class FileUploadService {
             + NAME_SEPARATOR + documentTitle
             + NAME_SEPARATOR + originalFileName;
     }
+
 }

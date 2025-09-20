@@ -9,9 +9,11 @@ public record FileInfoResponse(
     String originalFileName,
     String storedFileName,
     String documentTitle,
-    Long applicationId
+    Long applicationId,
+    String presignedUrl
 ) {
 
+    // 메타데이터 조회용
     public static FileInfoResponse fromAttachmentFile(AttachmentFile attachmentFile) {
         return new FileInfoResponse(
             attachmentFile.getDocumentType(),
@@ -19,7 +21,22 @@ public record FileInfoResponse(
             attachmentFile.getOriginalFileName(),
             attachmentFile.getStoredFilePath(),
             attachmentFile.getTitle(),
-            attachmentFile.getApplication().getId()
+            attachmentFile.getApplication().getId(),
+            null
         );
     }
+
+    // presignedUrl 발급용
+    public static FileInfoResponse withPresignedUrl(AttachmentFile attachmentFile, String presignedUrl){
+        return new FileInfoResponse(
+            attachmentFile.getDocumentType(),
+            attachmentFile.getId(),
+            attachmentFile.getOriginalFileName(),
+            attachmentFile.getStoredFilePath(),
+            attachmentFile.getTitle(),
+            attachmentFile.getApplication().getId(),
+            presignedUrl
+        );
+    }
+
 }
