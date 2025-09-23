@@ -4,10 +4,10 @@ import com.careerfit.attachmentfile.domain.AttachmentFile;
 import com.careerfit.document.domain.DocumentType;
 
 public record FileInfoResponse(
-    DocumentType documentType,
+    DocumentType attachmentFileType,
     Long id,
     String originalFileName,
-    String storedFileName,
+    String storedFilePath,
     String documentTitle,
     Long applicationId,
     String presignedUrl
@@ -16,7 +16,7 @@ public record FileInfoResponse(
     // 메타데이터 조회용
     public static FileInfoResponse fromAttachmentFile(AttachmentFile attachmentFile) {
         return new FileInfoResponse(
-            attachmentFile.getDocumentType(),
+            attachmentFile.getAttachmentFileType(),
             attachmentFile.getId(),
             attachmentFile.getOriginalFileName(),
             attachmentFile.getStoredFilePath(),
@@ -29,7 +29,7 @@ public record FileInfoResponse(
     // presignedUrl 발급용
     public static FileInfoResponse withPresignedUrl(AttachmentFile attachmentFile, String presignedUrl){
         return new FileInfoResponse(
-            attachmentFile.getDocumentType(),
+            attachmentFile.getAttachmentFileType(),
             attachmentFile.getId(),
             attachmentFile.getOriginalFileName(),
             attachmentFile.getStoredFilePath(),
