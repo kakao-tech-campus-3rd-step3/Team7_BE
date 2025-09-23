@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum MentoringErrorCode implements ErrorCode {
     MENTORING_NOT_FOUND(HttpStatus.NOT_FOUND, "MENTORING-001", "멘토링을 찾을 수 없습니다."),
-    MENTEE_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER-001", "멘티를 찾을 수 없습니다."),
-    MENTOR_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER-002", "멘토를 찾을 수 없습니다."),
     DOCUMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "DOCUMENT-001", "해당 문서가 없습니다."),
     UNAUTHORIZED_DELETE(HttpStatus.FORBIDDEN, "AUTH-001", "삭제 권한이 없습니다.");
 
