@@ -1,17 +1,12 @@
 package com.careerfit.member.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.careerfit.global.dto.ApiResponse;
 import com.careerfit.member.dto.mentor.MentorHeaderResponse;
 import com.careerfit.member.dto.mentor.MentorIntroductionResponse;
 import com.careerfit.member.dto.mentor.MentorListPageResponse;
 import com.careerfit.member.dto.mentor.MentorReviewResponse;
-import com.careerfit.member.service.MentorQueryService;
+import com.careerfit.member.service.mentor.MentorQueryService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
