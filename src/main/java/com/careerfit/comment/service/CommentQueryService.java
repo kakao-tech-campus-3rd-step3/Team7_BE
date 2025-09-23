@@ -3,10 +3,11 @@ package com.careerfit.comment.service;
 import com.careerfit.comment.domain.Comment;
 import com.careerfit.comment.dto.CommentInfoResponse;
 import com.careerfit.comment.repository.CommentRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
