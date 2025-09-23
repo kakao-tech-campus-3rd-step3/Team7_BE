@@ -1,13 +1,11 @@
 package com.careerfit.auth.utils;
 
-import javax.crypto.SecretKey;
-
-import org.springframework.stereotype.Component;
-
 import com.careerfit.auth.property.JwtProperties;
-
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
 
 @Component
 public class JwtValidator {

@@ -1,16 +1,14 @@
 package com.careerfit.auth.controller;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.careerfit.auth.dto.MenteeSignUpRequest;
 import com.careerfit.auth.dto.MentorSignUpRequest;
 import com.careerfit.auth.dto.SignUpResponse;
 import com.careerfit.global.dto.ApiResponse;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(description = "회원가입 API", name = "SignUp API")
 public interface SignUpControllerDocs {
