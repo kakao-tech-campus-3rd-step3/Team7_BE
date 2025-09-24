@@ -1,7 +1,6 @@
 package com.careerfit.review.controller;
 
 import com.careerfit.global.dto.ApiResponse;
-import com.careerfit.review.dto.ReviewGetResponse;
 import com.careerfit.review.dto.ReviewPatchRequest;
 import com.careerfit.review.dto.ReviewPostRequest;
 import com.careerfit.review.dto.ReviewPostResponse;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,16 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewController {
 
     private final ReviewService reviewService;
-
-    /**
-     * 멘토 상세조회 - 리뷰 목록 조회 (Read)
-     */
-    @GetMapping("/mentors/{mentoId}/reviews")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<ReviewGetResponse> getReviewsByMento(@PathVariable Long mentorId) {
-        ReviewGetResponse response = reviewService.getReviewsByMentor(mentorId);
-        return ApiResponse.success(response);
-    }
 
     @PostMapping("/mentors/{mentorId}/reviews")
     public ResponseEntity<ApiResponse<ReviewPostResponse>> createReview(
