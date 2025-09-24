@@ -1,4 +1,4 @@
-package com.careerfit.document.dto;
+package com.careerfit.attachmentfile.dto;
 
 import com.careerfit.document.domain.DocumentType;
 import jakarta.validation.constraints.Pattern;

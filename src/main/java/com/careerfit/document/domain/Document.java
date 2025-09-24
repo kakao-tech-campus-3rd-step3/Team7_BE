@@ -8,11 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name = "document")
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "document_type")
+@DiscriminatorColumn(name = "document_type", discriminatorType = DiscriminatorType.STRING)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
@@ -25,6 +26,10 @@ public class Document extends CreatedDateBaseEntity {
 
     @Column(nullable = false)
     private String title;
+
+    @Enumerated(EnumType.STRING)
+    @Formula("document_type")
+    private DocumentType documentType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "application_id")

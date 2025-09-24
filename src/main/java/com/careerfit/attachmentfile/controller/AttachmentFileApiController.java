@@ -1,9 +1,9 @@
-package com.careerfit.portfolio.controller;
+package com.careerfit.attachmentfile.controller;
 
-import com.careerfit.document.dto.CompleteUploadRequest;
-import com.careerfit.document.dto.FileCreateResponse;
-import com.careerfit.document.dto.FileInfoResponse;
-import com.careerfit.portfolio.service.PortfolioService;
+import com.careerfit.attachmentfile.dto.CompleteUploadRequest;
+import com.careerfit.attachmentfile.dto.FileCreateResponse;
+import com.careerfit.attachmentfile.dto.FileInfoResponse;
+import com.careerfit.attachmentfile.service.AttachmentFileService;
 import com.careerfit.global.dto.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,36 +18,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/applications/{application-id}/portfolios")
-public class PortfolioApiController {
+@RequestMapping("/api/applications/{application-id}/attachment-files")
+public class AttachmentFileApiController {
 
-    private final PortfolioService portfolioService;
+    private final AttachmentFileService attachmentFileService;
 
     // 파일 업로드 완료 처리: 파일 메타데이터 저장
     @PostMapping("/complete-upload")
-    public ResponseEntity<ApiResponse<?>> completeUploadPortfolio(
+    public ResponseEntity<ApiResponse<FileCreateResponse>> completeUploadPortfolio(
         @PathVariable(name = "application-id") Long applicationId,
         @Valid @RequestBody CompleteUploadRequest request
     ) {
-        FileCreateResponse response = portfolioService.completeUpload(applicationId, request);
+        FileCreateResponse response = attachmentFileService.completeUpload(applicationId, request);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @GetMapping("{portfolio-id}")
+    @GetMapping("{attachment-file-id}")
     public ResponseEntity<ApiResponse<FileInfoResponse>> getPortfolioInfo(
         @PathVariable(name = "application-id") Long applicationId,
-        @PathVariable(name = "portfolio-id") Long portfolioId
+        @PathVariable(name = "attachment-file-id") Long attachmentFileId
     ) {
-        FileInfoResponse response = portfolioService.getPortfolioInfo(applicationId, portfolioId);
+        FileInfoResponse response = attachmentFileService.getPortfolioInfo(applicationId, attachmentFileId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @DeleteMapping("{portfolio-id}")
+    @DeleteMapping("{attachment-file-id}")
     public ResponseEntity<ApiResponse<?>> deletePortfolio(
         @PathVariable(name = "application-id") Long applicationId,
-        @PathVariable(name = "portfolio-id") Long portfolioId
+        @PathVariable(name = "attachment-file-id") Long attachmentFileId
     ) {
-        portfolioService.deletePortfolio(applicationId, portfolioId);
+        attachmentFileService.deletePortfolio(applicationId, attachmentFileId);
         return ResponseEntity.ok(ApiResponse.success());
     }
 
