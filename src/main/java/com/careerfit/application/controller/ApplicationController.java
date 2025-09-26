@@ -40,31 +40,31 @@ public class ApplicationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> registerApplication(
+    public ResponseEntity<Void> register(
         @RequestBody ApplicationRegisterRequest request,
         @RequestParam Long memberId
     ) {
-        applicationCommandService.registerApplication(request, memberId);
+        applicationCommandService.register(request, memberId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<ApplicationListResponse>> getApplicationList(
+    public ResponseEntity<ApiResponse<ApplicationListResponse>> getList(
         @RequestParam Long memberId) {
-        ApplicationListResponse response = applicationQueryService.getApplicationList(memberId);
+        ApplicationListResponse response = applicationQueryService.getList(memberId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @GetMapping("/{applicationId}")
-    public ResponseEntity<ApiResponse<ApplicationDetailHeaderResponse>> getApplicationDetailHeader(
+    public ResponseEntity<ApiResponse<ApplicationDetailHeaderResponse>> getDetailHeader(
         @PathVariable Long applicationId) {
-        ApplicationDetailHeaderResponse response = applicationQueryService.getApplicationDetailHeader(
+        ApplicationDetailHeaderResponse response = applicationQueryService.getDetailHeader(
             applicationId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @PatchMapping("/{applicationId}/status")
-    public ResponseEntity<ApiResponse<Void>> updateApplicationStatus(
+    public ResponseEntity<ApiResponse<Void>> updateStatus(
         @PathVariable Long applicationId,
         @RequestBody @Valid ApplicationStatusUpdateRequest request
     ) {
@@ -73,7 +73,7 @@ public class ApplicationController {
     }
 
     @PatchMapping("/{applicationId}")
-    public ResponseEntity<ApiResponse<Void>> updateApplicationContent(
+    public ResponseEntity<ApiResponse<Void>> updateContent(
         @PathVariable Long applicationId,
         @RequestBody @Valid ApplicationContentUpdateRequest request
     ) {
@@ -82,8 +82,8 @@ public class ApplicationController {
     }
 
     @DeleteMapping("/{applicationId}")
-    public ResponseEntity<ApiResponse<Void>> deleteApplication(@PathVariable Long applicationId) {
-        applicationCommandService.deleteApplication(applicationId);
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long applicationId) {
+        applicationCommandService.delete(applicationId);
         return ResponseEntity.ok(ApiResponse.success());
     }
 }
