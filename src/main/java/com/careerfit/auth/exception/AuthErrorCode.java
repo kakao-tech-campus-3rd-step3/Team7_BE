@@ -1,11 +1,9 @@
 package com.careerfit.auth.exception;
 
-import org.springframework.http.HttpStatus;
-
 import com.careerfit.global.exception.ErrorCode;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 @Getter
@@ -17,7 +15,7 @@ public enum AuthErrorCode implements ErrorCode {
     KAKAO_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "AUTH-004", "카카오 API 서버 오류"),
     UNSUPPORTED_OAUTH2_PROVIDER(HttpStatus.BAD_REQUEST, "AUTH-005", "지원하지 않는 Oauth 인증 제공자입니다."),
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "AUTH-007", "이미 사용중인 이메일입니다."),
-    INVALID_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "AUTH-008","유효하지 않은 리프레쉬 토큰입니다.");
+    INVALID_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "AUTH-008", "유효하지 않은 리프레쉬 토큰입니다.");
 
     private final HttpStatus status;
     private final String code;

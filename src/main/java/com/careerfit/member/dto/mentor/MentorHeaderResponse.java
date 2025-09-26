@@ -3,6 +3,7 @@ package com.careerfit.member.dto.mentor;
 public record MentorHeaderResponse(
     Long id,
     String name,
+    String profileImageUrl,
     String company,
     String jobPosition,
     double averageRating,

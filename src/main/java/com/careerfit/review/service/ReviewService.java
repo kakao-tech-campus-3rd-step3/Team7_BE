@@ -2,7 +2,7 @@ package com.careerfit.review.service;
 
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
-import com.careerfit.member.domain.MentorProfile;
+import com.careerfit.member.domain.mentor.MentorProfile;
 import com.careerfit.member.exception.MemberErrorCode;
 import com.careerfit.member.repository.MemberJpaRepository;
 import com.careerfit.member.repository.MentorProfileJpaRepository;
@@ -83,7 +83,7 @@ public class ReviewService {
     private MentorProfile findMentorProfileByMemberId(Long memberId) {
         return mentorProfileJpaRepository.findByMemberId(memberId)
                 .orElseThrow(
-                        () -> new ApplicationException(MemberErrorCode.MENTO_PROFILE_NOT_FOUND));
+                        () -> new ApplicationException(MemberErrorCode.MENTOR_PROFILE_NOT_FOUND));
     }
 
     private Review findReviewById(Long reviewId) {

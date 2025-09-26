@@ -22,15 +22,18 @@ public record AwsProperties(
 
         @NotBlank(message = "AWS secretKey가 비어있습니다.")
         String secretKey
-    ) {}
+    ) {
+    }
 
     public record S3(
         @NotBlank(message = "AWS bucket이 비어있습니다.")
         String bucket
-    ) {}
+    ) {
+    }
 
     public record Region(
         @NotBlank(message = "AWS region이 비어있습니다.")
         String regionValue
-    ) {}
+    ) {
+    }
 }

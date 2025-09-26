@@ -1,10 +1,12 @@
 package com.careerfit.attachmentfile.service;
 
+import com.careerfit.application.domain.Application;
 import com.careerfit.application.exception.ApplicationErrorCode;
 import com.careerfit.application.service.ApplicationFinder;
 import com.careerfit.attachmentfile.domain.AttachmentFile;
 import com.careerfit.attachmentfile.repository.AttachmentFileRepository;
 import com.careerfit.document.domain.DocumentType;
+import com.careerfit.document.exception.DocumentErrorCode;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.global.util.DocumentUtil;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +34,18 @@ public class AttachmentFileCommandService {
             throw new ApplicationException(ApplicationErrorCode.APPLICATION_UNMATCHED);
         }
 
-        AttachmentFile attachmentFile = AttachmentFile.of(originalFileName, uniqueFileName,
-            documentTitle, applicationFinder.getApplicationOrThrow(applicationId), documentType);
+        Application application = applicationFinder.getApplicationOrThrow(applicationId);
+        AttachmentFile attachmentFile;
+
+        if(documentType.equals(DocumentType.RESUME)){
+            attachmentFile = AttachmentFile.createResume(originalFileName, uniqueFileName,
+                documentTitle, application);
+        }else if(documentType.equals(DocumentType.PORTFOLIO)){
+            attachmentFile = AttachmentFile.createPortfolio(originalFileName, uniqueFileName,
+                documentTitle, application);
+        }else{
+            throw new ApplicationException(DocumentErrorCode.DOCUMENT_INVALID_TYPE);
+        }
 
         attachmentFileRepository.save(attachmentFile);
     }
