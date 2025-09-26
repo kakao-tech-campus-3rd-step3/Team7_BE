@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,32 +28,31 @@ public class ReviewController {
 
     @PostMapping("/mentor/{mentorId}")
     public ResponseEntity<ApiResponse<ReviewPostResponse>> createReview(
-            @PathVariable Long mentorId,
-            @RequestParam Long memberId,
-            @Valid @RequestBody ReviewPostRequest request
+        @PathVariable Long mentorId,
+        @RequestParam Long memberId,
+        @Valid @RequestBody ReviewPostRequest request
     ) {
         Long menteeId = memberId;
         ReviewPostResponse response = reviewService.createReview(menteeId, mentorId, request);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success(response));
+            .body(ApiResponse.success(response));
     }
 
     @PatchMapping("/{reviewId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<ReviewUpdateResponse> updateReview(
-            @PathVariable Long reviewId,
-            @RequestParam Long memberId,
-            @Valid @RequestBody ReviewPatchRequest request
+    public ResponseEntity<ApiResponse<ReviewUpdateResponse>> updateReview(
+        @PathVariable Long reviewId,
+        @RequestParam Long memberId,
+        @Valid @RequestBody ReviewPatchRequest request
     ) {
         Long menteeId = memberId;
         ReviewUpdateResponse response = reviewService.updateReview(reviewId, menteeId, request);
-        return ApiResponse.success(response);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<Void> deleteReview(
-            @PathVariable Long reviewId,
-            @RequestParam Long memberId
+        @PathVariable Long reviewId,
+        @RequestParam Long memberId
     ) {
         Long menteeId = memberId;
         reviewService.deleteReview(reviewId, menteeId);
