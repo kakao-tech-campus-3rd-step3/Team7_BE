@@ -16,7 +16,7 @@ public record LoginResponse(
     }
 
     public static LoginResponse forExistingUser(OAuthUserInfo oAuthUserInfo, MemberRole memberRole,
-        TokenInfo tokenInfo) {
+                                                TokenInfo tokenInfo) {
         return new LoginResponse(true, oAuthUserInfo, memberRole, tokenInfo);
     }
 }

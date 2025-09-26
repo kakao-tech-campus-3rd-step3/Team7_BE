@@ -12,13 +12,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<ApiResponse<ErrorInfo>> handleApplicationException(
-            ApplicationException exception) {
+        ApplicationException exception) {
         log.error(exception.getMessage(), exception);
 
         ErrorCode errorCode = exception.getErrorCode();
 
         return ResponseEntity.status(errorCode.getStatus())
-                .body(ApiResponse.error(errorCode.getCode(), errorCode.getMessage(),
-                        ErrorInfo.of(exception.getErrorInfo())));
+            .body(ApiResponse.error(errorCode.getCode(), errorCode.getMessage(),
+                ErrorInfo.of(exception.getErrorInfo())));
     }
 }

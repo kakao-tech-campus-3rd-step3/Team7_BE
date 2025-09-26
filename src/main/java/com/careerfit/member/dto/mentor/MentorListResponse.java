@@ -1,7 +1,7 @@
 package com.careerfit.member.dto.mentor;
 
 import com.careerfit.member.domain.Member;
-import com.careerfit.member.domain.MentorProfile;
+import com.careerfit.member.domain.mentor.MentorProfile;
 
 public record MentorListResponse(
     Long id,
@@ -11,7 +11,7 @@ public record MentorListResponse(
     String jobPosition,
     int careerYears,
     double averageRating,
-    int reviewsCount,
+    int reviewCount,
     int menteesCount,
     double pricePerSession
 ) {

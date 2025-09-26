@@ -1,12 +1,11 @@
 package com.careerfit.coverletter.service;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-
-import java.util.List;
+import com.careerfit.coverletter.domain.CoverLetter;
+import com.careerfit.coverletter.domain.CoverLetterItem;
+import com.careerfit.coverletter.dto.CoverLetterDetailResponse;
+import com.careerfit.coverletter.dto.CoverLetterListResponse;
+import com.careerfit.coverletter.repository.CoverLetterJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,11 +13,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.careerfit.coverletter.domain.CoverLetter;
-import com.careerfit.coverletter.domain.CoverLetterItem;
-import com.careerfit.coverletter.dto.CoverLetterDetailResponse;
-import com.careerfit.coverletter.dto.CoverLetterListResponse;
-import com.careerfit.coverletter.repository.CoverLetterJpaRepository;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CoverLetterQueryServiceTest {

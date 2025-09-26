@@ -7,7 +7,7 @@ public record DocumentInfoResponse(
     Long id,
     String title
 ) {
-    public static DocumentInfoResponse from(Document document){
+    public static DocumentInfoResponse from(Document document) {
         return new DocumentInfoResponse(document.getId(), document.getTitle());
     }
 }

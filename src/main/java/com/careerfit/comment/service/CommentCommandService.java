@@ -22,7 +22,6 @@ public class CommentCommandService {
     private final MemberFinder memberFinder;
     private final CommentFinder commentFinder;
 
-    // comment 생성
     @Transactional
     public void createComment(
         Long documentId,
@@ -36,7 +35,6 @@ public class CommentCommandService {
         commentRepository.save(comment);
     }
 
-    // comment 수정
     @Transactional
     public CommentInfoResponse updateComment(
         Long commentId,
@@ -48,7 +46,6 @@ public class CommentCommandService {
         return CommentInfoResponse.from(comment);
     }
 
-    // comment 삭제
     @Transactional
     public void deleteComment(Long commentId, Long memberId) {
         // 멘토나, 해당 문서를 소유한 멘티만 해당 코멘트 리스트를 조회할 수 있도록 검증 로직 추가 필요: 이후 추가 예정

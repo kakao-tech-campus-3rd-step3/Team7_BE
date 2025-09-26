@@ -1,17 +1,15 @@
 package com.careerfit.auth.controller;
 
+import com.careerfit.auth.dto.ReissueTokenRequest;
+import com.careerfit.auth.dto.TokenInfo;
+import com.careerfit.global.dto.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.view.RedirectView;
-
-import com.careerfit.auth.dto.ReissueTokenRequest;
-import com.careerfit.auth.dto.TokenInfo;
-import com.careerfit.global.dto.ApiResponse;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 
 @Tag(description = "인증 API", name = "Authentication API")
 public interface AuthControllerDocs {

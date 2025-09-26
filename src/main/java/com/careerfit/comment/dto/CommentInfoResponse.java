@@ -12,7 +12,7 @@ public record CommentInfoResponse(
     MemberInfoResponse writerInfo,
     DocumentInfoResponse documentInfo
 ) {
-    public static CommentInfoResponse from(Comment comment){
+    public static CommentInfoResponse from(Comment comment) {
         return new CommentInfoResponse(
             comment.getId(),
             comment.getContent(),

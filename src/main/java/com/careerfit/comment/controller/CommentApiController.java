@@ -7,19 +7,12 @@ import com.careerfit.comment.service.CommentCommandService;
 import com.careerfit.comment.service.CommentQueryService;
 import com.careerfit.global.dto.ApiResponse;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +26,7 @@ public class CommentApiController {
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createComment(
         @PathVariable Long documentId,
-        // 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
+        // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId,
         @RequestBody CommentCreateRequest request
     ) {
@@ -48,9 +41,9 @@ public class CommentApiController {
     public ResponseEntity<ApiResponse<CommentInfoResponse>> getComment(
         @PathVariable Long documentId,
         @PathVariable Long commentId,
-        // 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
+        // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId
-    ){
+    ) {
         CommentInfoResponse response = commentQueryService.findComment(commentId, memberId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
@@ -59,9 +52,9 @@ public class CommentApiController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<CommentInfoResponse>>> getCommentList(
         @PathVariable Long documentId,
-        // 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
+        // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId
-    ){
+    ) {
         List<CommentInfoResponse> response = commentQueryService.findAllComment(documentId, memberId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
@@ -71,7 +64,7 @@ public class CommentApiController {
     public ResponseEntity<ApiResponse<CommentInfoResponse>> updateComment(
         @PathVariable Long documentId,
         @PathVariable Long commentId,
-        // 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
+        // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId,
         @Valid @RequestBody CommentUpdateRequest request
     ) {
@@ -84,7 +77,7 @@ public class CommentApiController {
     public ResponseEntity<Void> deleteComment(
         @PathVariable Long documentId,
         @PathVariable Long commentId,
-        // 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
+        // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId
     ) {
         commentCommandService.deleteComment(commentId, memberId);

@@ -18,7 +18,7 @@ public class ApplicationFinder {
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public Application getApplicationOrThrow(Long applicationId) {
         return applicationJpaRepository.findById(applicationId)
-                .orElseThrow(() -> new ApplicationException(ApplicationErrorCode.APPLICATION_NOT_FOUND));
+            .orElseThrow(() -> new ApplicationException(ApplicationErrorCode.APPLICATION_NOT_FOUND));
     }
 
 }

@@ -25,7 +25,7 @@ public class CoverLetterQueryService {
 
     public CoverLetterListResponse getCoverLetterList(Long applicationId) {
         List<CoverLetter> coverLetters = coverLetterJpaRepository.findAllByApplicationId(
-                applicationId);
+            applicationId);
         return CoverLetterListResponse.of(coverLetters);
     }
 }

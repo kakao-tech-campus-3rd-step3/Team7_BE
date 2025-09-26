@@ -1,13 +1,12 @@
 package com.careerfit.auth.dto;
 
-import java.util.Map;
-import java.util.Optional;
-
 import com.careerfit.auth.domain.OAuthProvider;
 import com.careerfit.auth.exception.AuthErrorCode;
 import com.careerfit.global.exception.ApplicationException;
-
 import lombok.Builder;
+
+import java.util.Map;
+import java.util.Optional;
 
 @Builder
 public record OAuthUserInfo(

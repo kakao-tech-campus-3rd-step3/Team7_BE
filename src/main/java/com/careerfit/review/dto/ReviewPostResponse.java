@@ -1,7 +1,7 @@
 package com.careerfit.review.dto;
 
 public record ReviewPostResponse(
-        Long reviewId
+    Long reviewId
 ) {
 
 }

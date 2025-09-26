@@ -1,16 +1,14 @@
 package com.careerfit.coverletter.controller;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.careerfit.coverletter.dto.CoverLetterDetailResponse;
 import com.careerfit.coverletter.dto.CoverLetterListResponse;
 import com.careerfit.coverletter.dto.CoverLetterRegisterRequest;
 import com.careerfit.global.dto.ApiResponse;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(description = "자기소개서 API", name = "CoverLetter API")
 public interface CoverLetterControllerDocs {

@@ -1,6 +1,6 @@
 package com.careerfit.member.dto.mentor;
 
-import com.careerfit.member.domain.MentorCareer;
+import com.careerfit.member.domain.mentor.MentorCareer;
 
 public record MentorCareerResponse(
     String companyName,

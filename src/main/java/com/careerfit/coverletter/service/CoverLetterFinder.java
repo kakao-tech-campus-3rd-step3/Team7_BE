@@ -18,6 +18,6 @@ public class CoverLetterFinder {
 
     public CoverLetter findCoverLetter(Long documentId) {
         return coverLetterJpaRepository.findById(documentId)
-                .orElseThrow(() -> new ApplicationException(CoverLetterErrorCode.COVER_LETTER_NOT_FOUND));
+            .orElseThrow(() -> new ApplicationException(CoverLetterErrorCode.COVER_LETTER_NOT_FOUND));
     }
 }

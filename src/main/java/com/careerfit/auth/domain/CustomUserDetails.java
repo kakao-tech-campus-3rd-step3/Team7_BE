@@ -1,15 +1,13 @@
 package com.careerfit.auth.domain;
 
-import java.util.Collection;
-import java.util.Collections;
-
+import com.careerfit.member.domain.Member;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.careerfit.member.domain.Member;
-
-import lombok.Getter;
+import java.util.Collection;
+import java.util.Collections;
 
 @Getter
 public class CustomUserDetails implements UserDetails {

@@ -1,8 +1,7 @@
 package com.careerfit.auth.utils;
 
-import org.springframework.stereotype.Component;
-
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Component;
 
 @Component
 public class BearerAuthorizationExtractor {

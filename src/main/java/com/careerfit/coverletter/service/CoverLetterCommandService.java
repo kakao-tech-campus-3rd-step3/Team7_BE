@@ -22,9 +22,9 @@ public class CoverLetterCommandService {
     @Transactional
     public void registerCoverLetter(Long applicationId, CoverLetterRegisterRequest dto) {
         List<CoverLetterItem> coverLetterItems = dto.coverLetterItems().stream()
-                .map(item ->
-                        CoverLetterItem.of(item.question(), item.answer(), item.answerLimit()))
-                .toList();
+            .map(item ->
+                CoverLetterItem.of(item.question(), item.answer(), item.answerLimit()))
+            .toList();
 
         Application application = applicationFinder.getApplicationOrThrow(applicationId);
         CoverLetter coverLetter = CoverLetter.createCoverLetter(dto.title(), coverLetterItems);

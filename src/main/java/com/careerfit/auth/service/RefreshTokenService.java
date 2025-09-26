@@ -1,12 +1,10 @@
 package com.careerfit.auth.service;
 
-import org.springframework.stereotype.Service;
-
 import com.careerfit.auth.domain.RefreshToken;
 import com.careerfit.auth.repository.RefreshTokenRepository;
 import com.careerfit.auth.utils.JwtProvider;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +22,7 @@ public class RefreshTokenService {
         return refreshTokenRepository.existsByRefreshToken(refreshToken);
     }
 
-    public void deleteByMemberId(Long memberId){
+    public void deleteByMemberId(Long memberId) {
         refreshTokenRepository.deleteByUserId(memberId);
     }
 
