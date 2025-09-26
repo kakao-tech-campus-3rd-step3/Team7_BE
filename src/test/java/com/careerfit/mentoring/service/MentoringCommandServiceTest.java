@@ -2,6 +2,7 @@ package com.careerfit.mentoring.service;
 
 import com.careerfit.application.domain.Application;
 import com.careerfit.application.service.ApplicationFinder;
+import com.careerfit.auth.exception.AuthErrorCode;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.service.MemberFinder;
@@ -82,7 +83,7 @@ class MentoringCommandServiceTest {
             service.deleteMentoring(mentoringId, menteeId)
         );
 
-        assertThat(ex.getErrorCode()).isEqualTo(MentoringErrorCode.UNAUTHORIZED_DELETE);
+        assertThat(ex.getErrorCode()).isEqualTo(AuthErrorCode.ACCESS_DENIED);
     }
 
     @Test

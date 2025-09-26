@@ -2,6 +2,7 @@ package com.careerfit.mentoring.service;
 
 import com.careerfit.application.domain.Application;
 import com.careerfit.application.service.ApplicationFinder;
+import com.careerfit.auth.exception.AuthErrorCode;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.service.MemberFinder;
@@ -45,7 +46,7 @@ public class MentoringCommandService {
             .orElseThrow(() -> new ApplicationException(MentoringErrorCode.MENTORING_NOT_FOUND));
 
         if (!mentoring.getMentee().getId().equals(menteeId)) {
-            throw new ApplicationException(MentoringErrorCode.UNAUTHORIZED_DELETE);
+            throw new ApplicationException(AuthErrorCode.ACCESS_DENIED);
         }
         mentoringJpaRepository.delete(mentoring);
     }

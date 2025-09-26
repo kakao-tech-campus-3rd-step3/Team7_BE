@@ -5,6 +5,7 @@ import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.mentor.MentorProfile;
 import com.careerfit.member.dto.mentor.MentorOwnProfileInfo;
 import com.careerfit.member.exception.MemberErrorCode;
+import com.careerfit.member.service.MemberFinder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.when;
 class MentorProfileQueryServiceTest {
 
     @Mock
-    private MentorFinder mentorFinder;
+    private MemberFinder memberFinder;
 
     @InjectMocks
     private MentorProfileQueryService queryService;
@@ -46,7 +47,7 @@ class MentorProfileQueryServiceTest {
 
     @Test
     void getMentorProfile_success() {
-        when(mentorFinder.getMentorById(1L)).thenReturn(mentor);
+        when(memberFinder.getMentorOrThrow(1L)).thenReturn(mentor);
 
         MentorOwnProfileInfo result = queryService.getMentorProfile(1L);
 
@@ -66,7 +67,7 @@ class MentorProfileQueryServiceTest {
             "oauth999",
             null
         );
-        when(mentorFinder.getMentorById(2L)).thenReturn(mentorWithoutProfile);
+        when(memberFinder.getMentorOrThrow(2L)).thenReturn(mentorWithoutProfile);
 
         ApplicationException ex = assertThrows(ApplicationException.class,
             () -> queryService.getMentorProfile(2L));

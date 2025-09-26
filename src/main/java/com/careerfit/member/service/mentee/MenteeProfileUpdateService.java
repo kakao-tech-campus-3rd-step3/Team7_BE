@@ -8,6 +8,7 @@ import com.careerfit.member.domain.mentee.MenteeWishPosition;
 import com.careerfit.member.dto.mentee.MenteeProfileInfo;
 import com.careerfit.member.dto.mentee.MenteeProfileUpdateRequest;
 import com.careerfit.member.exception.MemberErrorCode;
+import com.careerfit.member.service.MemberFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +20,11 @@ import java.util.List;
 @Transactional
 public class MenteeProfileUpdateService {
 
-    private final MenteeFinder menteeFinder;
+    private final MemberFinder menteeFinder;
 
     public MenteeProfileInfo updateMenteeProfile(Long menteeId, MenteeProfileUpdateRequest request) {
 
-        Member mentee = menteeFinder.getMenteeById(menteeId);
+        Member mentee = menteeFinder.getMenteeOrThrow(menteeId);
 
         MenteeProfile profile = mentee.getMenteeProfile();
         if (profile == null) {

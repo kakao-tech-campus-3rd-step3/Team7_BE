@@ -8,6 +8,7 @@ import com.careerfit.member.dto.mentee.MenteeProfileUpdateRequest;
 import com.careerfit.member.dto.mentee.MenteeWishCompanyRequest;
 import com.careerfit.member.dto.mentee.MenteeWishPositionRequest;
 import com.careerfit.member.exception.MemberErrorCode;
+import com.careerfit.member.service.MemberFinder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.when;
 class MenteeProfileTestUpdateServiceTest {
 
     @Mock
-    private MenteeFinder menteeFinder;
+    private MemberFinder memberFinder;
 
     @InjectMocks
     private MenteeProfileUpdateService updateService;
@@ -48,7 +49,7 @@ class MenteeProfileTestUpdateServiceTest {
 
     @Test
     void updateMenteeProfile_success_allFields() {
-        when(menteeFinder.getMenteeById(1L)).thenReturn(mentee);
+        when(memberFinder.getMenteeOrThrow(1L)).thenReturn(mentee);
 
         MenteeProfileUpdateRequest request = new MenteeProfileUpdateRequest(
             "김영희",
@@ -77,7 +78,7 @@ class MenteeProfileTestUpdateServiceTest {
 
     @Test
     void updateMenteeProfile_partialNullFields_keepsOldValues() {
-        when(menteeFinder.getMenteeById(1L)).thenReturn(mentee);
+        when(memberFinder.getMenteeOrThrow(1L)).thenReturn(mentee);
 
         MenteeProfileUpdateRequest request = new MenteeProfileUpdateRequest(
             null, null, null, null, null, null, null, null
@@ -103,7 +104,7 @@ class MenteeProfileTestUpdateServiceTest {
             null
         );
 
-        when(menteeFinder.getMenteeById(2L)).thenReturn(menteeWithoutProfile);
+        when(memberFinder.getMenteeOrThrow(2L)).thenReturn(menteeWithoutProfile);
 
         MenteeProfileUpdateRequest request = new MenteeProfileUpdateRequest(
             "김철수", null, null, null, null, null, null, null

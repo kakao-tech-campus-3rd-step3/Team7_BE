@@ -9,6 +9,7 @@ import com.careerfit.member.domain.mentor.MentorProfile;
 import com.careerfit.member.dto.mentor.MentorOwnProfileInfo;
 import com.careerfit.member.dto.mentor.MentorProfileUpdateRequest;
 import com.careerfit.member.exception.MemberErrorCode;
+import com.careerfit.member.service.MemberFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +21,11 @@ import java.util.List;
 @Transactional
 public class MentorProfileUpdateService {
 
-    private final MentorFinder mentorFinder;
+    private final MemberFinder memberFinder;
 
     public MentorOwnProfileInfo updateMentorProfile(Long mentorId, MentorProfileUpdateRequest request) {
 
-        Member mentor = mentorFinder.getMentorById(mentorId);
+        Member mentor = memberFinder.getMentorOrThrow(mentorId);
 
         MentorProfile profile = mentor.getMentorProfile();
         if (profile == null) {

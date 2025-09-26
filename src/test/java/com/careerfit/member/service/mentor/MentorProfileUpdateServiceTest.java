@@ -8,6 +8,7 @@ import com.careerfit.member.dto.mentor.MentorEducationRequest;
 import com.careerfit.member.dto.mentor.MentorExpertiseRequest;
 import com.careerfit.member.dto.mentor.MentorProfileUpdateRequest;
 import com.careerfit.member.exception.MemberErrorCode;
+import com.careerfit.member.service.MemberFinder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.when;
 class MentorProfileUpdateServiceTest {
 
     @Mock
-    private MentorFinder mentorFinder;
+    private MemberFinder memberFinder;
 
     @InjectMocks
     private MentorProfileUpdateService updateService;
@@ -51,7 +52,7 @@ class MentorProfileUpdateServiceTest {
 
     @Test
     void updateMentorProfile_success_allFields() {
-        when(mentorFinder.getMentorById(1L)).thenReturn(mentor);
+        when(memberFinder.getMentorOrThrow(1L)).thenReturn(mentor);
 
         MentorProfileUpdateRequest request = new MentorProfileUpdateRequest(
             "홍길동",
@@ -90,7 +91,7 @@ class MentorProfileUpdateServiceTest {
             "oauth999",
             null
         );
-        when(mentorFinder.getMentorById(2L)).thenReturn(mentorWithoutProfile);
+        when(memberFinder.getMentorOrThrow(2L)).thenReturn(mentorWithoutProfile);
 
         MentorProfileUpdateRequest request = new MentorProfileUpdateRequest(
             null, null, null, null, null, null, null, null, null, null, null, null

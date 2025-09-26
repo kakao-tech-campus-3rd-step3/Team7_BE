@@ -3,6 +3,7 @@ package com.careerfit.member.service.mentor;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.mentor.MentorProfile;
 import com.careerfit.member.dto.mentor.*;
+import com.careerfit.member.service.MemberFinder;
 import com.careerfit.review.domain.Review;
 import com.careerfit.review.repository.ReviewJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class MentorQueryService {
 
-    private final MentorFinder mentorFinder;
+    private final MemberFinder memberFinder;
     private final ReviewJpaRepository reviewRepository;
 
     public MentorListPageResponse getMentors(String search, int page, int size, String sortBy,
@@ -32,8 +33,7 @@ public class MentorQueryService {
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<Member> mentorPage = mentorFinder.getMentorList(search != null ? search : "",
-            pageable);
+        Page<Member> mentorPage = memberFinder.getMentorPage(search, pageable);
 
         List<MentorListResponse> mentorList = mentorPage.stream()
             .map(MentorListResponse::from)
@@ -51,7 +51,7 @@ public class MentorQueryService {
     }
 
     public MentorHeaderResponse getMentorHeader(Long mentorId) {
-        Member m = mentorFinder.getMentorById(mentorId);
+        Member m = memberFinder.getMentorOrThrow(mentorId);
         MentorProfile p = m.getMentorProfile();
 
         return new MentorHeaderResponse(
@@ -69,7 +69,7 @@ public class MentorQueryService {
     }
 
     public MentorIntroductionResponse getMentorIntroduction(Long mentorId) {
-        MentorProfile p = mentorFinder.getMentorById(mentorId).getMentorProfile();
+        MentorProfile p = memberFinder.getMentorOrThrow(mentorId).getMentorProfile();
 
         List<MentorCareerResponse> careerResponses = p.getMentorCareers().stream()
             .map(MentorCareerResponse::from)
@@ -98,7 +98,7 @@ public class MentorQueryService {
 
 
     public MentorReviewResponse getMentorReviews(Long mentorId) {
-        Member mentor = mentorFinder.getMentorById(mentorId);
+        Member mentor = memberFinder.getMentorOrThrow(mentorId);
         List<Review> reviews = reviewRepository.findByMentor(mentor);
 
         List<MentorReviewResponse.ReviewDetail> reviewDetails = reviews.stream()

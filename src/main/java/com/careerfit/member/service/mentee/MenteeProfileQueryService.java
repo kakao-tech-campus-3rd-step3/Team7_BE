@@ -5,6 +5,7 @@ import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.mentee.MenteeProfile;
 import com.careerfit.member.dto.mentee.MenteeProfileInfo;
 import com.careerfit.member.exception.MemberErrorCode;
+import com.careerfit.member.service.MemberFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class MenteeProfileQueryService {
 
-    private final MenteeFinder menteeFinder;
+    private final MemberFinder menteeFinder;
 
     public MenteeProfileInfo getMenteeProfile(Long mentorId) {
-        Member mentee = menteeFinder.getMenteeById(mentorId);
+        Member mentee = menteeFinder.getMenteeOrThrow(mentorId);
         MenteeProfile profile = mentee.getMenteeProfile();
         if (profile == null) {
             throw new ApplicationException(MemberErrorCode.MENTEE_PROFILE_NOT_FOUND);
