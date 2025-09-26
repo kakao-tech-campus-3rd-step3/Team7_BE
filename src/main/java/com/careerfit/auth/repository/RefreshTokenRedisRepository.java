@@ -1,10 +1,8 @@
 package com.careerfit.auth.repository;
 
-import org.springframework.stereotype.Repository;
-
 import com.careerfit.auth.domain.RefreshToken;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor

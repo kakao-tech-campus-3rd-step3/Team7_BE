@@ -34,7 +34,7 @@ public class AttachmentFile extends Document {
     private DocumentType attachmentFileType;
 
     public static AttachmentFile of(String originalFileName, String storedFilePath, String documentTitle,
-        Application application, DocumentType attachmentFileType) {
+                                    Application application, DocumentType attachmentFileType) {
 
         return AttachmentFile.builder()
             .originalFileName(originalFileName)
