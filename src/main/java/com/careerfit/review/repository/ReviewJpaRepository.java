@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReviewJpaRepository extends JpaRepository<Review, Long> {
 
-    List<Review> findByMento(Member mento);
+    List<Review> findByMentor(Member mentor);
 }

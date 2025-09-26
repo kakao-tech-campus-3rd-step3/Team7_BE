@@ -21,7 +21,7 @@ public interface MemberJpaRepository extends JpaRepository<Member, Long> {
     @Query(value = """
             SELECT m
             FROM Member m
-            LEFT JOIN FETCH m.mentoProfile mp
+            LEFT JOIN FETCH m.mentorProfile mp
             WHERE m.memberRole = :role
               AND (
                 LOWER(m.name) LIKE LOWER(CONCAT('%', :search, '%'))
@@ -32,7 +32,7 @@ public interface MemberJpaRepository extends JpaRepository<Member, Long> {
         countQuery = """
                 SELECT COUNT(m)
                 FROM Member m
-                JOIN m.mentoProfile mp
+                JOIN m.mentorProfile mp
                 WHERE m.memberRole = :role
                   AND (
                     LOWER(m.name) LIKE LOWER(CONCAT('%', :search, '%'))
@@ -52,7 +52,7 @@ public interface MemberJpaRepository extends JpaRepository<Member, Long> {
     Optional<Member> findMenteeByIdWithDetails(@Param("id") Long id);
 
     @Query("SELECT m FROM Member m " +
-        "LEFT JOIN FETCH m.mentoProfile mp " +
+        "LEFT JOIN FETCH m.mentorProfile mp " +
         "WHERE m.id = :id AND m.memberRole = 'MENTO'")
-    Optional<Member> findMentoByIdWithDetails(@Param("id") Long id);
+    Optional<Member> findMentorByIdWithDetails(@Param("id") Long id);
 }

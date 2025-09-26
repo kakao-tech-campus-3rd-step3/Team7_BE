@@ -57,14 +57,14 @@ public class MentorQueryService {
 
     public MentorHeaderResponse getMentorHeader(Long mentorId) {
         Member m = mentorFinder.getMentorById(mentorId);
-        MentorProfile p = m.getMentoProfile();
+        MentorProfile p = m.getMentorProfile();
 
         return new MentorHeaderResponse(
                 m.getId(),
                 m.getName(),
                 p.getCompany(),
                 p.getJobPosition(),
-                p.getRating(),
+                p.getAverageRating(),
                 p.getReviewCount(),
                 p.getCareerYears(),
                 p.getMenteeCount()
@@ -73,9 +73,9 @@ public class MentorQueryService {
     }
 
     public MentorIntroductionResponse getMentorIntroduction(Long mentorId) {
-        MentorProfile p = mentorFinder.getMentorById(mentorId).getMentoProfile();
+        MentorProfile p = mentorFinder.getMentorById(mentorId).getMentorProfile();
 
-        List<MentorCareerResponse> careerResponses = p.getMentoCareers().stream()
+        List<MentorCareerResponse> careerResponses = p.getMentorCareers().stream()
                 .map(MentorCareerResponse::from)
                 .toList();
 
@@ -90,7 +90,7 @@ public class MentorQueryService {
 
     public MentorReviewResponse getMentorReviews(Long mentorId) {
         Member mentor = mentorFinder.getMentorById(mentorId);
-        List<Review> reviews = reviewRepository.findByMento(mentor);
+        List<Review> reviews = reviewRepository.findByMentor(mentor);
 
         List<MentorReviewResponse.ReviewDetail> reviewDetails = reviews.stream()
                 .map(r -> new MentorReviewResponse.ReviewDetail(
