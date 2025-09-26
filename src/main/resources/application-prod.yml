@@ -10,7 +10,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update #TODO: 이후 validate로 수정 예정
     properties:
       hibernate:
         format_sql: true
@@ -25,7 +25,7 @@ spring:
 
 ai:
   server:
-    base-url: ${AI_SERVER_URL} # AI 서버 개발자(현준님)에게 받은 실제 주소로 변경해야 합니다.
+    base-url: ${AI_SERVER_URL}
 
 cloud:
   aws:

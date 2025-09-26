@@ -1,10 +1,5 @@
 package com.careerfit.global.config;
 
-import java.util.List;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -12,6 +7,10 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
@@ -19,7 +18,7 @@ public class SwaggerConfig {
     private static final String securitySchemeName = "bearerAuth";
 
     @Bean
-    public List<Server> servers(){
+    public List<Server> servers() {
         return List.of(
             new Server().url("https://kareer-fit.com").description("Production Server"),
             new Server().url("http://15.164.71.98:8080").description("Development Server"),
@@ -28,7 +27,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public SecurityScheme securityScheme(){
+    public SecurityScheme securityScheme() {
         return new SecurityScheme()
             .name(securitySchemeName)
             .type(SecurityScheme.Type.HTTP)
@@ -37,7 +36,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public SecurityRequirement securityRequirement(){
+    public SecurityRequirement securityRequirement() {
         return new SecurityRequirement().addList(securitySchemeName);
     }
 

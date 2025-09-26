@@ -2,22 +2,19 @@ package com.careerfit.review.service;
 
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
-import com.careerfit.member.domain.MentorProfile;
+import com.careerfit.member.domain.mentor.MentorProfile;
 import com.careerfit.member.exception.MemberErrorCode;
 import com.careerfit.member.repository.MemberJpaRepository;
 import com.careerfit.member.repository.MentorProfileJpaRepository;
 import com.careerfit.review.domain.Review;
-import com.careerfit.review.dto.ReviewGetResponse;
-import com.careerfit.review.dto.ReviewPatchRequest;
-import com.careerfit.review.dto.ReviewPostRequest;
-import com.careerfit.review.dto.ReviewPostResponse;
-import com.careerfit.review.dto.ReviewUpdateResponse;
+import com.careerfit.review.dto.*;
 import com.careerfit.review.exception.ReviewErrorCode;
 import com.careerfit.review.repository.ReviewJpaRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -46,24 +43,24 @@ public class ReviewService {
         List<Review> reviews = reviewJpaRepository.findByMentor(mentorProfile.getMember());
 
         List<ReviewGetResponse.ReviewDetail> reviewDetails = reviews.stream()
-                .map(review -> new ReviewGetResponse.ReviewDetail(
-                        review.getMentee().getId(),
-                        review.getMentee().getName(),
-                        review.getRating(),
-                        review.getContent(),
-                        review.getCreatedDate()
-                ))
-                .toList();
+            .map(review -> new ReviewGetResponse.ReviewDetail(
+                review.getMentee().getId(),
+                review.getMentee().getName(),
+                review.getRating(),
+                review.getContent(),
+                review.getCreatedDate()
+            ))
+            .toList();
 
         return new ReviewGetResponse(
-                mentorProfile.getReviewCount(),
-                mentorProfile.getAverageRating(),
-                reviewDetails
+            mentorProfile.getReviewCount(),
+            mentorProfile.getAverageRating(),
+            reviewDetails
         );
     }
 
     public ReviewUpdateResponse updateReview(Long reviewId, Long menteeId,
-            ReviewPatchRequest request) {
+                                             ReviewPatchRequest request) {
         Review review = findReviewById(reviewId);
         validateReviewOwner(review, menteeId);
 
@@ -87,9 +84,9 @@ public class ReviewService {
 
         int reviewCount = reviews.size();
         double averageRating = reviews.stream()
-                .mapToDouble(Review::getRating)
-                .average()
-                .orElse(0.0);
+            .mapToDouble(Review::getRating)
+            .average()
+            .orElse(0.0);
 
         double roundedRating = Math.round(averageRating * 10.0) / 10.0;
 
@@ -100,17 +97,17 @@ public class ReviewService {
 
     private Member findMemberById(Long memberId) {
         return memberJpaRepository.findById(memberId)
-                .orElseThrow(() -> new ApplicationException(MemberErrorCode.MEMBER_NOT_FOUND));
+            .orElseThrow(() -> new ApplicationException(MemberErrorCode.MEMBER_NOT_FOUND));
     }
 
     private MentorProfile findMentorProfileByMemberId(Long memberId) {
         return mentorProfileJpaRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new ApplicationException(MemberErrorCode.MENTO_PROFILE_NOT_FOUND));
+            .orElseThrow(() -> new ApplicationException(MemberErrorCode.MENTOR_PROFILE_NOT_FOUND));
     }
 
     private Review findReviewById(Long reviewId) {
         return reviewJpaRepository.findById(reviewId)
-                .orElseThrow(() -> new ApplicationException(ReviewErrorCode.REVIEW_NOT_FOUND));
+            .orElseThrow(() -> new ApplicationException(ReviewErrorCode.REVIEW_NOT_FOUND));
     }
 
     private void validateReviewOwner(Review review, Long currentMemberId) {
