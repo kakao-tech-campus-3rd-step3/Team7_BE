@@ -12,6 +12,7 @@ import com.careerfit.attachmentfile.dto.PutPresignedUrlResponse;
 import com.careerfit.document.domain.DocumentType;
 import com.careerfit.global.config.AwsProperties;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,8 @@ public class S3CommandService {
         DocumentType documentType,
         FileUploadRequest fileUploadRequest
     ) {
+        Duration expiryTime = Duration.ofMinutes(5);
+
         String uniqueFileName = generateUniqueFileName(applicationId, documentType,
             fileUploadRequest.documentTitle(), fileUploadRequest.fileName());
 
@@ -49,14 +52,14 @@ public class S3CommandService {
             .build();
 
         PutObjectPresignRequest putObjectPresignRequest = PutObjectPresignRequest.builder()
-            .signatureDuration(Duration.ofMinutes(10))
+            .signatureDuration(expiryTime)
             .putObjectRequest(putObjectRequest)
             .build();
 
         String presignedUrl = s3Presigner.presignPutObject(putObjectPresignRequest)
             .url().toString();
 
-        return new PutPresignedUrlResponse(presignedUrl, uniqueFileName);
+        return PutPresignedUrlResponse.of(presignedUrl, uniqueFileName, LocalDateTime.now().plus(expiryTime));
     }
 
     // 파일 삭제
