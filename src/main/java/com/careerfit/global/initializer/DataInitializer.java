@@ -37,33 +37,13 @@ public class DataInitializer implements CommandLineRunner {
 
         // 1. 프로필 생성
         List<MentorCareer> career1 = List.of(
-            MentorCareer.builder()
-                .companyName("삼성전자")
-                .position("Backend 개발자")
-                .startDate("2010-01")
-                .endDate("2014-12")
-                .build(),
-            MentorCareer.builder()
-                .companyName("Google")
-                .position("시니어 백엔드 개발자")
-                .startDate("2015-01")
-                .endDate("현재")
-                .build()
+            MentorCareer.of("삼성전자", "Backend 개발자", "2010-01", "2014-12"),
+            MentorCareer.of("Google", "시니어 백엔드 개발자", "2015-01", "현재")
         );
 
         List<MentorCareer> career2 = List.of(
-            MentorCareer.builder()
-                .companyName("kakao")
-                .position("프론트엔드 개발자")
-                .startDate("2012-03")
-                .endDate("2017-08")
-                .build(),
-            MentorCareer.builder()
-                .companyName("Naver")
-                .position("프론트엔드 리드")
-                .startDate("2017-09")
-                .endDate("현재")
-                .build()
+            MentorCareer.of("kakao", "프론트엔드 개발자", "2012-03", "2017-08"),
+            MentorCareer.of("Naver", "프론트엔드 리드", "2017-09", "현재")
         );
 
         MentorProfile mentorProfile1 = MentorProfile.of(
