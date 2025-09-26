@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/mentors")
 public class MentorQueryController {
 
     private final MentorQueryService mentorQueryService;
@@ -19,7 +19,7 @@ public class MentorQueryController {
         this.mentorQueryService = mentorQueryService;
     }
 
-    @GetMapping("/mentors")
+    @GetMapping
     public ResponseEntity<ApiResponse<MentorListPageResponse>> getMentors(
         @RequestParam(required = false) String search,
         @RequestParam(required = false) String sortBy,
@@ -32,20 +32,21 @@ public class MentorQueryController {
         return ResponseEntity.ok(ApiResponse.success(result));
     }
 
-    @GetMapping("/mentors/{mentorId}/header")
+    @GetMapping("/{mentorId}/header")
     public ResponseEntity<ApiResponse<MentorHeaderResponse>> getMentorHeader(@PathVariable Long mentorId) {
-        return ResponseEntity.ok(ApiResponse.success(mentorQueryService.getMentorHeader(mentorId)));
+        MentorHeaderResponse result = mentorQueryService.getMentorHeader(mentorId);
+        return ResponseEntity.ok(ApiResponse.success(result));
     }
 
 
-    @GetMapping("/mentors/{mentorId}/introduction")
+    @GetMapping("/{mentorId}/introduction")
     public ResponseEntity<ApiResponse<MentorIntroductionResponse>> getMentorIntroduction(
         @PathVariable Long mentorId) {
         MentorIntroductionResponse result = mentorQueryService.getMentorIntroduction(mentorId);
         return ResponseEntity.ok(ApiResponse.success(result));
     }
 
-    @GetMapping("/mentors/{mentorId}/reviews")
+    @GetMapping("/{mentorId}/reviews")
     public ResponseEntity<ApiResponse<MentorReviewResponse>> getMentorReviews(@PathVariable Long mentorId) {
         MentorReviewResponse result = mentorQueryService.getMentorReviews(mentorId);
         return ResponseEntity.ok(ApiResponse.success(result));

@@ -10,23 +10,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/mentor/profile")
+@RequestMapping("/api/mentors")
 @RequiredArgsConstructor
 public class MentorProfileController {
 
     private final MentorProfileQueryService mentorProfileQueryService;
     private final MentorProfileUpdateService mentorProfileUpdateService;
 
-    @GetMapping
-    public ResponseEntity<ApiResponse<MentorOwnProfileInfo>> getMentorProfile(@RequestParam Long memberId) {
-        MentorOwnProfileInfo profile = mentorProfileQueryService.getMentorProfile(memberId);
-        return ResponseEntity.ok(ApiResponse.success(profile));
+    @GetMapping("/{mentorId}/profile")
+    public ResponseEntity<ApiResponse<MentorOwnProfileInfo>> getMentorProfile(@PathVariable Long mentorId) {
+        MentorOwnProfileInfo result = mentorProfileQueryService.getMentorProfile(mentorId);
+        return ResponseEntity.ok(ApiResponse.success(result));
     }
 
-
-    @PatchMapping
-    public ResponseEntity<ApiResponse<MentorOwnProfileInfo>> updateMentorProfile(@RequestParam Long memberId, @RequestBody MentorProfileUpdateRequest request) {
-        MentorOwnProfileInfo updatedProfile = mentorProfileUpdateService.updateMentorProfile(memberId, request);
-        return ResponseEntity.ok(ApiResponse.success(updatedProfile));
+    @PatchMapping("/{mentorId}/profile")
+    public ResponseEntity<ApiResponse<MentorOwnProfileInfo>> updateMentorProfile(
+        @PathVariable Long mentorId,
+        @RequestBody MentorProfileUpdateRequest request) {
+        MentorOwnProfileInfo result = mentorProfileUpdateService.updateMentorProfile(mentorId, request);
+        return ResponseEntity.ok(ApiResponse.success(result));
     }
 }
+

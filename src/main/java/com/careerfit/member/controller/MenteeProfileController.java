@@ -10,22 +10,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/mentee/profile")
+@RequestMapping("/api/mentees")
 @RequiredArgsConstructor
 public class MenteeProfileController {
 
     private final MenteeProfileQueryService menteeProfileQueryService;
     private final MenteeProfileUpdateService menteeProfileUpdateService;
 
-    @GetMapping
-    public ResponseEntity<ApiResponse<MenteeProfileInfo>> getMenteeProfile(@RequestParam Long memberId) {
-        return ResponseEntity.ok(ApiResponse.success(menteeProfileQueryService.getMenteeProfile(memberId)));
+    @GetMapping("/{memberId}/profile")
+    public ResponseEntity<ApiResponse<MenteeProfileInfo>> getMenteeProfile(@PathVariable Long memberId) {
+        MenteeProfileInfo result = menteeProfileQueryService.getMenteeProfile(memberId);
+        return ResponseEntity.ok(ApiResponse.success(result));
     }
 
-    @PatchMapping
-    public ResponseEntity<ApiResponse<MenteeProfileInfo>> updateMenteeProfile(@RequestParam Long memberId, @RequestBody MenteeProfileUpdateRequest request) {
-        return ResponseEntity.ok(ApiResponse.success(menteeProfileUpdateService.updateMenteeProfile(memberId, request)));
+    @PatchMapping("/{memberId}/profile")
+    public ResponseEntity<ApiResponse<MenteeProfileInfo>> updateMenteeProfile(@PathVariable Long memberId,
+                                                                              @RequestBody MenteeProfileUpdateRequest request) {
+        MenteeProfileInfo result = menteeProfileUpdateService.updateMenteeProfile(memberId, request);
+        return ResponseEntity.ok(ApiResponse.success(result));
     }
-
 }
+
 
