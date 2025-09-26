@@ -65,7 +65,7 @@ class ApplicationQueryServiceTest {
                     () -> assertThat(response.companyName()).isEqualTo("테스트 컴퍼니"),
                     // .getValue()가 아닌 .name()으로 enum 상수 이름을 직접 비교합니다.
                     () -> assertThat(response.applicationStatus()).isEqualTo(
-                            ApplicationStatus.WRITING.name())
+                            ApplicationStatus.WRITING)
             );
 
             verify(applicationJpaRepository).findById(applicationId);
