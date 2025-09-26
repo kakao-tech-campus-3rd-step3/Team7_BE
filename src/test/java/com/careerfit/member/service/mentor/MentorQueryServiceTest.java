@@ -6,6 +6,7 @@ import com.careerfit.member.dto.mentor.MentorHeaderResponse;
 import com.careerfit.member.dto.mentor.MentorIntroductionResponse;
 import com.careerfit.member.dto.mentor.MentorListPageResponse;
 import com.careerfit.member.dto.mentor.MentorReviewResponse;
+import com.careerfit.member.service.MemberFinder;
 import com.careerfit.review.domain.Review;
 import com.careerfit.review.repository.ReviewJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,12 +19,13 @@ import org.springframework.data.domain.*;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 class MentorQueryServiceTest {
 
     @Mock
-    private MentorFinder mentorFinder;
+    private MemberFinder memberFinder;
 
     @Mock
     private ReviewJpaRepository reviewRepository;
@@ -76,7 +78,9 @@ class MentorQueryServiceTest {
         Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "mentorProfile.averageRating"));
         Page<Member> page = new PageImpl<>(List.of(mentor), pageable, 1);
 
-        when(mentorFinder.getMentorList("", pageable)).thenReturn(page);
+        when(memberFinder.getMentorPage(nullable(String.class), any(Pageable.class)))
+            .thenReturn(page);
+
 
         MentorListPageResponse result = queryService.getMentors(null, 0, 10, null, null);
 
@@ -87,7 +91,7 @@ class MentorQueryServiceTest {
 
     @Test
     void getMentorHeader_success() {
-        when(mentorFinder.getMentorById(1L)).thenReturn(mentor);
+        when(memberFinder.getMentorOrThrow(1L)).thenReturn(mentor);
 
         MentorHeaderResponse header = queryService.getMentorHeader(1L);
 
@@ -100,7 +104,7 @@ class MentorQueryServiceTest {
 
     @Test
     void getMentorIntroduction_success() {
-        when(mentorFinder.getMentorById(1L)).thenReturn(mentor);
+        when(memberFinder.getMentorOrThrow(1L)).thenReturn(mentor);
 
         MentorIntroductionResponse intro = queryService.getMentorIntroduction(1L);
 
@@ -114,7 +118,7 @@ class MentorQueryServiceTest {
     @Test
     void getMentorReviews_success() {
         Review review = Review.create(mentee, mentor, 5.0, "좋아요");
-        when(mentorFinder.getMentorById(1L)).thenReturn(mentor);
+        when(memberFinder.getMentorOrThrow(1L)).thenReturn(mentor);
         when(reviewRepository.findByMentor(mentor)).thenReturn(List.of(review));
 
         MentorReviewResponse reviews = queryService.getMentorReviews(1L);
