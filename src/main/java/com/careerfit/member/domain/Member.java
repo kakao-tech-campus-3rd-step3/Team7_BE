@@ -1,28 +1,15 @@
 package com.careerfit.member.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.careerfit.application.domain.Application;
 import com.careerfit.auth.domain.OAuthProvider;
 import com.careerfit.global.entity.TimeBaseEntity;
+import com.careerfit.member.domain.mentee.MenteeProfile;
+import com.careerfit.member.domain.mentor.MentorProfile;
+import jakarta.persistence.*;
+import lombok.*;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -69,8 +56,8 @@ public class Member extends TimeBaseEntity {
     private MenteeProfile menteeProfile;
 
     public static Member mentor(String email, String phoneNumber, String name,
-        String profileImageUrl, OAuthProvider oAuthProvider,
-        String oauthId, MentorProfile mentorProfile) {
+                                String profileImageUrl, OAuthProvider oAuthProvider,
+                                String oauthId, MentorProfile mentorProfile) {
         Member member = Member.builder()
             .name(name)
             .email(email)
@@ -87,8 +74,8 @@ public class Member extends TimeBaseEntity {
     }
 
     public static Member mentee(String email, String phoneNumber, String name,
-        String profileImageUrl, OAuthProvider oAuthProvider,
-        String oauthId, MenteeProfile menteeProfile) {
+                                String profileImageUrl, OAuthProvider oAuthProvider,
+                                String oauthId, MenteeProfile menteeProfile) {
         Member member = Member.builder()
             .name(name)
             .email(email)
@@ -121,5 +108,25 @@ public class Member extends TimeBaseEntity {
         if (profileImageUrl != null) {
             this.profileImageUrl = profileImageUrl;
         }
+    }
+
+    public boolean isMentor() {
+        return this.memberRole == MemberRole.MENTOR;
+    }
+
+    public boolean isMentee() {
+        return this.memberRole == MemberRole.MENTEE;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

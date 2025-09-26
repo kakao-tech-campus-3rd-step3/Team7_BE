@@ -7,19 +7,12 @@ import com.careerfit.comment.service.CommentCommandService;
 import com.careerfit.comment.service.CommentQueryService;
 import com.careerfit.global.dto.ApiResponse;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -50,7 +43,7 @@ public class CommentApiController {
         @PathVariable Long commentId,
         // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId
-    ){
+    ) {
         CommentInfoResponse response = commentQueryService.findComment(commentId, memberId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
@@ -61,7 +54,7 @@ public class CommentApiController {
         @PathVariable Long documentId,
         // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId
-    ){
+    ) {
         List<CommentInfoResponse> response = commentQueryService.findAllComment(documentId, memberId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }

@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 public class DocumentFinder {
     private final DocumentRepository documentRepository;
 
-    public Document findDocumentOrThrow(Long documentId){
+    public Document findDocumentOrThrow(Long documentId) {
         return documentRepository.findById(documentId)
-            .orElseThrow(()-> new ApplicationException(DocumentErrorCode.DOCUMENT_NOT_FOUND));
+            .orElseThrow(() -> new ApplicationException(DocumentErrorCode.DOCUMENT_NOT_FOUND));
     }
 }
