@@ -27,7 +27,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/mentor/{mentorId}")
-    public ResponseEntity<ApiResponse<ReviewPostResponse>> createReview(
+    public ResponseEntity<ApiResponse<ReviewPostResponse>> create(
         @PathVariable Long mentorId,
         @RequestParam Long memberId,
         @Valid @RequestBody ReviewPostRequest request
@@ -39,7 +39,7 @@ public class ReviewController {
     }
 
     @PatchMapping("/{reviewId}")
-    public ResponseEntity<ApiResponse<ReviewUpdateResponse>> updateReview(
+    public ResponseEntity<ApiResponse<ReviewUpdateResponse>> update(
         @PathVariable Long reviewId,
         @RequestParam Long memberId,
         @Valid @RequestBody ReviewPatchRequest request
@@ -50,7 +50,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Void> deleteReview(
+    public ResponseEntity<Void> delete(
         @PathVariable Long reviewId,
         @RequestParam Long memberId
     ) {
