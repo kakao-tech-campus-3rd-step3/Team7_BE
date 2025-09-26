@@ -14,7 +14,10 @@ import com.careerfit.attachmentfile.service.AttachmentFileQueryService;
 import com.careerfit.auth.domain.OAuthProvider;
 import com.careerfit.document.domain.DocumentType;
 import com.careerfit.member.domain.Member;
-import com.careerfit.member.domain.MenteeProfile;
+import com.careerfit.member.domain.mentee.MenteeProfile;
+import com.careerfit.member.domain.mentee.MenteeWishCompany;
+import com.careerfit.member.domain.mentee.MenteeWishPosition;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,9 +54,11 @@ class AttachmentFileQueryServiceTest {
     @BeforeEach
     void setUp() {
         menteeProfile1 = MenteeProfile.of("경북대학교", "컴퓨터학부", 2026,
-            List.of("카카오", "라인", "네이버"), List.of("백엔드", "서버 개발"));
+            List.of(MenteeWishCompany.of("카카오"), MenteeWishCompany.of("라인")),
+            List.of(MenteeWishPosition.of("백엔드"), MenteeWishPosition.of("서버 개발")));
         menteeProfile2 = MenteeProfile.of("영남대학교", "소프트웨어학과", 2027,
-            List.of("당근", "쿠팡", "토스"), List.of("IOS"));
+            List.of(MenteeWishCompany.of("당근")),
+            List.of(MenteeWishPosition.of("IOS")));
 
         mentee1 = Member.mentee("mentee1@gmail.com", "010-3333-3333", "김철수", null,
             OAuthProvider.KAKAO, "oauth_id_3", menteeProfile1);
