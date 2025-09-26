@@ -6,6 +6,7 @@ import com.careerfit.member.dto.mentor.MentorIntroductionResponse;
 import com.careerfit.member.dto.mentor.MentorListPageResponse;
 import com.careerfit.member.dto.mentor.MentorReviewResponse;
 import com.careerfit.member.service.mentor.MentorQueryService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +20,7 @@ public class MentorQueryController {
     }
 
     @GetMapping("/mentors")
-    public ApiResponse<MentorListPageResponse> getMentors(
+    public ResponseEntity<ApiResponse<MentorListPageResponse>> getMentors(
         @RequestParam(required = false) String search,
         @RequestParam(required = false) String sortBy,
         @RequestParam(required = false) String sortOrder,
@@ -28,26 +29,26 @@ public class MentorQueryController {
     ) {
         MentorListPageResponse result = mentorQueryService.getMentors(search, page, size, sortBy,
             sortOrder);
-        return ApiResponse.success(result);
+        return ResponseEntity.ok(ApiResponse.success(result));
     }
 
     @GetMapping("/mentors/{mentorId}/header")
-    public ApiResponse<MentorHeaderResponse> getMentorHeader(@PathVariable Long mentorId) {
-        MentorHeaderResponse result = mentorQueryService.getMentorHeader(mentorId);
-        return ApiResponse.success(result);
+    public ResponseEntity<ApiResponse<MentorHeaderResponse>> getMentorHeader(@PathVariable Long mentorId) {
+        return ResponseEntity.ok(ApiResponse.success(mentorQueryService.getMentorHeader(mentorId)));
     }
 
+
     @GetMapping("/mentors/{mentorId}/introduction")
-    public ApiResponse<MentorIntroductionResponse> getMentorIntroduction(
+    public ResponseEntity<ApiResponse<MentorIntroductionResponse>> getMentorIntroduction(
         @PathVariable Long mentorId) {
         MentorIntroductionResponse result = mentorQueryService.getMentorIntroduction(mentorId);
-        return ApiResponse.success(result);
+        return ResponseEntity.ok(ApiResponse.success(result));
     }
 
     @GetMapping("/mentors/{mentorId}/reviews")
-    public ApiResponse<MentorReviewResponse> getMentorReviews(@PathVariable Long mentorId) {
+    public ResponseEntity<ApiResponse<MentorReviewResponse>> getMentorReviews(@PathVariable Long mentorId) {
         MentorReviewResponse result = mentorQueryService.getMentorReviews(mentorId);
-        return ApiResponse.success(result);
+        return ResponseEntity.ok(ApiResponse.success(result));
     }
 
 }

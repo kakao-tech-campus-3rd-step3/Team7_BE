@@ -6,6 +6,7 @@ import com.careerfit.member.dto.mentor.MentorProfileUpdateRequest;
 import com.careerfit.member.service.mentor.MentorProfileQueryService;
 import com.careerfit.member.service.mentor.MentorProfileUpdateService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,15 +18,15 @@ public class MentorProfileController {
     private final MentorProfileUpdateService mentorProfileUpdateService;
 
     @GetMapping
-    public ApiResponse<MentorOwnProfileInfo> getMentorProfile(@RequestParam Long memberId) {
+    public ResponseEntity<ApiResponse<MentorOwnProfileInfo>> getMentorProfile(@RequestParam Long memberId) {
         MentorOwnProfileInfo profile = mentorProfileQueryService.getMentorProfile(memberId);
-        return ApiResponse.success(profile);
+        return ResponseEntity.ok(ApiResponse.success(profile));
     }
 
+
     @PatchMapping
-    public ApiResponse<MentorOwnProfileInfo> updateMentorProfile(@RequestParam Long memberId,
-                                                                 @RequestBody MentorProfileUpdateRequest request) {
+    public ResponseEntity<ApiResponse<MentorOwnProfileInfo>> updateMentorProfile(@RequestParam Long memberId, @RequestBody MentorProfileUpdateRequest request) {
         MentorOwnProfileInfo updatedProfile = mentorProfileUpdateService.updateMentorProfile(memberId, request);
-        return ApiResponse.success(updatedProfile);
+        return ResponseEntity.ok(ApiResponse.success(updatedProfile));
     }
 }
