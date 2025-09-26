@@ -4,6 +4,7 @@ import com.careerfit.attachmentfile.domain.AttachmentFile;
 import com.careerfit.attachmentfile.dto.GetPresignedUrlResponse;
 import com.careerfit.global.config.AwsProperties;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ public class S3QueryService {
     public GetPresignedUrlResponse generateGetPresignedUrl(Long applicationid,
         Long attachmentFileId) {
 
+        Duration expiryTime = Duration.ofMinutes(5);
+
         AttachmentFile attachmentFile = attachmentFileFinder.findAttachmentFileOrThrow(
             attachmentFileId);
 
@@ -36,13 +39,13 @@ public class S3QueryService {
             .build();
 
         GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
-            .signatureDuration(Duration.ofMinutes(5))
+            .signatureDuration(expiryTime)
             .getObjectRequest(getObjectRequest)
             .build();
 
         String result = s3Presigner.presignGetObject(presignRequest).url().toString();
 
-        return GetPresignedUrlResponse.from(result);
+        return GetPresignedUrlResponse.of(result, LocalDateTime.now().plus(expiryTime));
     }
 
 }

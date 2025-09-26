@@ -26,7 +26,7 @@ public class CommentApiController {
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createComment(
         @PathVariable Long documentId,
-        // 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
+        // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId,
         @RequestBody CommentCreateRequest request
     ) {
@@ -41,7 +41,7 @@ public class CommentApiController {
     public ResponseEntity<ApiResponse<CommentInfoResponse>> getComment(
         @PathVariable Long documentId,
         @PathVariable Long commentId,
-        // 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
+        // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId
     ) {
         CommentInfoResponse response = commentQueryService.findComment(commentId, memberId);
@@ -52,7 +52,7 @@ public class CommentApiController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<CommentInfoResponse>>> getCommentList(
         @PathVariable Long documentId,
-        // 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
+        // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId
     ) {
         List<CommentInfoResponse> response = commentQueryService.findAllComment(documentId, memberId);
@@ -64,7 +64,7 @@ public class CommentApiController {
     public ResponseEntity<ApiResponse<CommentInfoResponse>> updateComment(
         @PathVariable Long documentId,
         @PathVariable Long commentId,
-        // 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
+        // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId,
         @Valid @RequestBody CommentUpdateRequest request
     ) {
@@ -77,7 +77,7 @@ public class CommentApiController {
     public ResponseEntity<Void> deleteComment(
         @PathVariable Long documentId,
         @PathVariable Long commentId,
-        // 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
+        // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId
     ) {
         commentCommandService.deleteComment(commentId, memberId);
