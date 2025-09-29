@@ -11,8 +11,9 @@ import com.careerfit.attachmentfile.service.S3QueryService;
 import com.careerfit.document.domain.DocumentType;
 import com.careerfit.global.dto.ApiResponse;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -87,12 +88,13 @@ public class AttachmentFileApiController {
 
     // 파일 메타 데이터 리스트 조회
     @GetMapping("/metadata/list")
-    public ResponseEntity<ApiResponse<List<FileInfoResponse>>> getFileMetaDataList(
+    public ResponseEntity<ApiResponse<Page<FileInfoResponse>>> getFileMetaDataList(
         @PathVariable(name = "application-id") Long applicationId,
-        @RequestParam(name = "document-type") DocumentType documentType
+        @RequestParam(name = "document-type") DocumentType documentType,
+        Pageable pageable
     ) {
-        List<FileInfoResponse> response = attachmentFileQueryService.getFileInfoList(applicationId,
-            documentType);
+        Page<FileInfoResponse> response = attachmentFileQueryService.getFileInfoList(applicationId,
+            documentType, pageable);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
