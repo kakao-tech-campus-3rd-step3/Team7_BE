@@ -40,7 +40,7 @@ public class S3CommandService {
         DocumentType documentType,
         FileUploadRequest fileUploadRequest
     ) {
-        Duration expiryTime = Duration.ofMinutes(5);
+        Duration expiryTime = Duration.ofMinutes(awsProperties.s3().expiryTime());
 
         String uniqueFileName = generateUniqueFileName(applicationId, documentType,
             fileUploadRequest.documentTitle(), fileUploadRequest.fileName());
