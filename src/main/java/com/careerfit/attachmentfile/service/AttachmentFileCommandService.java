@@ -23,7 +23,8 @@ public class AttachmentFileCommandService {
     private final ApplicationFinder applicationFinder;
 
     // 파일 메타 데이터 저장
-    public void saveFile(Long requestApplicationId, String uniqueFileName, DocumentType documentType) {
+    public void saveFile(Long requestApplicationId, String uniqueFileName,
+        DocumentType documentType) {
 
         Long applicationId = DocumentUtil.extractApplicationId(uniqueFileName);
         String documentTitle = DocumentUtil.extractDocumentTitle(uniqueFileName);
@@ -37,13 +38,13 @@ public class AttachmentFileCommandService {
         Application application = applicationFinder.getApplicationOrThrow(applicationId);
         AttachmentFile attachmentFile;
 
-        if(documentType.equals(DocumentType.RESUME)){
+        if (documentType.equals(DocumentType.RESUME)) {
             attachmentFile = AttachmentFile.createResume(originalFileName, uniqueFileName,
                 documentTitle, application);
-        }else if(documentType.equals(DocumentType.PORTFOLIO)){
+        } else if (documentType.equals(DocumentType.PORTFOLIO)) {
             attachmentFile = AttachmentFile.createPortfolio(originalFileName, uniqueFileName,
                 documentTitle, application);
-        }else{
+        } else {
             throw new ApplicationException(DocumentErrorCode.DOCUMENT_INVALID_TYPE);
         }
 
