@@ -27,6 +27,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class AttachmentFileQueryServiceTest {
@@ -126,25 +130,29 @@ class AttachmentFileQueryServiceTest {
         // given
         Long applicationId = 1L;
         DocumentType documentType = DocumentType.RESUME;
-        when(attachmentFileRepository.findAllByApplicationId(applicationId))
-            .thenReturn(app1.getDocuments().stream()
-                .filter(each -> each instanceof AttachmentFile)
-                .map(each -> (AttachmentFile) each)
-                .toList());
+        Pageable pageable = PageRequest.of(0, 2);
+
+        List<AttachmentFile> resumeFiles = app1.getDocuments().stream()
+            .filter(doc -> doc instanceof AttachmentFile)
+            .map(doc -> (AttachmentFile) doc)
+            .filter(file -> documentType.equals(file.getAttachmentFileType()))
+            .toList();
+        Page<AttachmentFile> pagedResponse = new PageImpl<>(resumeFiles, pageable, resumeFiles.size());
+
+        when(attachmentFileRepository.findAllByApplicationIdAndAttachmentFileType(applicationId, documentType, pageable))
+            .thenReturn(pagedResponse);
 
         // when
-        List<FileInfoResponse> response = attachmentFileQueryService.getFileInfoList(applicationId,
-            documentType);
+        Page<FileInfoResponse> response = attachmentFileQueryService.getFileInfoList(applicationId, documentType, pageable);
 
         // then
         assertThat(response).isNotNull();
-        assertThat(response).hasSize(2);
-        assertThat(response).extracting(FileInfoResponse::id)
+        assertThat(response.getTotalElements()).isEqualTo(2);
+        assertThat(response.getContent()).hasSize(2);
+        assertThat(response.getContent()).extracting(FileInfoResponse::id)
             .containsExactlyInAnyOrder(1L, 3L);
-        assertThat(response).extracting(FileInfoResponse::attachmentFileType)
+        assertThat(response.getContent()).extracting(FileInfoResponse::attachmentFileType)
             .allMatch(type -> type.equals(documentType));
-        assertThat(response.get(0).originalFileName()).isEqualTo(file1.getOriginalFileName());
-        assertThat(response.get(1).originalFileName()).isEqualTo(file3.getOriginalFileName());
     }
 
 
