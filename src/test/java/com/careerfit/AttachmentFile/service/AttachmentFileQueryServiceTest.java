@@ -5,7 +5,6 @@ import static org.mockito.Mockito.when;
 
 import com.careerfit.application.domain.Application;
 import com.careerfit.application.domain.ApplicationStatus;
-import com.careerfit.application.service.ApplicationFinder;
 import com.careerfit.attachmentfile.domain.AttachmentFile;
 import com.careerfit.attachmentfile.dto.FileInfoResponse;
 import com.careerfit.attachmentfile.repository.AttachmentFileRepository;
@@ -17,7 +16,6 @@ import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.mentee.MenteeProfile;
 import com.careerfit.member.domain.mentee.MenteeWishCompany;
 import com.careerfit.member.domain.mentee.MenteeWishPosition;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -137,13 +135,16 @@ class AttachmentFileQueryServiceTest {
             .map(doc -> (AttachmentFile) doc)
             .filter(file -> documentType.equals(file.getAttachmentFileType()))
             .toList();
-        Page<AttachmentFile> pagedResponse = new PageImpl<>(resumeFiles, pageable, resumeFiles.size());
+        Page<AttachmentFile> pagedResponse = new PageImpl<>(resumeFiles, pageable,
+            resumeFiles.size());
 
-        when(attachmentFileRepository.findAllByApplicationIdAndAttachmentFileType(applicationId, documentType, pageable))
+        when(attachmentFileRepository.findAllByApplicationIdAndAttachmentFileType(applicationId,
+            documentType, pageable))
             .thenReturn(pagedResponse);
 
         // when
-        Page<FileInfoResponse> response = attachmentFileQueryService.getFileInfoList(applicationId, documentType, pageable);
+        Page<FileInfoResponse> response = attachmentFileQueryService.getFileInfoList(applicationId,
+            documentType, pageable);
 
         // then
         assertThat(response).isNotNull();
