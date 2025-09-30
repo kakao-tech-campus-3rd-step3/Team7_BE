@@ -23,28 +23,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/reviews")
 @RequiredArgsConstructor
-public class ReviewController {
+public class ReviewController implements ReviewControllerDocs {
 
     private final ReviewService reviewService;
 
     @PostMapping("/mentor/{mentorId}")
     public ResponseEntity<ApiResponse<ReviewPostResponse>> createReview(
-            @PathVariable Long mentorId,
-            @RequestParam Long memberId,
-            @Valid @RequestBody ReviewPostRequest request
+        @PathVariable Long mentorId,
+        @RequestParam Long memberId,
+        @Valid @RequestBody ReviewPostRequest request
     ) {
         Long menteeId = memberId;
         ReviewPostResponse response = reviewService.createReview(menteeId, mentorId, request);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success(response));
+            .body(ApiResponse.success(response));
     }
 
     @PatchMapping("/{reviewId}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<ReviewUpdateResponse> updateReview(
-            @PathVariable Long reviewId,
-            @RequestParam Long memberId,
-            @Valid @RequestBody ReviewPatchRequest request
+        @PathVariable Long reviewId,
+        @RequestParam Long memberId,
+        @Valid @RequestBody ReviewPatchRequest request
     ) {
         Long menteeId = memberId;
         ReviewUpdateResponse response = reviewService.updateReview(reviewId, menteeId, request);
@@ -53,8 +53,8 @@ public class ReviewController {
 
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<Void> deleteReview(
-            @PathVariable Long reviewId,
-            @RequestParam Long memberId
+        @PathVariable Long reviewId,
+        @RequestParam Long memberId
     ) {
         Long menteeId = memberId;
         reviewService.deleteReview(reviewId, menteeId);
