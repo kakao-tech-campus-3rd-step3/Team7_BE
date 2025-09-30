@@ -2,7 +2,6 @@ package com.careerfit.attachmentfile.domain;
 
 import com.careerfit.application.domain.Application;
 import com.careerfit.document.domain.Document;
-import com.careerfit.document.domain.DocumentType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -31,7 +30,7 @@ public class AttachmentFile extends Document {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private DocumentType attachmentFileType;
+    private AttachmentFileType attachmentFileType;
 
     public static AttachmentFile createResume(String originalFileName, String storedFilePath, String documentTitle,
         Application application) {
@@ -41,7 +40,7 @@ public class AttachmentFile extends Document {
             .storedFilePath(storedFilePath)
             .title(documentTitle)
             .application(application)
-            .attachmentFileType(DocumentType.RESUME)
+            .attachmentFileType(AttachmentFileType.RESUME)
             .build();
     }
 
@@ -53,7 +52,7 @@ public class AttachmentFile extends Document {
             .storedFilePath(storedFilePath)
             .title(documentTitle)
             .application(application)
-            .attachmentFileType(DocumentType.PORTFOLIO)
+            .attachmentFileType(AttachmentFileType.PORTFOLIO)
             .build();
     }
 

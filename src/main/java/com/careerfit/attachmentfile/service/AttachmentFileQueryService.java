@@ -1,9 +1,9 @@
 package com.careerfit.attachmentfile.service;
 
 import com.careerfit.attachmentfile.domain.AttachmentFile;
+import com.careerfit.attachmentfile.domain.AttachmentFileType;
 import com.careerfit.attachmentfile.dto.FileInfoResponse;
 import com.careerfit.attachmentfile.repository.AttachmentFileRepository;
-import com.careerfit.document.domain.DocumentType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,10 +28,10 @@ public class AttachmentFileQueryService {
     }
 
     // 리스트 조회
-    public Page<FileInfoResponse> getFileInfoList(Long applicationId, DocumentType documentType,
+    public Page<FileInfoResponse> getFileInfoList(Long applicationId, AttachmentFileType attachmentFileType,
         Pageable pageable) {
         return attachmentFileRepository.findAllByApplicationIdAndAttachmentFileType(applicationId,
-                documentType, pageable)
+                attachmentFileType, pageable)
             .map(FileInfoResponse::fromAttachmentFile);
     }
 }

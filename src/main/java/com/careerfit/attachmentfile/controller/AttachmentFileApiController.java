@@ -1,5 +1,6 @@
 package com.careerfit.attachmentfile.controller;
 
+import com.careerfit.attachmentfile.domain.AttachmentFileType;
 import com.careerfit.attachmentfile.dto.FileInfoResponse;
 import com.careerfit.attachmentfile.dto.GetPresignedUrlResponse;
 import com.careerfit.attachmentfile.dto.FileUploadRequest;
@@ -8,7 +9,6 @@ import com.careerfit.attachmentfile.service.AttachmentFileCommandService;
 import com.careerfit.attachmentfile.service.AttachmentFileQueryService;
 import com.careerfit.attachmentfile.service.S3CommandService;
 import com.careerfit.attachmentfile.service.S3QueryService;
-import com.careerfit.document.domain.DocumentType;
 import com.careerfit.global.dto.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,12 +41,12 @@ public class AttachmentFileApiController {
     @PostMapping("/file-upload")
     public ResponseEntity<ApiResponse<PutPresignedUrlResponse>> generatePostPresignedUrl(
         @PathVariable(name = "application-id") Long applicationId,
-        @RequestParam(name = "document-type") DocumentType documentType,
+        @RequestParam(name = "document-type") AttachmentFileType attachmentFileType,
         @Valid @RequestBody FileUploadRequest request
     ) {
         PutPresignedUrlResponse response = s3CommandService.generatePutPresignedUrl(applicationId,
-            documentType, request);
-        attachmentFileCommandService.saveFile(applicationId, response.uniqueFileName(), documentType);
+            attachmentFileType, request);
+        attachmentFileCommandService.saveFile(applicationId, response.uniqueFileName(), attachmentFileType);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
@@ -90,11 +90,11 @@ public class AttachmentFileApiController {
     @GetMapping("/metadata/list")
     public ResponseEntity<ApiResponse<Page<FileInfoResponse>>> getFileMetaDataList(
         @PathVariable(name = "application-id") Long applicationId,
-        @RequestParam(name = "document-type") DocumentType documentType,
+        @RequestParam(name = "document-type") AttachmentFileType attachmentFileType,
         Pageable pageable
     ) {
         Page<FileInfoResponse> response = attachmentFileQueryService.getFileInfoList(applicationId,
-            documentType, pageable);
+            attachmentFileType, pageable);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 

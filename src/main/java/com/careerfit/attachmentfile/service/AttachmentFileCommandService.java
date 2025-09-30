@@ -4,8 +4,8 @@ import com.careerfit.application.domain.Application;
 import com.careerfit.application.exception.ApplicationErrorCode;
 import com.careerfit.application.service.ApplicationFinder;
 import com.careerfit.attachmentfile.domain.AttachmentFile;
+import com.careerfit.attachmentfile.domain.AttachmentFileType;
 import com.careerfit.attachmentfile.repository.AttachmentFileRepository;
-import com.careerfit.document.domain.DocumentType;
 import com.careerfit.document.exception.DocumentErrorCode;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.global.util.DocumentUtil;
@@ -24,7 +24,7 @@ public class AttachmentFileCommandService {
 
     // 파일 메타 데이터 저장
     public void saveFile(Long requestApplicationId, String uniqueFileName,
-        DocumentType documentType) {
+        AttachmentFileType attachmentFileType) {
 
         Long applicationId = DocumentUtil.extractApplicationId(uniqueFileName);
         String documentTitle = DocumentUtil.extractDocumentTitle(uniqueFileName);
@@ -38,10 +38,10 @@ public class AttachmentFileCommandService {
         Application application = applicationFinder.getApplicationOrThrow(applicationId);
         AttachmentFile attachmentFile;
 
-        if (documentType.equals(DocumentType.RESUME)) {
+        if (attachmentFileType.equals(AttachmentFileType.RESUME)) {
             attachmentFile = AttachmentFile.createResume(originalFileName, uniqueFileName,
                 documentTitle, application);
-        } else if (documentType.equals(DocumentType.PORTFOLIO)) {
+        } else if (attachmentFileType.equals(AttachmentFileType.PORTFOLIO)) {
             attachmentFile = AttachmentFile.createPortfolio(originalFileName, uniqueFileName,
                 documentTitle, application);
         } else {
