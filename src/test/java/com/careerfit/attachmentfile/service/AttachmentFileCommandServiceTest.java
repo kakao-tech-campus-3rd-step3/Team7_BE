@@ -1,4 +1,4 @@
-package com.careerfit.AttachmentFile.service;
+package com.careerfit.attachmentfile.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
@@ -12,8 +12,6 @@ import com.careerfit.application.service.ApplicationFinder;
 import com.careerfit.attachmentfile.domain.AttachmentFile;
 import com.careerfit.attachmentfile.domain.AttachmentFileType;
 import com.careerfit.attachmentfile.repository.AttachmentFileRepository;
-import com.careerfit.attachmentfile.service.AttachmentFileCommandService;
-import com.careerfit.attachmentfile.service.AttachmentFileFinder;
 import com.careerfit.auth.domain.OAuthProvider;
 import com.careerfit.global.util.DocumentUtil;
 import com.careerfit.member.domain.Member;
