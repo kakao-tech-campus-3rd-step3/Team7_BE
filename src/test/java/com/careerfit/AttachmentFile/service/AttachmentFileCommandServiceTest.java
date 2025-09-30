@@ -10,11 +10,11 @@ import com.careerfit.application.domain.Application;
 import com.careerfit.application.domain.ApplicationStatus;
 import com.careerfit.application.service.ApplicationFinder;
 import com.careerfit.attachmentfile.domain.AttachmentFile;
+import com.careerfit.attachmentfile.domain.AttachmentFileType;
 import com.careerfit.attachmentfile.repository.AttachmentFileRepository;
 import com.careerfit.attachmentfile.service.AttachmentFileCommandService;
 import com.careerfit.attachmentfile.service.AttachmentFileFinder;
 import com.careerfit.auth.domain.OAuthProvider;
-import com.careerfit.document.domain.DocumentType;
 import com.careerfit.global.util.DocumentUtil;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.mentee.MenteeProfile;
@@ -82,7 +82,7 @@ class AttachmentFileCommandServiceTest {
             .originalFileName("MyResume")
             .storedFilePath("applications/1/resumes/a42f8cd9-7391-437d-91ef-9b78e462db9c_MyResume1_MyResume")
             .title("MyResume1")
-            .attachmentFileType(DocumentType.RESUME)
+            .attachmentFileType(AttachmentFileType.RESUME)
             .build();
         app1.addDocument(file1);
 
@@ -91,7 +91,7 @@ class AttachmentFileCommandServiceTest {
             .originalFileName("MyPortfolio")
             .storedFilePath("applications/1/portfolios/a42f8cd9-7391-437d-91ef-9b78e462db9c_MyPortfolio1_MyPortfolio")
             .title("MyPortfolio1")
-            .attachmentFileType(DocumentType.PORTFOLIO)
+            .attachmentFileType(AttachmentFileType.PORTFOLIO)
             .build();
         app2.addDocument(file2);
 
@@ -100,7 +100,7 @@ class AttachmentFileCommandServiceTest {
             .originalFileName("MyResumeV2")
             .storedFilePath("applications/1/resumes/a42f8cd9-7391-437d-91ef-9b78e462db9c_MyResume2_MyResumeV2")
             .title("MyResume2")
-            .attachmentFileType(DocumentType.RESUME)
+            .attachmentFileType(AttachmentFileType.RESUME)
             .build();
         app1.addDocument(file3);
     }
@@ -127,7 +127,7 @@ class AttachmentFileCommandServiceTest {
         // 실제 파일 메타 데이터 저장
         // given
         Long requestApplicationId = 1L;
-        DocumentType documentType = DocumentType.RESUME;
+        AttachmentFileType documentType = AttachmentFileType.RESUME;
         when(applicationFinder.getApplicationOrThrow(extractedApplicationId)).thenReturn(app1);
         ArgumentCaptor<AttachmentFile> attachmentFileCaptor = ArgumentCaptor.forClass(AttachmentFile.class);
 
