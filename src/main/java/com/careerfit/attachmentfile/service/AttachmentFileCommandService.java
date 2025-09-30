@@ -36,18 +36,8 @@ public class AttachmentFileCommandService {
         }
 
         Application application = applicationFinder.getApplicationOrThrow(applicationId);
-        AttachmentFile attachmentFile;
-
-        if (attachmentFileType.equals(AttachmentFileType.RESUME)) {
-            attachmentFile = AttachmentFile.createResume(originalFileName, uniqueFileName,
-                documentTitle, application);
-        } else if (attachmentFileType.equals(AttachmentFileType.PORTFOLIO)) {
-            attachmentFile = AttachmentFile.createPortfolio(originalFileName, uniqueFileName,
-                documentTitle, application);
-        } else {
-            throw new ApplicationException(DocumentErrorCode.DOCUMENT_INVALID_TYPE);
-        }
-
+        AttachmentFile attachmentFile = AttachmentFile.of(originalFileName, uniqueFileName,
+            documentTitle, application, attachmentFileType);
         attachmentFileRepository.save(attachmentFile);
     }
 

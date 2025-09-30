@@ -4,6 +4,7 @@ import com.careerfit.application.domain.Application;
 import com.careerfit.application.domain.ApplicationStatus;
 import com.careerfit.application.repository.ApplicationJpaRepository;
 import com.careerfit.attachmentfile.domain.AttachmentFile;
+import com.careerfit.attachmentfile.domain.AttachmentFileType;
 import com.careerfit.auth.domain.OAuthProvider;
 import com.careerfit.comment.domain.Comment;
 import com.careerfit.comment.domain.Coordinate;
@@ -138,32 +139,36 @@ public class DataInitializer implements CommandLineRunner {
         app2.addDocument(cl2);
 
         // 5. AttachmentFile 생성 및 저장
-        AttachmentFile resume1 = AttachmentFile.createResume(
+        AttachmentFile resume1 = AttachmentFile.of(
             "resume1.pdf",
             "applications/" + app1.getId() + "/resumes/" + UUID.randomUUID() + "_resume1_resume1.pdf",
             "resume1",
-            app1
+            app1,
+            AttachmentFileType.RESUME
         );
-        AttachmentFile portfolio1 = AttachmentFile.createPortfolio(
+        AttachmentFile portfolio1 = AttachmentFile.of(
             "portfolio1.pdf",
             "applications/" + app1.getId() + "/portfolios/" + UUID.randomUUID() + "_portfolio1_portfolio1.pdf",
             "portfolio1",
-            app1
+            app1,
+            AttachmentFileType.PORTFOLIO
         );
         app1.addDocument(resume1);
         app1.addDocument(portfolio1);
 
-        AttachmentFile resume2 = AttachmentFile.createResume(
+        AttachmentFile resume2 = AttachmentFile.of(
             "resume2.pdf",
             "applications/" + app2.getId() + "/resumes/" + UUID.randomUUID() + "_resume2_resume2.pdf",
             "resume2",
-            app2
+            app2,
+            AttachmentFileType.RESUME
         );
-        AttachmentFile portfolio2 = AttachmentFile.createPortfolio(
+        AttachmentFile portfolio2 = AttachmentFile.of(
             "portfolio2.pdf",
             "applications/" + app2.getId() + "/portfolios/" + UUID.randomUUID() + "_portfolio2_portfolio2.pdf",
             "portfolio2",
-            app2
+            app2,
+            AttachmentFileType.PORTFOLIO
         );
         app2.addDocument(resume2);
         app2.addDocument(portfolio2);
