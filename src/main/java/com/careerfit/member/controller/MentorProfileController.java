@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/mentors")
 @RequiredArgsConstructor
-public class MentorProfileController {
+public class MentorProfileController implements MentorProfileControllerDocs {
 
     private final MentorProfileQueryService mentorProfileQueryService;
     private final MentorProfileUpdateService mentorProfileUpdateService;

@@ -6,16 +6,17 @@ import com.careerfit.member.domain.MemberRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 
-public interface MemberJpaRepository extends JpaRepository<Member, Long> {
+public interface MemberJpaRepository extends JpaRepository<Member, Long>, JpaSpecificationExecutor<Member> {
 
     Optional<Member> findByProviderAndOauthId(OAuthProvider oAuthProvider, String oauthId);
 
     Optional<Member> findByEmail(String email);
 
-    Page<Member> findDistinctByMemberRoleAndNameContainsIgnoreCaseOrMentorProfile_CompanyContainsIgnoreCaseOrMentorProfile_JobPositionContainsIgnoreCase(
+    Page<Member> findByMemberRoleAndNameContainsIgnoreCaseOrMentorProfile_CompanyContainsIgnoreCaseOrMentorProfile_JobPositionContainsIgnoreCase(
         MemberRole role,
         String name,
         String company,

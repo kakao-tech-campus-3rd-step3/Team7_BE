@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/mentoring")
 @RequiredArgsConstructor
-public class MentoringQueryController {
+public class MentoringQueryController implements MentoringQueryControllerDocs {
 
     private final MentoringQueryService mentoringQueryService;
 
@@ -23,7 +23,7 @@ public class MentoringQueryController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<List<MentoringDetailResponse>>> getMyMentorings(
+    public ResponseEntity<ApiResponse<List<MentoringDetailResponse>>> getMyMentoring(
         @RequestHeader("X-User-Id") Long menteeId
     ) {
         List<MentoringDetailResponse> result = mentoringQueryService.getMentoringByMentee(menteeId);
