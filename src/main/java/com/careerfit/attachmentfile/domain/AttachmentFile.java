@@ -32,28 +32,15 @@ public class AttachmentFile extends Document {
     @Column(nullable = false)
     private AttachmentFileType attachmentFileType;
 
-    public static AttachmentFile createResume(String originalFileName, String storedFilePath, String documentTitle,
-        Application application) {
+    public static AttachmentFile of(String originalFileName, String storedFilePath, String documentTitle,
+    Application application, AttachmentFileType attachmentFileType) {
 
         return AttachmentFile.builder()
             .originalFileName(originalFileName)
             .storedFilePath(storedFilePath)
             .title(documentTitle)
             .application(application)
-            .attachmentFileType(AttachmentFileType.RESUME)
+            .attachmentFileType(attachmentFileType)
             .build();
     }
-
-    public static AttachmentFile createPortfolio(String originalFileName, String storedFilePath, String documentTitle,
-        Application application) {
-
-        return AttachmentFile.builder()
-            .originalFileName(originalFileName)
-            .storedFilePath(storedFilePath)
-            .title(documentTitle)
-            .application(application)
-            .attachmentFileType(AttachmentFileType.PORTFOLIO)
-            .build();
-    }
-
 }
