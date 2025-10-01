@@ -45,7 +45,7 @@ class ApplicationCommandServiceTest {
         given(applicationJpaRepository.save(any(Application.class))).willReturn(null);
 
         // when:
-        applicationCommandService.registerApplication(request, memberId);
+        applicationCommandService.register(request, memberId);
 
         // then:
         verify(memberFinder).getMemberOrThrow(memberId);

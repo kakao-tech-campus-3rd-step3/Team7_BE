@@ -1,9 +1,12 @@
 package com.careerfit.attachmentfile.dto;
 
-public record GetPresignedUrlResponse(
-    String presignedUrl
-) {
-    public static GetPresignedUrlResponse from(String presignedUrl) {
-        return new GetPresignedUrlResponse(presignedUrl);
+import java.time.LocalDateTime;
+
+public record GetPresignedUrlResponse (
+    String presignedUrl,
+    LocalDateTime expiredAt
+){
+    public static GetPresignedUrlResponse of(String presignedUrl, LocalDateTime expiredAt){
+        return new GetPresignedUrlResponse(presignedUrl, expiredAt);
     }
 }
