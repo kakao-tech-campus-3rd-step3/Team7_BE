@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/applications/{application-id}/attachment-files")
-public class AttachmentFileApiController {
+public class AttachmentFileApiController implements AttachmentFileApiDocs{
 
     private final S3QueryService s3QueryService;
     private final S3CommandService s3CommandService;
@@ -39,9 +39,10 @@ public class AttachmentFileApiController {
 
     // 파일 업로드
     @PostMapping("/file-upload")
+    @Override
     public ResponseEntity<ApiResponse<PutPresignedUrlResponse>> generatePostPresignedUrl(
         @PathVariable(name = "application-id") Long applicationId,
-        @RequestParam(name = "document-type") AttachmentFileType attachmentFileType,
+        @RequestParam(name = "attachment-file-type") AttachmentFileType attachmentFileType,
         @Valid @RequestBody FileUploadRequest request
     ) {
         PutPresignedUrlResponse response = s3CommandService.generatePutPresignedUrl(applicationId,
@@ -52,6 +53,7 @@ public class AttachmentFileApiController {
 
     // 파일 조회
     @GetMapping("/{attachment-file-id}")
+    @Override
     public ResponseEntity<ApiResponse<GetPresignedUrlResponse>> generateGetPresignedUrl(
         @PathVariable(name = "application-id") Long applicationId,
         @PathVariable(name = "attachment-file-id") Long attachmentFileId
@@ -63,6 +65,7 @@ public class AttachmentFileApiController {
 
     // 파일 삭제
     @DeleteMapping("/{attachment-file-id}")
+    @Override
     public ResponseEntity<ApiResponse<Void>> deleteFile(
         @PathVariable(name = "application-id") Long applicationId,
         @PathVariable(name = "attachment-file-id") Long attachmentFileId
@@ -77,6 +80,7 @@ public class AttachmentFileApiController {
 
     // 파일 메타 데이터 단건 조회
     @GetMapping("/{attachment-file-id}/metadata")
+    @Override
     public ResponseEntity<ApiResponse<FileInfoResponse>> getFileMetaData(
         @PathVariable(name = "application-id") Long applicationId,
         @PathVariable(name = "attachment-file-id") Long attachmentFileId
@@ -88,9 +92,10 @@ public class AttachmentFileApiController {
 
     // 파일 메타 데이터 리스트 조회
     @GetMapping("/metadata/list")
+    @Override
     public ResponseEntity<ApiResponse<Page<FileInfoResponse>>> getFileMetaDataList(
         @PathVariable(name = "application-id") Long applicationId,
-        @RequestParam(name = "document-type") AttachmentFileType attachmentFileType,
+        @RequestParam(name = "attachment-file-type") AttachmentFileType attachmentFileType,
         Pageable pageable
     ) {
         Page<FileInfoResponse> response = attachmentFileQueryService.getFileInfoList(applicationId,
