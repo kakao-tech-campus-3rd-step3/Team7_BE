@@ -22,12 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/reviews")
 @RequiredArgsConstructor
-public class ReviewController {
+public class ReviewController implements ReviewControllerDocs {
 
     private final ReviewService reviewService;
 
     @PostMapping("/mentor/{mentorId}")
-    public ResponseEntity<ApiResponse<ReviewPostResponse>> create(
+
+    public ResponseEntity<ApiResponse<ReviewPostResponse>> createReview(
         @PathVariable Long mentorId,
         @RequestParam Long memberId,
         @Valid @RequestBody ReviewPostRequest request
@@ -39,7 +40,7 @@ public class ReviewController {
     }
 
     @PatchMapping("/{reviewId}")
-    public ResponseEntity<ApiResponse<ReviewUpdateResponse>> update(
+    public ResponseEntity<ApiResponse<ReviewUpdateResponse>> updateReview(
         @PathVariable Long reviewId,
         @RequestParam Long memberId,
         @Valid @RequestBody ReviewPatchRequest request
@@ -50,7 +51,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Void> delete(
+    public ResponseEntity<Void> deleteReview(
         @PathVariable Long reviewId,
         @RequestParam Long memberId
     ) {

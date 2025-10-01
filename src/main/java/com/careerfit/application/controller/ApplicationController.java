@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/applications")
 @RequiredArgsConstructor
-public class ApplicationController {
+public class ApplicationController implements ApplicationControllerDocs {
 
     private final ApplicationCommandService applicationCommandService;
     private final ApplicationQueryService applicationQueryService;
