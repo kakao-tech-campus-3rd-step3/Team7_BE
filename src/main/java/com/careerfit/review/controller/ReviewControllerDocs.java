@@ -31,7 +31,7 @@ public interface ReviewControllerDocs {
     );
 
     @Operation(summary = "리뷰 삭제", description = "자신이 작성한 리뷰를 삭제합니다.")
-    ResponseEntity<Void> deleteReview(
+    ResponseEntity<ApiResponse<Void>> deleteReview(
         @PathVariable Long reviewId,
         @RequestParam Long memberId
     );
