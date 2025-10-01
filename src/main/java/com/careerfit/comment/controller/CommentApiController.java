@@ -25,18 +25,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/documents/{documentId}/comments")
-public class CommentApiController {
+public class CommentApiController implements CommentApiDocs {
 
     private final CommentCommandService commentCommandService;
     private final CommentQueryService commentQueryService;
 
     // comment 생성
     @PostMapping
+    @Override
     public ResponseEntity<ApiResponse<Void>> createComment(
         @PathVariable Long documentId,
         // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
         @RequestParam Long memberId,
-        @RequestBody CommentCreateRequest request
+        @Valid @RequestBody CommentCreateRequest request
     ) {
         commentCommandService.createComment(documentId, memberId, request);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -46,6 +47,7 @@ public class CommentApiController {
     // comment 단건 조회
     // 단건 조회/수정/삭제에는 documentId가 불필요하긴 하지만, 다른 API 경로와의 일관성을 위해 추가했습니다.
     @GetMapping("/{commentId}")
+    @Override
     public ResponseEntity<ApiResponse<CommentInfoResponse>> getComment(
         @PathVariable Long documentId,
         @PathVariable Long commentId,
@@ -58,6 +60,7 @@ public class CommentApiController {
 
     // comment 리스트 조회: document에 작성된 comment 리스트 조회(member 검증 로직은 아직 추가 x)
     @GetMapping("/list")
+    @Override
     public ResponseEntity<ApiResponse<Page<CommentInfoResponse>>> getCommentList(
         @PathVariable Long documentId,
         // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
@@ -71,6 +74,7 @@ public class CommentApiController {
 
     // comment 수정
     @PatchMapping("/{commentId}")
+    @Override
     public ResponseEntity<ApiResponse<CommentInfoResponse>> updateComment(
         @PathVariable Long documentId,
         @PathVariable Long commentId,
@@ -85,6 +89,7 @@ public class CommentApiController {
 
     // comment 삭제
     @DeleteMapping("/{commentId}")
+    @Override
     public ResponseEntity<Void> deleteComment(
         @PathVariable Long documentId,
         @PathVariable Long commentId,
