@@ -8,11 +8,19 @@ import com.careerfit.comment.service.CommentQueryService;
 import com.careerfit.global.dto.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -50,12 +58,14 @@ public class CommentApiController {
 
     // comment 리스트 조회: document에 작성된 comment 리스트 조회(member 검증 로직은 아직 추가 x)
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<CommentInfoResponse>>> getCommentList(
+    public ResponseEntity<ApiResponse<Page<CommentInfoResponse>>> getCommentList(
         @PathVariable Long documentId,
         // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
-        @RequestParam Long memberId
+        @RequestParam Long memberId,
+        Pageable pageable
     ) {
-        List<CommentInfoResponse> response = commentQueryService.findAllComment(documentId, memberId);
+        Page<CommentInfoResponse> response = commentQueryService.findAllComment(documentId,
+            memberId, pageable);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
@@ -68,7 +78,8 @@ public class CommentApiController {
         @RequestParam Long memberId,
         @Valid @RequestBody CommentUpdateRequest request
     ) {
-        CommentInfoResponse response = commentCommandService.updateComment(commentId, memberId, request);
+        CommentInfoResponse response = commentCommandService.updateComment(commentId, memberId,
+            request);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 

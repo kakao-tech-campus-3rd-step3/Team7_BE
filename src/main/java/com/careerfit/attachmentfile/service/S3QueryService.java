@@ -26,7 +26,7 @@ public class S3QueryService {
     public GetPresignedUrlResponse generateGetPresignedUrl(Long applicationid,
         Long attachmentFileId) {
 
-        Duration expiryTime = Duration.ofMinutes(5);
+        Duration expiryTime = Duration.ofMillis(awsProperties.s3().expiryTime());
 
         AttachmentFile attachmentFile = attachmentFileFinder.findAttachmentFileOrThrow(
             attachmentFileId);

@@ -7,12 +7,11 @@ import com.careerfit.application.dto.ApplicationSummaryResponse;
 import com.careerfit.application.exception.ApplicationErrorCode;
 import com.careerfit.application.repository.ApplicationJpaRepository;
 import com.careerfit.global.exception.ApplicationException;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +20,7 @@ public class ApplicationQueryService {
 
     private final ApplicationJpaRepository applicationJpaRepository;
 
-    public ApplicationListResponse getApplicationList(Long memberId) {
+    public ApplicationListResponse getList(Long memberId) {
         List<ApplicationSummaryResponse> summaries = applicationJpaRepository.findAllByMemberId(
                 memberId)
             .stream()
@@ -31,7 +30,7 @@ public class ApplicationQueryService {
         return ApplicationListResponse.from(summaries);
     }
 
-    public ApplicationDetailHeaderResponse getApplicationDetailHeader(Long applicationId) {
+    public ApplicationDetailHeaderResponse getDetailHeader(Long applicationId) {
         Application application = applicationJpaRepository.findById(applicationId)
             .orElseThrow(
                 () -> new ApplicationException(ApplicationErrorCode.APPLICATION_NOT_FOUND));

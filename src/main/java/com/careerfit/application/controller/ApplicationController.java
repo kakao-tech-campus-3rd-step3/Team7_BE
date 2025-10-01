@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,62 +33,57 @@ public class ApplicationController implements ApplicationControllerDocs {
     private final ApplicationQueryService applicationQueryService;
 
     @PostMapping("/analyze")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<JobPostingAnalysisResponse> analyzeJobPostingUrl(
+    public ResponseEntity<ApiResponse<JobPostingAnalysisResponse>> analyzeJobPostingUrl(
         @RequestBody JobPostingUrlRequest request) {
         JobPostingAnalysisResponse response = applicationCommandService.analyze(request);
-        return ApiResponse.success(response);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> registerApplication(
+    public ResponseEntity<Void> register(
         @RequestBody ApplicationRegisterRequest request,
         @RequestParam Long memberId
     ) {
-        applicationCommandService.registerApplication(request, memberId);
+        applicationCommandService.register(request, memberId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<ApplicationListResponse> getApplicationList(@RequestParam Long memberId) {
-        ApplicationListResponse response = applicationQueryService.getApplicationList(memberId);
-        return ApiResponse.success(response);
+    public ResponseEntity<ApiResponse<ApplicationListResponse>> getList(
+        @RequestParam Long memberId) {
+        ApplicationListResponse response = applicationQueryService.getList(memberId);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @GetMapping("/{applicationId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<ApplicationDetailHeaderResponse> getApplicationDetailHeader(
+    public ResponseEntity<ApiResponse<ApplicationDetailHeaderResponse>> getDetailHeader(
         @PathVariable Long applicationId) {
-        ApplicationDetailHeaderResponse response = applicationQueryService.getApplicationDetailHeader(
+        ApplicationDetailHeaderResponse response = applicationQueryService.getDetailHeader(
             applicationId);
-        return ApiResponse.success(response);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @PatchMapping("/{applicationId}/status")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<Void> updateApplicationStatus(
+    public ResponseEntity<ApiResponse<Void>> updateStatus(
         @PathVariable Long applicationId,
         @RequestBody @Valid ApplicationStatusUpdateRequest request
     ) {
         applicationCommandService.updateStatus(applicationId, request);
-        return ApiResponse.success();
+        return ResponseEntity.ok(ApiResponse.success());
     }
 
     @PatchMapping("/{applicationId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<Void> updateApplicationContent(
+    public ResponseEntity<ApiResponse<Void>> updateContent(
         @PathVariable Long applicationId,
         @RequestBody @Valid ApplicationContentUpdateRequest request
     ) {
         applicationCommandService.updateContent(applicationId, request);
-        return ApiResponse.success();
+        return ResponseEntity.ok(ApiResponse.success());
     }
 
     @DeleteMapping("/{applicationId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<Void> deleteApplication(@PathVariable Long applicationId) {
-        applicationCommandService.deleteApplication(applicationId);
-        return ApiResponse.success();
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long applicationId) {
+        applicationCommandService.delete(applicationId);
+        return ResponseEntity.ok(ApiResponse.success());
     }
 }
