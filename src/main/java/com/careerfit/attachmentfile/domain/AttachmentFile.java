@@ -1,7 +1,10 @@
 package com.careerfit.attachmentfile.domain;
 
 import com.careerfit.application.domain.Application;
+import com.careerfit.application.exception.ApplicationErrorCode;
+import com.careerfit.attachmentfile.exception.AttachmentFileErrorCode;
 import com.careerfit.document.domain.Document;
+import com.careerfit.global.exception.ApplicationException;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -32,8 +35,10 @@ public class AttachmentFile extends Document {
     @Column(nullable = false)
     private AttachmentFileType attachmentFileType;
 
-    public static AttachmentFile of(String originalFileName, String storedFilePath, String documentTitle,
-    Application application, AttachmentFileType attachmentFileType) {
+    public static AttachmentFile of(String originalFileName, String storedFilePath,
+        String documentTitle, Application application, AttachmentFileType attachmentFileType) {
+
+        validate(originalFileName, storedFilePath, documentTitle, application, attachmentFileType);
 
         return AttachmentFile.builder()
             .originalFileName(originalFileName)
@@ -42,5 +47,28 @@ public class AttachmentFile extends Document {
             .application(application)
             .attachmentFileType(attachmentFileType)
             .build();
+    }
+
+    private static void validate(String originalFileName, String storedFilePath,
+        String documentTitle, Application application, AttachmentFileType attachmentFileType) {
+
+        if (originalFileName == null || originalFileName.isBlank()) {
+            throw new ApplicationException(AttachmentFileErrorCode.INVALID_ORIGINAL_FILENAME);
+        }
+        if (storedFilePath == null || storedFilePath.isBlank()) {
+            throw new ApplicationException(AttachmentFileErrorCode.INVALID_STORED_FILE_PATH);
+        }
+
+        if(documentTitle==null || documentTitle.isBlank()){
+            throw new ApplicationException(AttachmentFileErrorCode.INVALID_ATTACHMENT_FILE_TYPE);
+        }
+
+        if(application==null){
+            throw new ApplicationException(ApplicationErrorCode.APPLICATION_NOT_FOUND);
+        }
+
+        if (attachmentFileType == null) {
+            throw new ApplicationException(AttachmentFileErrorCode.INVALID_ATTACHMENT_FILE_TYPE);
+        }
     }
 }
