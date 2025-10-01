@@ -1,18 +1,18 @@
 package com.careerfit.attachmentfile.service;
 
 import com.careerfit.attachmentfile.domain.AttachmentFile;
+import com.careerfit.attachmentfile.domain.AttachmentFileType;
 import com.careerfit.attachmentfile.dto.FileInfoResponse;
 import com.careerfit.attachmentfile.repository.AttachmentFileRepository;
-import com.careerfit.document.domain.DocumentType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly=true)
+@Transactional(readOnly = true)
 public class AttachmentFileQueryService {
 
     private final AttachmentFileRepository attachmentFileRepository;
@@ -28,11 +28,10 @@ public class AttachmentFileQueryService {
     }
 
     // 리스트 조회
-    public List<FileInfoResponse> getFileInfoList(Long applicationId, DocumentType documentType) {
-        return attachmentFileRepository.findAllByApplicationId(applicationId)
-            .stream()
-            .filter(each -> each.getAttachmentFileType().equals(documentType))
-            .map(FileInfoResponse::fromAttachmentFile)
-            .toList();
+    public Page<FileInfoResponse> getFileInfoList(Long applicationId, AttachmentFileType attachmentFileType,
+        Pageable pageable) {
+        return attachmentFileRepository.findAllByApplicationIdAndAttachmentFileType(applicationId,
+                attachmentFileType, pageable)
+            .map(FileInfoResponse::fromAttachmentFile);
     }
 }

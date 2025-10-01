@@ -2,8 +2,12 @@ package com.careerfit.attachmentfile.domain;
 
 import com.careerfit.application.domain.Application;
 import com.careerfit.document.domain.Document;
-import com.careerfit.document.domain.DocumentType;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,30 +30,17 @@ public class AttachmentFile extends Document {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private DocumentType attachmentFileType;
+    private AttachmentFileType attachmentFileType;
 
-    public static AttachmentFile createResume(String originalFileName, String storedFilePath, String documentTitle,
-        Application application) {
-
-        return AttachmentFile.builder()
-            .originalFileName(originalFileName)
-            .storedFilePath(storedFilePath)
-            .title(documentTitle)
-            .application(application)
-            .attachmentFileType(DocumentType.RESUME)
-            .build();
-    }
-
-    public static AttachmentFile createPortfolio(String originalFileName, String storedFilePath, String documentTitle,
-        Application application) {
+    public static AttachmentFile of(String originalFileName, String storedFilePath, String documentTitle,
+    Application application, AttachmentFileType attachmentFileType) {
 
         return AttachmentFile.builder()
             .originalFileName(originalFileName)
             .storedFilePath(storedFilePath)
             .title(documentTitle)
             .application(application)
-            .attachmentFileType(DocumentType.PORTFOLIO)
+            .attachmentFileType(attachmentFileType)
             .build();
     }
-
 }

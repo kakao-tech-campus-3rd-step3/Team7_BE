@@ -28,7 +28,12 @@ public class ReviewService {
     private final MentorProfileJpaRepository mentorProfileJpaRepository;
 
     public ReviewPostResponse createReview(Long menteeId, Long mentorId,
-            ReviewPostRequest request) {
+        ReviewPostRequest request) {
+
+        if (menteeId.equals(mentorId)) {
+            throw new ApplicationException(ReviewErrorCode.CANNOT_REVIEW_SELF);
+        }
+
         Member mentee = findMemberById(menteeId);
         Member mentor = findMemberById(mentorId);
 
@@ -41,7 +46,7 @@ public class ReviewService {
     }
 
     public ReviewUpdateResponse updateReview(Long reviewId, Long menteeId,
-            ReviewPatchRequest request) {
+        ReviewPatchRequest request) {
         Review review = findReviewById(reviewId);
         validateReviewOwner(review, menteeId);
 
@@ -65,9 +70,9 @@ public class ReviewService {
 
         int reviewCount = reviews.size();
         double averageRating = reviews.stream()
-                .mapToDouble(Review::getRating)
-                .average()
-                .orElse(0.0);
+            .mapToDouble(Review::getRating)
+            .average()
+            .orElse(0.0);
 
         double roundedRating = Math.round(averageRating * 10.0) / 10.0;
 
@@ -77,18 +82,18 @@ public class ReviewService {
 
     private Member findMemberById(Long memberId) {
         return memberJpaRepository.findById(memberId)
-                .orElseThrow(() -> new ApplicationException(MemberErrorCode.MEMBER_NOT_FOUND));
+            .orElseThrow(() -> new ApplicationException(MemberErrorCode.MEMBER_NOT_FOUND));
     }
 
     private MentorProfile findMentorProfileByMemberId(Long memberId) {
         return mentorProfileJpaRepository.findByMemberId(memberId)
-                .orElseThrow(
-                        () -> new ApplicationException(MemberErrorCode.MENTOR_PROFILE_NOT_FOUND));
+            .orElseThrow(
+                () -> new ApplicationException(MemberErrorCode.MENTOR_PROFILE_NOT_FOUND));
     }
 
     private Review findReviewById(Long reviewId) {
         return reviewJpaRepository.findById(reviewId)
-                .orElseThrow(() -> new ApplicationException(ReviewErrorCode.REVIEW_NOT_FOUND));
+            .orElseThrow(() -> new ApplicationException(ReviewErrorCode.REVIEW_NOT_FOUND));
     }
 
     private void validateReviewOwner(Review review, Long currentMemberId) {
