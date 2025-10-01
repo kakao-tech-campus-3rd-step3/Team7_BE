@@ -2,8 +2,8 @@ package com.careerfit.attachmentfile.controller;
 
 import com.careerfit.attachmentfile.domain.AttachmentFileType;
 import com.careerfit.attachmentfile.dto.FileInfoResponse;
-import com.careerfit.attachmentfile.dto.GetPresignedUrlResponse;
 import com.careerfit.attachmentfile.dto.FileUploadRequest;
+import com.careerfit.attachmentfile.dto.GetPresignedUrlResponse;
 import com.careerfit.attachmentfile.dto.PutPresignedUrlResponse;
 import com.careerfit.attachmentfile.service.AttachmentFileCommandService;
 import com.careerfit.attachmentfile.service.AttachmentFileQueryService;
@@ -16,14 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,7 +30,7 @@ public class AttachmentFileApiController {
     private final AttachmentFileQueryService attachmentFileQueryService;
     private final AttachmentFileCommandService attachmentFileCommandService;
 
-    /////* S3에 저장된 실제 파일 API */////
+    /// //* S3에 저장된 실제 파일 API */////
 
     // 파일 업로드
     @PostMapping("/file-upload")
@@ -73,7 +68,7 @@ public class AttachmentFileApiController {
             .body(ApiResponse.success());
     }
 
-    /////* 파일 메타 데이터 조회 API */////
+    /// //* 파일 메타 데이터 조회 API */////
 
     // 파일 메타 데이터 단건 조회
     @GetMapping("/{attachment-file-id}/metadata")

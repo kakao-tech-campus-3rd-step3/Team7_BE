@@ -45,27 +45,27 @@ class ApplicationQueryServiceTest {
             Long applicationId = 1L;
             Member member = Member.builder().id(1L).build();
             Application mockApplication = Application.builder()
-                    .id(applicationId)
-                    .companyName("테스트 컴퍼니")
-                    .applyPosition("서버 개발자")
-                    .applicationStatus(ApplicationStatus.WRITING)
-                    .member(member)
-                    .build();
+                .id(applicationId)
+                .companyName("테스트 컴퍼니")
+                .applyPosition("서버 개발자")
+                .applicationStatus(ApplicationStatus.WRITING)
+                .member(member)
+                .build();
 
             given(applicationJpaRepository.findById(applicationId))
-                    .willReturn(Optional.of(mockApplication));
+                .willReturn(Optional.of(mockApplication));
 
             // when
-            ApplicationDetailHeaderResponse response = applicationQueryService.getApplicationDetailHeader(
-                    applicationId);
+            ApplicationDetailHeaderResponse response = applicationQueryService.getDetailHeader(
+                applicationId);
 
             // then
             assertAll(
-                    () -> assertThat(response.applicationId()).isEqualTo(applicationId),
-                    () -> assertThat(response.companyName()).isEqualTo("테스트 컴퍼니"),
-                    // .getValue()가 아닌 .name()으로 enum 상수 이름을 직접 비교합니다.
-                    () -> assertThat(response.applicationStatus()).isEqualTo(
-                            ApplicationStatus.WRITING)
+                () -> assertThat(response.applicationId()).isEqualTo(applicationId),
+                () -> assertThat(response.companyName()).isEqualTo("테스트 컴퍼니"),
+                // .getValue()가 아닌 .name()으로 enum 상수 이름을 직접 비교합니다.
+                () -> assertThat(response.applicationStatus()).isEqualTo(
+                    ApplicationStatus.WRITING)
             );
 
             verify(applicationJpaRepository).findById(applicationId);
@@ -78,13 +78,13 @@ class ApplicationQueryServiceTest {
             Long nonExistentId = 999L;
 
             given(applicationJpaRepository.findById(nonExistentId))
-                    .willReturn(Optional.empty());
+                .willReturn(Optional.empty());
 
             // when & then
             assertThatThrownBy(
-                    () -> applicationQueryService.getApplicationDetailHeader(nonExistentId))
-                    .isInstanceOf(ApplicationException.class)
-                    .hasMessage(ApplicationErrorCode.APPLICATION_NOT_FOUND.getMessage());
+                () -> applicationQueryService.getDetailHeader(nonExistentId))
+                .isInstanceOf(ApplicationException.class)
+                .hasMessage(ApplicationErrorCode.APPLICATION_NOT_FOUND.getMessage());
 
             verify(applicationJpaRepository).findById(nonExistentId);
         }
@@ -101,23 +101,23 @@ class ApplicationQueryServiceTest {
             Long memberId = 1L;
             Member member = Member.builder().id(memberId).build();
             Application app1 = Application.builder().id(1L).companyName("회사 A")
-                    .applicationStatus(ApplicationStatus.PREPARING).member(member).build();
+                .applicationStatus(ApplicationStatus.PREPARING).member(member).build();
             Application app2 = Application.builder().id(2L).companyName("회사 B")
-                    .applicationStatus(ApplicationStatus.APPLIED).member(member).build();
+                .applicationStatus(ApplicationStatus.APPLIED).member(member).build();
             List<Application> mockApplications = List.of(app1, app2);
 
             given(applicationJpaRepository.findAllByMemberId(memberId)).willReturn(
-                    mockApplications);
+                mockApplications);
 
             // when
-            ApplicationListResponse response = applicationQueryService.getApplicationList(memberId);
+            ApplicationListResponse response = applicationQueryService.getList(memberId);
 
             // then
             assertAll(
-                    () -> assertThat(response.applications()).hasSize(2),
-                    () -> assertThat(response.applications().get(0).companyName()).isEqualTo(
-                            "회사 A"),
-                    () -> assertThat(response.applications().get(1).companyName()).isEqualTo("회사 B")
+                () -> assertThat(response.applications()).hasSize(2),
+                () -> assertThat(response.applications().get(0).companyName()).isEqualTo(
+                    "회사 A"),
+                () -> assertThat(response.applications().get(1).companyName()).isEqualTo("회사 B")
             );
 
             verify(applicationJpaRepository).findAllByMemberId(memberId);

@@ -27,7 +27,7 @@ public record FileInfoResponse(
     }
 
     // presignedUrl 발급용
-    public static FileInfoResponse withPresignedUrl(AttachmentFile attachmentFile, String presignedUrl){
+    public static FileInfoResponse withPresignedUrl(AttachmentFile attachmentFile, String presignedUrl) {
         return new FileInfoResponse(
             attachmentFile.getAttachmentFileType(),
             attachmentFile.getId(),

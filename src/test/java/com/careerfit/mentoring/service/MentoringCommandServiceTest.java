@@ -8,7 +8,6 @@ import com.careerfit.member.domain.Member;
 import com.careerfit.member.service.MemberFinder;
 import com.careerfit.mentoring.domain.Mentoring;
 import com.careerfit.mentoring.dto.MentoringCreateRequest;
-import com.careerfit.mentoring.exception.MentoringErrorCode;
 import com.careerfit.mentoring.repository.MentoringJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
