@@ -10,7 +10,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update #TODO: 이후 validate로 수정 예정
+      ddl-auto: create-drop #TODO: 이후 validate로 수정 예정
     properties:
       hibernate:
         format_sql: true
