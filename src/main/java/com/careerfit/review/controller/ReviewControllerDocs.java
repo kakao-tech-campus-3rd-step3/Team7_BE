@@ -24,7 +24,7 @@ public interface ReviewControllerDocs {
     );
 
     @Operation(summary = "리뷰 수정", description = "자신이 작성한 리뷰의 내용이나 평점을 수정합니다.")
-    ApiResponse<ReviewUpdateResponse> updateReview(
+    ResponseEntity<ApiResponse<ReviewUpdateResponse>> updateReview(
         @PathVariable Long reviewId,
         @RequestParam Long memberId,
         @Valid @RequestBody ReviewPatchRequest request
