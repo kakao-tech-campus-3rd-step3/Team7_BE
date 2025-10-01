@@ -51,12 +51,12 @@ public class ReviewController implements ReviewControllerDocs {
     }
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Void> deleteReview(
+    public ResponseEntity<ApiResponse<Void>> deleteReview(
         @PathVariable Long reviewId,
         @RequestParam Long memberId
     ) {
         Long menteeId = memberId;
         reviewService.deleteReview(reviewId, menteeId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok(ApiResponse.success(null));
     }
 }

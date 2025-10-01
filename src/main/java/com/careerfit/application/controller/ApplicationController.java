@@ -40,7 +40,7 @@ public class ApplicationController implements ApplicationControllerDocs {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(
+    public ResponseEntity<ApiResponse<Void>> registerApplication(
         @RequestBody ApplicationRegisterRequest request,
         @RequestParam Long memberId
     ) {
@@ -49,14 +49,14 @@ public class ApplicationController implements ApplicationControllerDocs {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<ApplicationListResponse>> getList(
+    public ResponseEntity<ApiResponse<ApplicationListResponse>> getApplicationList(
         @RequestParam Long memberId) {
         ApplicationListResponse response = applicationQueryService.getList(memberId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     @GetMapping("/{applicationId}")
-    public ResponseEntity<ApiResponse<ApplicationDetailHeaderResponse>> getDetailHeader(
+    public ResponseEntity<ApiResponse<ApplicationDetailHeaderResponse>> getApplicationDetailHeader(
         @PathVariable Long applicationId) {
         ApplicationDetailHeaderResponse response = applicationQueryService.getDetailHeader(
             applicationId);
@@ -64,7 +64,7 @@ public class ApplicationController implements ApplicationControllerDocs {
     }
 
     @PatchMapping("/{applicationId}/status")
-    public ResponseEntity<ApiResponse<Void>> updateStatus(
+    public ResponseEntity<ApiResponse<Void>> updateApplicationStatus(
         @PathVariable Long applicationId,
         @RequestBody @Valid ApplicationStatusUpdateRequest request
     ) {
@@ -73,7 +73,7 @@ public class ApplicationController implements ApplicationControllerDocs {
     }
 
     @PatchMapping("/{applicationId}")
-    public ResponseEntity<ApiResponse<Void>> updateContent(
+    public ResponseEntity<ApiResponse<Void>> updateApplicationContent(
         @PathVariable Long applicationId,
         @RequestBody @Valid ApplicationContentUpdateRequest request
     ) {
@@ -82,7 +82,7 @@ public class ApplicationController implements ApplicationControllerDocs {
     }
 
     @DeleteMapping("/{applicationId}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long applicationId) {
+    public ResponseEntity<ApiResponse<Void>> deleteApplication(@PathVariable Long applicationId) {
         applicationCommandService.delete(applicationId);
         return ResponseEntity.ok(ApiResponse.success());
     }
