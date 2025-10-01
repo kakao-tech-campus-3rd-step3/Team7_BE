@@ -3,7 +3,13 @@ package com.careerfit.global.initializer;
 import com.careerfit.application.domain.Application;
 import com.careerfit.application.domain.ApplicationStatus;
 import com.careerfit.application.repository.ApplicationJpaRepository;
+import com.careerfit.attachmentfile.domain.AttachmentFile;
+import com.careerfit.attachmentfile.domain.AttachmentFileType;
 import com.careerfit.auth.domain.OAuthProvider;
+import com.careerfit.comment.domain.Comment;
+import com.careerfit.comment.domain.Coordinate;
+import com.careerfit.comment.dto.CommentCreateRequest;
+import com.careerfit.comment.repository.CommentRepository;
 import com.careerfit.coverletter.domain.CoverLetter;
 import com.careerfit.coverletter.domain.CoverLetterItem;
 import com.careerfit.member.domain.Member;
@@ -21,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @Profile({"local", "prod"})
@@ -29,6 +36,7 @@ public class DataInitializer implements CommandLineRunner {
 
     private final MemberJpaRepository memberRepository;
     private final ApplicationJpaRepository applicationRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     @Transactional
@@ -129,6 +137,57 @@ public class DataInitializer implements CommandLineRunner {
         CoverLetter cl2 = CoverLetter.createCoverLetter("라인 신입 백엔드 개발자 자기소개서2", items2);
         app1.addDocument(cl1);
         app2.addDocument(cl2);
+
+        // 5. AttachmentFile 생성 및 저장
+        AttachmentFile resume1 = AttachmentFile.of(
+            "resume1.pdf",
+            "applications/" + app1.getId() + "/resumes/" + UUID.randomUUID() + "_resume1_resume1.pdf",
+            "resume1",
+            app1,
+            AttachmentFileType.RESUME
+        );
+        AttachmentFile portfolio1 = AttachmentFile.of(
+            "portfolio1.pdf",
+            "applications/" + app1.getId() + "/portfolios/" + UUID.randomUUID() + "_portfolio1_portfolio1.pdf",
+            "portfolio1",
+            app1,
+            AttachmentFileType.PORTFOLIO
+        );
+        app1.addDocument(resume1);
+        app1.addDocument(portfolio1);
+
+        AttachmentFile resume2 = AttachmentFile.of(
+            "resume2.pdf",
+            "applications/" + app2.getId() + "/resumes/" + UUID.randomUUID() + "_resume2_resume2.pdf",
+            "resume2",
+            app2,
+            AttachmentFileType.RESUME
+        );
+        AttachmentFile portfolio2 = AttachmentFile.of(
+            "portfolio2.pdf",
+            "applications/" + app2.getId() + "/portfolios/" + UUID.randomUUID() + "_portfolio2_portfolio2.pdf",
+            "portfolio2",
+            app2,
+            AttachmentFileType.PORTFOLIO
+        );
+        app2.addDocument(resume2);
+        app2.addDocument(portfolio2);
+
+        // 6. Comment 생성 및 저장
+        List<Comment> comments = new ArrayList<>();
+        comments.add(Comment.of(cl1, mento1, new CommentCreateRequest("댓글1", new Coordinate(10.0, 10.0, 20.0, 20.0))));
+        comments.add(Comment.of(cl1, mentee1, new CommentCreateRequest("댓글2", new Coordinate(10.0, 10.0, 20.0, 20.0))));
+        comments.add(Comment.of(cl2, mento2, new CommentCreateRequest("댓글3", new Coordinate(15.0, 15.0, 25.0, 25.0))));
+        comments.add(Comment.of(cl2, mentee2, new CommentCreateRequest("댓글4", new Coordinate(15.0, 15.0, 25.0, 25.0))));
+        comments.add(Comment.of(resume1, mento1, new CommentCreateRequest("댓글5", new Coordinate(20.0, 20.0, 30.0, 30.0))));
+        comments.add(Comment.of(resume1, mentee1, new CommentCreateRequest("댓글6", new Coordinate(20.0, 20.0, 30.0, 30.0))));
+        comments.add(Comment.of(portfolio1, mento1, new CommentCreateRequest("댓글7", new Coordinate(25.0, 25.0, 35.0, 35.0))));
+        comments.add(Comment.of(portfolio1, mentee1, new CommentCreateRequest("댓글8", new Coordinate(25.0, 25.0, 35.0, 35.0))));
+        comments.add(Comment.of(resume2, mento2, new CommentCreateRequest("댓글9", new Coordinate(30.0, 30.0, 40.0, 40.0))));
+        comments.add(Comment.of(resume2, mentee2, new CommentCreateRequest("댓글10", new Coordinate(30.0, 30.0, 40.0, 40.0))));
+        comments.add(Comment.of(portfolio2, mento2, new CommentCreateRequest("댓글11", new Coordinate(35.0, 35.0, 45.0, 45.0))));
+        comments.add(Comment.of(portfolio2, mentee2, new CommentCreateRequest("댓글12", new Coordinate(35.0, 35.0, 45.0, 45.0))));
+        commentRepository.saveAll(comments);
 
         System.out.println("====== 더미 데이터 생성 완료 ======");
     }

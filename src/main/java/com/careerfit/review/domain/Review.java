@@ -2,8 +2,20 @@ package com.careerfit.review.domain;
 
 import com.careerfit.global.entity.TimeBaseEntity;
 import com.careerfit.member.domain.Member;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "review")
@@ -39,7 +51,12 @@ public class Review extends TimeBaseEntity {
     }
 
     public static Review create(Member mentee, Member mentor, double rating, String content) {
-        return new Review(mentee, mentor, rating, content);
+        return Review.builder()
+            .mentee(mentee)
+            .mentor(mentor)
+            .rating(rating)
+            .content(content)
+            .build();
     }
 
     public void update(Double rating, String content) {

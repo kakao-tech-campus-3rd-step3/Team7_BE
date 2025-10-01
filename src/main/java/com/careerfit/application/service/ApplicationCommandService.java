@@ -2,7 +2,11 @@ package com.careerfit.application.service;
 
 import com.careerfit.application.client.AiServerClient;
 import com.careerfit.application.domain.Application;
-import com.careerfit.application.dto.*;
+import com.careerfit.application.dto.ApplicationContentUpdateRequest;
+import com.careerfit.application.dto.ApplicationRegisterRequest;
+import com.careerfit.application.dto.ApplicationStatusUpdateRequest;
+import com.careerfit.application.dto.JobPostingAnalysisResponse;
+import com.careerfit.application.dto.JobPostingUrlRequest;
 import com.careerfit.application.exception.ApplicationErrorCode;
 import com.careerfit.application.repository.ApplicationJpaRepository;
 import com.careerfit.global.exception.ApplicationException;
@@ -26,7 +30,7 @@ public class ApplicationCommandService {
         return aiServerClient.analyzeUrl(request);
     }
 
-    public void registerApplication(ApplicationRegisterRequest request, Long memberId) {
+    public void register(ApplicationRegisterRequest request, Long memberId) {
         Member member = memberFinder.getMemberOrThrow(memberId);
 
         Application application = Application.of(request, member);
@@ -51,7 +55,7 @@ public class ApplicationCommandService {
 
     }
 
-    public void deleteApplication(Long applicationId) {
+    public void delete(Long applicationId) {
         if (!applicationJpaRepository.existsById(applicationId)) {
             throw new ApplicationException(ApplicationErrorCode.APPLICATION_NOT_FOUND);
         }
