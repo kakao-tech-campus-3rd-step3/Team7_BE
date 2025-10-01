@@ -7,9 +7,9 @@ import static com.careerfit.global.util.DocumentUtil.PORTFOLIO_PREFIX;
 import static com.careerfit.global.util.DocumentUtil.RESUME_PREFIX;
 
 import com.careerfit.attachmentfile.domain.AttachmentFile;
+import com.careerfit.attachmentfile.domain.AttachmentFileType;
 import com.careerfit.attachmentfile.dto.FileUploadRequest;
 import com.careerfit.attachmentfile.dto.PutPresignedUrlResponse;
-import com.careerfit.document.domain.DocumentType;
 import com.careerfit.global.config.AwsProperties;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -37,12 +37,12 @@ public class S3CommandService {
     // 파일 업로드
     public PutPresignedUrlResponse generatePutPresignedUrl(
         Long applicationId,
-        DocumentType documentType,
+        AttachmentFileType attachmentFileType,
         FileUploadRequest fileUploadRequest
     ) {
-        Duration expiryTime = Duration.ofMinutes(5);
+        Duration expiryTime = Duration.ofMinutes(awsProperties.s3().expiryTime());
 
-        String uniqueFileName = generateUniqueFileName(applicationId, documentType,
+        String uniqueFileName = generateUniqueFileName(applicationId, attachmentFileType,
             fileUploadRequest.documentTitle(), fileUploadRequest.fileName());
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
@@ -83,16 +83,16 @@ public class S3CommandService {
     // applications/{applicationId}/attachment-files/uuid_documentTitle_originalFileName
     private String generateUniqueFileName(
         Long applicationId,
-        DocumentType documentType,
+        AttachmentFileType attachmentFileType,
         String documentTitle,
         String originalFileName) {
 
         String uuid = UUID.randomUUID().toString();
         String result = APPLICATION_PREFIX + PATH_SEPARATOR + applicationId + PATH_SEPARATOR;
 
-        if (documentType.equals(DocumentType.PORTFOLIO)) {
+        if (attachmentFileType.equals(AttachmentFileType.PORTFOLIO)) {
             result += PORTFOLIO_PREFIX;
-        } else if (documentType.equals(DocumentType.RESUME)) {
+        } else if (attachmentFileType.equals(AttachmentFileType.RESUME)) {
             result += RESUME_PREFIX;
         }
 

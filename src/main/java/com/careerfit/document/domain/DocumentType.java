@@ -1,5 +1,5 @@
 package com.careerfit.document.domain;
 
 public enum DocumentType {
-    COVER_LETTER, ATTACHMENT_FILE, RESUME, PORTFOLIO
+    COVER_LETTER, ATTACHMENT_FILE
 }
