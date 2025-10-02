@@ -60,7 +60,7 @@ public class AttachmentFile extends Document {
         }
 
         if(documentTitle==null || documentTitle.isBlank()){
-            throw new ApplicationException(AttachmentFileErrorCode.INVALID_ATTACHMENT_FILE_TYPE);
+            throw new ApplicationException(AttachmentFileErrorCode.INVALID_DOCUMENT_TITLE);
         }
 
         if(application==null){
