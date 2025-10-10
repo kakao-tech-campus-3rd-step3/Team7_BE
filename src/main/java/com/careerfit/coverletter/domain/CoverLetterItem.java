@@ -30,10 +30,10 @@ public class CoverLetterItem {
 
     public static CoverLetterItem of(String question, String answer, int answerLimit) {
         return CoverLetterItem.builder()
-                .question(question)
-                .answer(answer)
-                .answerLimit(answerLimit)
-                .build();
+            .question(question)
+            .answer(answer)
+            .answerLimit(answerLimit)
+            .build();
     }
 
     public void setCoverLetter(CoverLetter coverLetter) {

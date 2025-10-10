@@ -24,8 +24,8 @@ public class CoverLetter extends Document {
     public static CoverLetter createCoverLetter(String title, List<CoverLetterItem> items) {
         validateItemsNull(items);
         CoverLetter coverLetter = CoverLetter.builder()
-                .title(title)
-                .build();
+            .title(title)
+            .build();
 
         items.forEach(coverLetter::addCoverLetterItem);
 

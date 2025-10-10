@@ -1,32 +1,26 @@
 package com.careerfit.auth.service;
 
-import java.util.List;
-import java.util.Set;
-
-import com.careerfit.member.domain.MentorProfile;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import com.careerfit.auth.domain.OAuthProvider;
-import com.careerfit.auth.dto.CommonSignUpRequest;
-import com.careerfit.auth.dto.MenteeSignUpRequest;
-import com.careerfit.auth.dto.MentorSignUpRequest;
-import com.careerfit.auth.dto.ReissueTokenRequest;
-import com.careerfit.auth.dto.SignUpResponse;
-import com.careerfit.auth.dto.TokenInfo;
+import com.careerfit.auth.dto.*;
 import com.careerfit.auth.exception.AuthErrorCode;
 import com.careerfit.auth.utils.JwtParser;
 import com.careerfit.auth.utils.JwtProvider;
 import com.careerfit.auth.utils.JwtValidator;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
-import com.careerfit.member.domain.MenteeProfile;
-import com.careerfit.member.domain.MentorCareer;
+import com.careerfit.member.domain.mentee.MenteeProfile;
+import com.careerfit.member.domain.mentee.MenteeWishCompany;
+import com.careerfit.member.domain.mentee.MenteeWishPosition;
+import com.careerfit.member.domain.mentor.*;
 import com.careerfit.member.repository.MemberJpaRepository;
 import com.careerfit.member.service.MemberFinder;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -46,12 +40,24 @@ public class AuthService {
 
         OAuthProvider oAuthProvider = OAuthProvider.from(commonInfo.registrationId());
 
+        List<MenteeWishCompany> wishCompanies = dto.wishCompanies().stream()
+            .map(wishCompany ->
+                MenteeWishCompany.of(wishCompany.companyName()))
+            .toList();
+
+        List<MenteeWishPosition> wishPositions = dto.wishPositions().stream()
+            .map(wishPosition ->
+                MenteeWishPosition.of(wishPosition.positionName()))
+            .toList();
+
         MenteeProfile menteeProfile = MenteeProfile.of(
             dto.university(),
             dto.major(),
             dto.graduationYear(),
-            dto.wishCompanies(),
-            dto.wishPositions());
+            wishCompanies,
+            wishPositions
+        );
+
 
         Member mentee = Member.mentee(
             commonInfo.name(),
@@ -81,17 +87,30 @@ public class AuthService {
                     career.endDate()))
             .toList();
 
+        List<MentorCertification> certifications = dto.certifications().stream()
+            .map(c -> MentorCertification.of(c.certificateName()))
+            .toList();
+
+        List<MentorEducation> educations = dto.educations().stream()
+            .map(e -> MentorEducation.of(e.schoolName(), e.major(), e.startYear(), e.endYear()))
+            .toList();
+
+
+        List<MentorExpertise> expertises = dto.expertises().stream()
+            .map(e -> MentorExpertise.of(e.expertiseName()))
+            .toList();
+
         MentorProfile mentorProfile = MentorProfile.of(
             dto.careerYears(),
             dto.currentCompany(),
             dto.currentPosition(),
             dto.employmentCertificate(),
-            dto.certifications(),
-            dto.educations(),
-            dto.expertises(),
+            certifications,
+            educations,
+            expertises,
             dto.description(),
             careers,
-            0.0 // 회원가입이기 때문에 아직 리뷰 기록이 없으므로 0.0임.
+            0.0
         );
 
         Member mentor = Member.mentor(
@@ -121,7 +140,7 @@ public class AuthService {
 
     public TokenInfo reissueTokens(ReissueTokenRequest reissueTokenRequest) {
         String refreshToken = reissueTokenRequest.refreshToken();
-        if(!jwtValidator.validateToken(refreshToken) || !refreshTokenService.existsByRefreshToken(refreshToken)){
+        if (!jwtValidator.validateToken(refreshToken) || !refreshTokenService.existsByRefreshToken(refreshToken)) {
             throw new ApplicationException(AuthErrorCode.INVALID_REFRESH_TOKEN);
         }
 
@@ -130,7 +149,7 @@ public class AuthService {
         return issueTokens(member);
     }
 
-    public void logout(Long userId){
+    public void logout(Long userId) {
         refreshTokenService.deleteByMemberId(userId);
     }
 

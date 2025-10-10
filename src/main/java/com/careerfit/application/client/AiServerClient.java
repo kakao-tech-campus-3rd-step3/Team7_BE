@@ -17,22 +17,22 @@ public class AiServerClient {
     public AiServerClient(RestClient.Builder builder,
                           @Value("${ai.server.base-url}") String baseUrl) {
         this.restClient = builder
-                .baseUrl(baseUrl)
-                .defaultStatusHandler(status -> status.is4xxClientError(), (req, res) -> {
-                    throw new ApiClientException("AI 서버 요청 시 문제가 발생했습니다: " + res.getStatusText());
-                })
-                .defaultStatusHandler(status -> status.is5xxServerError(), (req, res) -> {
-                    throw new ApiServerException("AI 서버에 문제가 발생했습니다: " + res.getStatusText());
-                })
-                .build();
+            .baseUrl(baseUrl)
+            .defaultStatusHandler(status -> status.is4xxClientError(), (req, res) -> {
+                throw new ApiClientException("AI 서버 요청 시 문제가 발생했습니다: " + res.getStatusText());
+            })
+            .defaultStatusHandler(status -> status.is5xxServerError(), (req, res) -> {
+                throw new ApiServerException("AI 서버에 문제가 발생했습니다: " + res.getStatusText());
+            })
+            .build();
     }
 
     public JobPostingAnalysisResponse analyzeUrl(JobPostingUrlRequest request) {
         return restClient.post()
-                .uri("/api/ai/analyze-url")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(request)
-                .retrieve()
-                .body(JobPostingAnalysisResponse.class);
+            .uri("/api/ai/analyze-url")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(request)
+            .retrieve()
+            .body(JobPostingAnalysisResponse.class);
     }
 }
