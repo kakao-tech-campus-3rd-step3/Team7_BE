@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/mentoring")
 @RequiredArgsConstructor
-public class MentoringCommandController {
+public class MentoringCommandController implements MentoringCommandControllerDocs {
 
     private final MentoringCommandService mentoringCommandService;
 

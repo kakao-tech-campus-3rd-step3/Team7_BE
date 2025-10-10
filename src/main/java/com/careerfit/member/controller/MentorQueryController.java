@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/mentors")
-public class MentorQueryController {
+public class MentorQueryController implements MentorQueryControllerDocs {
 
     private final MentorQueryService mentorQueryService;
 

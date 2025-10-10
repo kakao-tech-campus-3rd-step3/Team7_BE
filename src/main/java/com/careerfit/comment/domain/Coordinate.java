@@ -1,15 +1,19 @@
 package com.careerfit.comment.domain;
 
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Embeddable
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Coordinate {
 
-    private int startX;
-    private int startY;
-    private int endX;
-    private int endY;
+    private Double startX;
+    private Double startY;
+    private Double endX;
+    private Double endY;
 
 }

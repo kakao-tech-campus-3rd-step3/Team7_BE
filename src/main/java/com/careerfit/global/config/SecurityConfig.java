@@ -1,11 +1,8 @@
 package com.careerfit.global.config;
 
-import com.careerfit.auth.filter.JwtValidationFilter;
-import com.careerfit.auth.handler.CustomLogoutSuccessHandler;
-import com.careerfit.auth.handler.JwtLogoutHandler;
-import com.careerfit.auth.handler.OAuth2LoginSuccessHandler;
-import com.careerfit.auth.service.CustomOAuth2UserService;
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -26,8 +23,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.List;
+import com.careerfit.auth.filter.JwtValidationFilter;
+import com.careerfit.auth.handler.CustomLogoutSuccessHandler;
+import com.careerfit.auth.handler.JwtLogoutHandler;
+import com.careerfit.auth.handler.OAuth2LoginSuccessHandler;
+import com.careerfit.auth.service.CustomOAuth2UserService;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -36,14 +38,6 @@ import java.util.List;
 @Profile({"prod"})
 public class SecurityConfig {
 
-    private final JwtValidationFilter jwtValidationFilter;
-    private final AuthenticationEntryPoint authenticationEntryPoint;
-    private final AccessDeniedHandler accessDeniedHandler;
-    private final CustomOAuth2UserService userService;
-    private final OAuth2LoginSuccessHandler loginSuccessHandler;
-    private final JwtLogoutHandler jwtLogoutHandler;
-    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
-
     private static final String[] WHITELIST = {
         "/favicon.ico",
         "/error",
@@ -51,6 +45,19 @@ public class SecurityConfig {
         "/swagger-ui/**",
         "/swagger-ui.html"
     };
+    private static final List<String> clients =
+        List.of(
+            "http://localhost:3000",
+            "https://kareer-fit.com",
+            "https://www.kareer-fit.com"
+        );
+    private final JwtValidationFilter jwtValidationFilter;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final AccessDeniedHandler accessDeniedHandler;
+    private final CustomOAuth2UserService userService;
+    private final OAuth2LoginSuccessHandler loginSuccessHandler;
+    private final JwtLogoutHandler jwtLogoutHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -94,7 +101,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOrigins(clients);
         config.setAllowedMethods(Arrays.asList(
             HttpMethod.GET.name(),
             HttpMethod.POST.name(),

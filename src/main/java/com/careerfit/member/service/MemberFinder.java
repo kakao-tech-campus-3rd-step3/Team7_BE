@@ -51,10 +51,13 @@ public class MemberFinder {
         if (search == null || search.isBlank()) {
             return memberJpaRepository.findByMemberRoleOrderByMentorProfile_AverageRatingDesc(MemberRole.MENTOR, pageable);
         }
+        String nameSearch = search;
+        String companySearch = search;
+        String jobPositionSearch = search;
 
-        return memberJpaRepository.findDistinctByMemberRoleAndNameContainsIgnoreCaseOrMentorProfile_CompanyContainsIgnoreCaseOrMentorProfile_JobPositionContainsIgnoreCase(
+        return memberJpaRepository.findByMemberRoleAndNameContainsIgnoreCaseOrMentorProfile_CompanyContainsIgnoreCaseOrMentorProfile_JobPositionContainsIgnoreCase(
             MemberRole.MENTOR,
-            search, search, search,
+            nameSearch, companySearch, jobPositionSearch,
             pageable
         );
     }

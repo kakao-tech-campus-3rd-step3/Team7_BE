@@ -1,24 +1,30 @@
 package com.careerfit.coverletter.service;
 
 
-import com.careerfit.coverletter.domain.CoverLetter;
-import com.careerfit.coverletter.domain.CoverLetterItem;
-import com.careerfit.coverletter.dto.CoverLetterDetailResponse;
-import com.careerfit.coverletter.dto.CoverLetterListResponse;
-import com.careerfit.coverletter.repository.CoverLetterJpaRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
+import com.careerfit.coverletter.domain.CoverLetter;
+import com.careerfit.coverletter.domain.CoverLetterItem;
+import com.careerfit.coverletter.dto.CoverLetterDetailResponse;
+import com.careerfit.coverletter.dto.CoverLetterInfoResponse;
+import com.careerfit.coverletter.repository.CoverLetterJpaRepository;
+import com.careerfit.global.dto.PagedResponse;
 
 @ExtendWith(MockitoExtension.class)
 class CoverLetterQueryServiceTest {
@@ -47,7 +53,8 @@ class CoverLetterQueryServiceTest {
         given(coverLetterFinder.findCoverLetter(documentId)).willReturn(mockCoverLetter);
 
         // when
-        CoverLetterDetailResponse response = coverLetterQueryService.getCoverLetterDetail(documentId);
+        CoverLetterDetailResponse response = coverLetterQueryService.getCoverLetterDetail(
+            documentId);
 
         // then
         assertAll(
@@ -59,24 +66,31 @@ class CoverLetterQueryServiceTest {
     }
 
     @Test
-    @DisplayName("특정 지원서에 속한 자기소개서 목록 조회에 성공한다")
+    @DisplayName("특정 지원서에 속한 자기소개서 목록 페이지 조회에 성공한다")
     void getCoverLetterList() {
-        // given
         Long applicationId = 1L;
-        CoverLetter coverLetter1 = CoverLetter.createCoverLetter("자기소개서 1", List.of(CoverLetterItem.of("질문1", "답변1", 500)));
-        CoverLetter coverLetter2 = CoverLetter.createCoverLetter("자기소개서 2", List.of(CoverLetterItem.of("질문2", "답변2", 500)));
+        Pageable pageable = PageRequest.of(0, 10);
+
+        CoverLetter coverLetter1 = CoverLetter.createCoverLetter("자기소개서 1",
+            List.of(CoverLetterItem.of("질문1", "답변1", 500)));
+        CoverLetter coverLetter2 = CoverLetter.createCoverLetter("자기소개서 2",
+            List.of(CoverLetterItem.of("질문2", "답변2", 500)));
         List<CoverLetter> mockCoverLetters = List.of(coverLetter1, coverLetter2);
 
-        given(coverLetterJpaRepository.findAllByApplicationId(applicationId)).willReturn(mockCoverLetters);
+        Page<CoverLetter> mockPage = new PageImpl<>(mockCoverLetters, pageable,
+            mockCoverLetters.size());
+        given(coverLetterJpaRepository.findAllByApplicationId(applicationId, pageable)).willReturn(
+            mockPage);
 
-        // when
-        CoverLetterListResponse response = coverLetterQueryService.getCoverLetterList(applicationId);
+        PagedResponse<CoverLetterInfoResponse> response = coverLetterQueryService.getCoverLetterList(
+            applicationId, pageable);
 
-        // then
         assertAll(
-            () -> assertThat(response.coverLetters()).hasSize(2),
-            () -> assertThat(response.coverLetters().getFirst().title()).isEqualTo("자기소개서 1")
+            () -> assertThat(response.content()).hasSize(2),
+            () -> assertThat(response.content().getFirst().title()).isEqualTo("자기소개서 1"),
+            () -> assertThat(response.page()).isZero(),
+            () -> assertThat(response.totalElements()).isEqualTo(2)
         );
-        verify(coverLetterJpaRepository).findAllByApplicationId(applicationId);
+        verify(coverLetterJpaRepository).findAllByApplicationId(applicationId, pageable);
     }
 }

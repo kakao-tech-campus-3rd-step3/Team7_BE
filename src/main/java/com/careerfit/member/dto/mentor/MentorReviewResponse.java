@@ -10,6 +10,7 @@ public record MentorReviewResponse(
 ) {
 
     public record ReviewDetail(
+        Long reviewId,
         Long reviewerId,
         String reviewerName,
         double rating,

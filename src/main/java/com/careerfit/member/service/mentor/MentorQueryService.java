@@ -2,10 +2,19 @@ package com.careerfit.member.service.mentor;
 
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.mentor.MentorProfile;
-import com.careerfit.member.dto.mentor.*;
+import com.careerfit.member.dto.mentor.MentorCareerResponse;
+import com.careerfit.member.dto.mentor.MentorCertificationResponse;
+import com.careerfit.member.dto.mentor.MentorEducationResponse;
+import com.careerfit.member.dto.mentor.MentorExpertiseResponse;
+import com.careerfit.member.dto.mentor.MentorHeaderResponse;
+import com.careerfit.member.dto.mentor.MentorIntroductionResponse;
+import com.careerfit.member.dto.mentor.MentorListPageResponse;
+import com.careerfit.member.dto.mentor.MentorListResponse;
+import com.careerfit.member.dto.mentor.MentorReviewResponse;
 import com.careerfit.member.service.MemberFinder;
 import com.careerfit.review.domain.Review;
 import com.careerfit.review.repository.ReviewJpaRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,8 +22,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +32,7 @@ public class MentorQueryService {
     private final ReviewJpaRepository reviewRepository;
 
     public MentorListPageResponse getMentors(String search, int page, int size, String sortBy,
-                                             String sortOrder) {
+        String sortOrder) {
 
         Sort.Direction direction = Sort.Direction.fromString(
             sortOrder != null ? sortOrder : "DESC");
@@ -103,6 +110,7 @@ public class MentorQueryService {
 
         List<MentorReviewResponse.ReviewDetail> reviewDetails = reviews.stream()
             .map(r -> new MentorReviewResponse.ReviewDetail(
+                r.getId(),
                 r.getMentee().getId(),
                 r.getMentee().getName(),
                 r.getRating(),
