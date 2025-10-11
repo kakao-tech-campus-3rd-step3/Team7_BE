@@ -11,6 +11,7 @@ import com.careerfit.application.service.ApplicationCommandService;
 import com.careerfit.application.service.ApplicationQueryService;
 import com.careerfit.global.dto.ApiResponse;
 import jakarta.validation.Valid;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,8 +51,11 @@ public class ApplicationController implements ApplicationControllerDocs {
 
     @GetMapping
     public ResponseEntity<ApiResponse<ApplicationListResponse>> getApplicationList(
-        @RequestParam Long memberId) {
-        ApplicationListResponse response = applicationQueryService.getList(memberId);
+        @RequestParam Long memberId,
+        @RequestParam(required = false) LocalDateTime lastUpdatedAt,
+        @RequestParam(defaultValue = "10") int size) {
+        ApplicationListResponse response = applicationQueryService.getList(memberId, lastUpdatedAt,
+            size);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
