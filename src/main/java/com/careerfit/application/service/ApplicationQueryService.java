@@ -23,19 +23,19 @@ public class ApplicationQueryService {
 
     private final ApplicationJpaRepository applicationJpaRepository;
 
-    public ApplicationListResponse getList(Long memberId, LocalDateTime lastUpdatedAt, int size) {
-        Pageable pageable = PageRequest.of(0, size + 1, Sort.by("updatedAt").descending());
+    public ApplicationListResponse getList(Long memberId, LocalDateTime lastUpdatedDate, int size) {
+        Pageable pageable = PageRequest.of(0, size + 1, Sort.by("updatedDate").descending());
 
         List<Application> applications;
 
-        if (lastUpdatedAt == null) {
+        if (lastUpdatedDate == null) {
             // 첫 페이지 조회
-            applications = applicationJpaRepository.findByMemberIdOrderByUpdatedAtDesc(memberId,
+            applications = applicationJpaRepository.findByMemberIdOrderByUpdatedDateDesc(memberId,
                 pageable);
         } else {
             // 다음 페이지 조회
-            applications = applicationJpaRepository.findByMemberIdAndUpdatedAtBeforeOrderByUpdatedAtDesc(
-                memberId, lastUpdatedAt, pageable);
+            applications = applicationJpaRepository.findByMemberIdAndUpdatedDateBeforeOrderByUpdatedDateDesc(
+                memberId, lastUpdatedDate, pageable);
         }
 
         boolean hasNext = applications.size() > size;

@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ApplicationJpaRepository extends JpaRepository<Application, Long> {
 
-    List<Application> findByMemberIdOrderByUpdatedAtDesc(Long memberId, Pageable pageable);
+    List<Application> findByMemberIdOrderByUpdatedDateDesc(Long memberId, Pageable pageable);
 
-    List<Application> findByMemberIdAndUpdatedAtBeforeOrderByUpdatedAtDesc(Long memberId,
-        LocalDateTime updatedAt, Pageable pageable);
+    List<Application> findByMemberIdAndUpdatedDateBeforeOrderByUpdatedDateDesc(Long memberId,
+        LocalDateTime updatedDate, Pageable pageable);
 }

@@ -52,9 +52,10 @@ public class ApplicationController implements ApplicationControllerDocs {
     @GetMapping
     public ResponseEntity<ApiResponse<ApplicationListResponse>> getApplicationList(
         @RequestParam Long memberId,
-        @RequestParam(required = false) LocalDateTime lastUpdatedAt,
+        @RequestParam(required = false) LocalDateTime lastUpdatedDate,
         @RequestParam(defaultValue = "10") int size) {
-        ApplicationListResponse response = applicationQueryService.getList(memberId, lastUpdatedAt,
+        ApplicationListResponse response = applicationQueryService.getList(memberId,
+            lastUpdatedDate,
             size);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
