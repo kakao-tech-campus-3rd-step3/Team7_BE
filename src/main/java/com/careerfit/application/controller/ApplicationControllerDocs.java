@@ -38,7 +38,7 @@ public interface ApplicationControllerDocs {
     @Operation(summary = "지원서 목록 조회", description = "특정 회원의 전체 지원서 목록을 요약하여 조회합니다.")
     @GetMapping
     ResponseEntity<ApiResponse<ApplicationListResponse>> getApplicationList(
-        @RequestParam Long memberId, @RequestParam(required = false) LocalDateTime lastUpdatedAt,
+        @RequestParam Long memberId, @RequestParam(required = false) LocalDateTime lastUpdatedDate,
         @RequestParam(defaultValue = "10") int size);
 
     @Operation(summary = "지원서 상세 상단 정보 조회", description = "특정 지원서의 상세 페이지 상단에 표시될 주요 정보를 조회합니다.")
