@@ -32,11 +32,12 @@ if ! docker pull $DOCKER_IMAGE_NAME:$IMAGE_TAG; then
 fi
 
 echo ">>> Deploying to $TARGET_CONTAINER on port $TARGET_PORT"
-# 환경변수 직접 주입하여 docker-compose로 새 컨테이너 실행
-if ! CONTAINER_NAME=$TARGET_CONTAINER PORT_MAPPING="$TARGET_PORT:8080" docker compose --env-file .env up -d --no-deps app; then
-  echo "!!! Error: Failed to start container $TARGET_CONTAINER"
-  exit 1
-fi
+{
+  echo ""
+  echo "CONTAINER_NAME=${TARGET_CONTAINER}"
+  echo "PORT_MAPPING=${TARGET_PORT}:8080"
+} >> .env
+docker compose --env-file .env up -d
 
 echo ">>> Health check for new container..."
 # 10번 시도, 5초 간격으로 Health Check
