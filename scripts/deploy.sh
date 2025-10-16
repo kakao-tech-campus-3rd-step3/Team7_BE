@@ -31,8 +31,8 @@ fi
 echo ">>> Health check for new container..."
 # 10번 시도, 5초 간격으로 Health Check
 for i in {1..10}; do
-  # curl 응답에서 "UP"이라는 문자열이 있는지 확인하여 성공 여부를 결정 - Spring Acutator 사용 시 응답 형식에 맞춤
-  HEALTH_CHECK_RESPONSE=$(curl -s http://127.0.0.1:$TARGET_PORT/health)
+  # curl 응답에서 "UP"이라는 문자열이 있는지 확인하여 성공 여부를 결정 - Spring Actuator 사용 시 응답 형식에 맞춤
+  HEALTH_CHECK_RESPONSE=$(curl -s --max-time 5 http://127.0.0.1:$TARGET_PORT/health)
   if echo "$HEALTH_CHECK_RESPONSE" | grep -q '"status":"UP"'; then
     echo ">>> Health check successful!"
     
