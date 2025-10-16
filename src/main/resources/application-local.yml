@@ -10,7 +10,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
@@ -38,3 +38,7 @@ cloud:
       expiry-time: ${EXPIRY_TIME}
     region:
       region-value: ap-northeast-2
+
+kareer-fit:
+  dummy:
+    enabled: ${DUMMY_ENABLED:false}
