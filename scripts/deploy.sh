@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 # 현재 활성화된 포트 확인 (Nginx 설정 파일 조회)
 CURRENT_PORT=$(grep -oP '(?<=:)\d+' /etc/nginx/proxy_pass.conf)
 
