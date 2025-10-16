@@ -1,7 +1,17 @@
 #!/bin/bash
 set -e
 # 현재 활성화된 포트 확인 (Nginx 설정 파일 조회)
+# 현재 활성화된 포트 확인 (Nginx 설정 파일 조회)
+if [ ! -f /etc/nginx/proxy_pass.conf ]; then
+  echo ">>> Initial deployment detected. Setting up port 8080 as active."
+  sudo sh -c "echo 'proxy_pass http://127.0.0.1:8080;' > /etc/nginx/proxy_pass.conf"
+fi
+
 CURRENT_PORT=$(grep -oP '(?<=:)\d+' /etc/nginx/proxy_pass.conf)
+if [ -z "$CURRENT_PORT" ]; then
+  echo "!!! Error: Could not determine current port from /etc/nginx/proxy_pass.conf"
+  exit 1
+fi
 
 if [ "$CURRENT_PORT" == "8080" ]; then
   # 현재 Blue(8080)가 활성화 상태 -> Green(8081)으로 배포
