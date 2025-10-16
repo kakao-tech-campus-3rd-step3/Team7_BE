@@ -16,7 +16,10 @@ else
 fi
 
 echo ">>> New Docker Image Pull"
-docker pull $DOCKER_IMAGE_NAME:$IMAGE_TAG
+if ! docker pull $DOCKER_IMAGE_NAME:$IMAGE_TAG; then
+  echo "!!! Error: Failed to pull Docker image $DOCKER_IMAGE_NAME:$IMAGE_TAG"
+  exit 1
+fi
 
 echo ">>> Deploying to $TARGET_CONTAINER on port $TARGET_PORT"
 # 환경변수 직접 주입하여 docker-compose로 새 컨테이너 실행
