@@ -45,6 +45,8 @@ services:
       - "6379:6379"
     networks:
       - career-fit-net
+    volumes:
+      - redis-data:/data
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
@@ -57,3 +59,4 @@ networks:
 
 volumes:
   db-data:
+  redis-data:
