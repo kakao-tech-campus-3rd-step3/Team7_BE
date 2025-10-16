@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-# 현재 활성화된 포트 확인 (Nginx 설정 파일 조회)
+
 # 현재 활성화된 포트 확인 (Nginx 설정 파일 조회)
 if [ ! -f /etc/nginx/proxy_pass.conf ]; then
   echo ">>> Initial deployment detected. Setting up port 8080 as active."
@@ -51,10 +51,15 @@ for i in {1..10}; do
     sudo sh -c "echo 'proxy_pass http://127.0.0.1:$TARGET_PORT;' > /etc/nginx/proxy_pass.conf"
     sudo nginx -s reload
     
-    echo ">>> Stopping old container: $OLD_CONTAINER"
-    # 이전 컨테이너 중지
-    docker stop $OLD_CONTAINER
-    docker rm $OLD_CONTAINER
+    echo ">>> Attempting to stop old container: $OLD_CONTAINER"
+    # 이전 컨테이너가 존재하는지 확인 후 중지 및 제거
+    if [ -n "$(docker ps -a -q -f name=$OLD_CONTAINER)" ]; then
+      echo ">>> Stopping and removing old container: $OLD_CONTAINER"
+      docker stop $OLD_CONTAINER
+      docker rm $OLD_CONTAINER
+    else
+      echo ">>> Old container $OLD_CONTAINER not found, skipping cleanup."
+    fi
     
     exit 0
   fi
