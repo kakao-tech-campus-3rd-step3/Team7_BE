@@ -47,4 +47,7 @@ for i in {1..10}; do
 done
 
 echo "!!! Deployment failed: Health check timed out."
+echo ">>> Stopping and removing failed container: $TARGET_CONTAINER"
+docker stop $TARGET_CONTAINER
+docker rm $TARGET_CONTAINER
 exit 1
