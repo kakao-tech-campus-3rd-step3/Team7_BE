@@ -1,10 +1,10 @@
 package com.careerfit.attachmentfile.dto;
 
 import com.careerfit.attachmentfile.domain.AttachmentFile;
-import com.careerfit.document.domain.DocumentType;
+import com.careerfit.attachmentfile.domain.AttachmentFileType;
 
 public record FileInfoResponse(
-    DocumentType attachmentFileType,
+    AttachmentFileType attachmentFileType,
     Long id,
     String originalFileName,
     String storedFilePath,
@@ -27,7 +27,7 @@ public record FileInfoResponse(
     }
 
     // presignedUrl 발급용
-    public static FileInfoResponse withPresignedUrl(AttachmentFile attachmentFile, String presignedUrl){
+    public static FileInfoResponse withPresignedUrl(AttachmentFile attachmentFile, String presignedUrl) {
         return new FileInfoResponse(
             attachmentFile.getAttachmentFileType(),
             attachmentFile.getId(),

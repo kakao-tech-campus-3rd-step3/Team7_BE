@@ -1,14 +1,18 @@
 package com.careerfit.coverletter.service;
 
-import com.careerfit.coverletter.domain.CoverLetter;
-import com.careerfit.coverletter.dto.CoverLetterDetailResponse;
-import com.careerfit.coverletter.dto.CoverLetterListResponse;
-import com.careerfit.coverletter.repository.CoverLetterJpaRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.careerfit.coverletter.domain.CoverLetter;
+import com.careerfit.coverletter.dto.CoverLetterDetailResponse;
+import com.careerfit.coverletter.dto.CoverLetterInfoResponse;
+import com.careerfit.coverletter.repository.CoverLetterJpaRepository;
+import com.careerfit.global.dto.PagedResponse;
+
+import lombok.RequiredArgsConstructor;
+
 
 @Service
 @RequiredArgsConstructor
@@ -20,12 +24,14 @@ public class CoverLetterQueryService {
 
     public CoverLetterDetailResponse getCoverLetterDetail(Long documentId) {
         CoverLetter coverLetter = coverLetterFinder.findCoverLetter(documentId);
-        return CoverLetterDetailResponse.of(coverLetter.getTitle(), coverLetter.getCoverLetterItems());
+        return CoverLetterDetailResponse.of(coverLetter.getTitle(),
+            coverLetter.getCoverLetterItems());
     }
 
-    public CoverLetterListResponse getCoverLetterList(Long applicationId) {
-        List<CoverLetter> coverLetters = coverLetterJpaRepository.findAllByApplicationId(
-            applicationId);
-        return CoverLetterListResponse.of(coverLetters);
+    public PagedResponse<CoverLetterInfoResponse> getCoverLetterList(Long applicationId,
+        Pageable pageable) {
+        Page<CoverLetter> coverLetters = coverLetterJpaRepository.findAllByApplicationId(
+            applicationId, pageable);
+        return PagedResponse.of(coverLetters, CoverLetterInfoResponse::from);
     }
 }
