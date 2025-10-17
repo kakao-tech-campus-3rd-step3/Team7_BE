@@ -70,9 +70,9 @@ public class AuthService {
         );
 
         Member mentee = Member.mentee(
-            commonInfo.name(),
             commonInfo.email(),
             commonInfo.phoneNumber(),
+            commonInfo.name(),
             commonInfo.profileImage(),
             oAuthProvider,
             commonInfo.oauthId(),
@@ -123,9 +123,9 @@ public class AuthService {
         );
 
         Member mentor = Member.mentor(
-            commonInfo.name(),
             commonInfo.email(),
             commonInfo.phoneNumber(),
+            commonInfo.name(),
             commonInfo.profileImage(),
             oAuthProvider,
             commonInfo.oauthId(),
