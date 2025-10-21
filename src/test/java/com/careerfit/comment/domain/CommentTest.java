@@ -44,7 +44,7 @@ class CommentTest {
         application.addDocument(document);
 
         Coordinate coordinate = new Coordinate(10.0, 20.0, 30.0, 40.0);
-        commentCreateRequest = new CommentCreateRequest("테스트 댓글 내용입니다.", coordinate);
+        commentCreateRequest = new CommentCreateRequest("테스트 댓글 내용입니다.", coordinate, 1);
     }
 
     @Test

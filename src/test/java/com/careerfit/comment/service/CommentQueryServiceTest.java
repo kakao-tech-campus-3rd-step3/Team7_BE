@@ -63,11 +63,11 @@ class CommentQueryServiceTest {
         document.setApplication(application);
 
         Coordinate coordinate1 = new Coordinate(10.0, 20.0, 30.0, 40.0);
-        CommentCreateRequest request1 = new CommentCreateRequest("첫번째 댓글", coordinate1);
+        CommentCreateRequest request1 = new CommentCreateRequest("첫번째 댓글", coordinate1, 1);
         comment1 = Comment.of(document, mentee, request1);
 
         Coordinate coordinate2 = new Coordinate(50.0, 60.0, 70.0, 80.0);
-        CommentCreateRequest request2 = new CommentCreateRequest("두번째 댓글", coordinate2);
+        CommentCreateRequest request2 = new CommentCreateRequest("두번째 댓글", coordinate2, 2);
         comment2 = Comment.of(document, mentee, request2);
     }
 
