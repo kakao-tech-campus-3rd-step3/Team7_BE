@@ -1,6 +1,7 @@
 package com.careerfit.comment.domain;
 
 import com.careerfit.comment.dto.CommentCreateRequest;
+import com.careerfit.comment.dto.CommentUpdateRequest;
 import com.careerfit.document.domain.Document;
 import com.careerfit.global.entity.TimeBaseEntity;
 import com.careerfit.member.domain.Member;
@@ -57,12 +58,14 @@ public class Comment extends TimeBaseEntity {
             .build();
     }
 
-    public void updateContent(String content, Integer page) {
-        if (content != null) {
-            this.content = content;
+    public void updateContent(CommentUpdateRequest request) {
+        // update 로직이 수정
+        // CommentUpdateRequest에서 content, page에 null이 아닌 값을 전달한 경우에만 update
+        if (request.content() != null) {
+            this.content = request.content();
         }
-        if (page != null) {
-            this.page = page;
+        if (request.page() != null) {
+            this.page = request.page();
         }
     }
 }

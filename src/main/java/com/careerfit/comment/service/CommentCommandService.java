@@ -42,7 +42,7 @@ public class CommentCommandService {
         CommentUpdateRequest request
     ) {
         Comment comment = commentFinder.findCommentOrThrow(commentId);
-        comment.updateContent(request.content(), request.page());
+        comment.updateContent(request);
         return CommentInfoResponse.from(comment);
     }
 
