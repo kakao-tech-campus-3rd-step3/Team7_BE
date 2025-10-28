@@ -1,15 +1,5 @@
 package com.careerfit.global.initializer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.careerfit.application.domain.Application;
 import com.careerfit.application.domain.ApplicationStatus;
 import com.careerfit.application.repository.ApplicationJpaRepository;
@@ -26,15 +16,21 @@ import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.mentee.MenteeProfile;
 import com.careerfit.member.domain.mentee.MenteeWishCompany;
 import com.careerfit.member.domain.mentee.MenteeWishPosition;
-import com.careerfit.member.domain.mentor.MentorCareer;
-import com.careerfit.member.domain.mentor.MentorCertification;
-import com.careerfit.member.domain.mentor.MentorEducation;
-import com.careerfit.member.domain.mentor.MentorExpertise;
-import com.careerfit.member.domain.mentor.MentorProfile;
+import com.careerfit.member.domain.mentor.*;
 import com.careerfit.member.repository.MemberJpaRepository;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 @Component
 @Profile({"local", "prod"})
@@ -45,6 +41,21 @@ public class DataInitializer implements CommandLineRunner {
     private final MemberJpaRepository memberRepository;
     private final ApplicationJpaRepository applicationRepository;
     private final CommentRepository commentRepository;
+
+    //////// 추가 시작 /////////////
+    private final EntityManager entityManager;
+    private void persistBatch(List<Member> members) {
+        for (Member member : members) {
+            entityManager.persist(member);
+        }
+        entityManager.flush();
+        entityManager.clear();
+        members.clear();
+    }
+
+    private String randomPhone(Random rnd) {
+        return "010-" + String.format("%04d", rnd.nextInt(10000)) + "-" + String.format("%04d", rnd.nextInt(10000));
+    }
 
     @Override
     @Transactional
@@ -128,6 +139,90 @@ public class DataInitializer implements CommandLineRunner {
         Member mentee2 = Member.mentee("mentee2@gmail.com", "010-4444-4444", "박영희", null,
             OAuthProvider.KAKAO, "oauth_id_4", menteeProfile2);
         memberRepository.saveAll(List.of(mento1, mento2, mentee1, mentee2));
+
+//        System.out.println("=== 대규모 더미 데이터 삽입 시작 ===");
+//
+//        String[] companies = {"Naver","Kakao","Coupang","Samsung","LG","Line","Toss","Baemin","Netflix","Google"};
+//        String[] positions = {"백엔드 개발자","프론트엔드 개발자","데이터 엔지니어","AI 엔지니어","모바일 개발자","DevOps 엔지니어"};
+//        String[] majors = {"컴퓨터공학과","소프트웨어학과","데이터사이언스","정보보호학과","전자공학과","인공지능학과"};
+//        String[] certs = {"정보처리기사","SQLD","ADsP","빅데이터분석기사","리눅스마스터","네트워크관리사"};
+//        String[] expertises = {"Java","Spring Boot","React","TypeScript","AWS","Docker","Kotlin","Python","TensorFlow","Node.js"};
+//        String[] universities = {"서울대학교","연세대학교","고려대학교","한양대학교","성균관대학교","KAIST","POSTECH","부산대학교","경북대학교","중앙대학교"};
+//        String[] familyNames = {"김","이","박","최","정","강","조","윤","임","한"};
+//        String[] givenNames1 = {"민","서","지","하","도","유","현","수","예","준"};
+//        String[] givenNames2 = {"준","연","우","윤","아","진","현","영","원","빈"};
+//
+//        Random rnd = new Random();
+//        List<Member> bulkMembers = new ArrayList<>();
+//        int oauthCounter = 5;
+//        int batchSize = 2000;
+//        int totalCount = 1_000_000;
+//
+//        for (int i = 5; i <= totalCount; i++) {
+//            String company = companies[rnd.nextInt(companies.length)];
+//            String position = positions[rnd.nextInt(positions.length)];
+//            String major = majors[rnd.nextInt(majors.length)];
+//            int careerYear = rnd.nextInt(15) + 1;
+//
+//            MentorProfile mentorProfile = MentorProfile.of(
+//                    careerYear, company, position,
+//                    "path/to/cert" + i + ".pdf",
+//                    List.of(MentorCertification.of(certs[rnd.nextInt(certs.length)])),
+//                    List.of(MentorEducation.of(universities[rnd.nextInt(universities.length)], major, 2000 + rnd.nextInt(10), 2005 + rnd.nextInt(5))),
+//                    List.of(MentorExpertise.of(expertises[rnd.nextInt(expertises.length)])),
+//                    company + "에서 근무 중인 " + position + "입니다.",
+//                    List.of(MentorCareer.of(company, position, "2010-01", "현재")),
+//                    0.0
+//            );
+//
+//            String mentorName = familyNames[rnd.nextInt(familyNames.length)] +
+//                    givenNames1[rnd.nextInt(givenNames1.length)] +
+//                    givenNames2[rnd.nextInt(givenNames2.length)];
+//
+//            Member mentor = Member.mentor(
+//                    "mentor" + i + "@test.com",
+//                    randomPhone(rnd),
+//                    mentorName, null, OAuthProvider.KAKAO,
+//                    "oauth_id_" + oauthCounter++, mentorProfile
+//            );
+//
+//            MenteeProfile menteeProfile = MenteeProfile.of(
+//                    universities[rnd.nextInt(universities.length)],
+//                    majors[rnd.nextInt(majors.length)],
+//                    2025 + rnd.nextInt(4),
+//                    List.of(MenteeWishCompany.of(companies[rnd.nextInt(companies.length)])),
+//                    List.of(MenteeWishPosition.of(positions[rnd.nextInt(positions.length)]))
+//            );
+//
+//            String menteeName = familyNames[rnd.nextInt(familyNames.length)] +
+//                    givenNames1[rnd.nextInt(givenNames1.length)] +
+//                    givenNames2[rnd.nextInt(givenNames2.length)];
+//
+//            Member mentee = Member.mentee(
+//                    "mentee" + i + "@test.com",
+//                    randomPhone(rnd),
+//                    menteeName, null, OAuthProvider.KAKAO,
+//                    "oauth_id_" + oauthCounter++, menteeProfile
+//            );
+//
+//            bulkMembers.add(mentor);
+//            bulkMembers.add(mentee);
+//
+//            if (bulkMembers.size() >= batchSize) {
+//                persistBatch(bulkMembers);
+//                if (i % 100_000 == 0) {
+//                    System.out.printf("%,d명 저장 완료%n", i * 2);
+//                }
+//            }
+//        }
+//
+//        if (!bulkMembers.isEmpty()) {
+//            persistBatch(bulkMembers);
+//        }
+//
+//        System.out.println("총 100만 건의 멤버 데이터 삽입 완료");
+
+
 
         // 3. 멘티의 지원서(Application) 생성
         Application app1 = createApplication("카카오", "2025 신입 백엔드 개발자", mentee1,
