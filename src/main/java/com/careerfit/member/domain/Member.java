@@ -12,7 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "member")
+@Table(name = "member", indexes = {
+        @Index(name = "idx_member_role", columnList = "member_role"),
+        @Index(name = "idx_member_name", columnList = "name")
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
@@ -33,6 +36,9 @@ public class Member extends TimeBaseEntity {
     private String phoneNumber;
 
     private String profileImageUrl;
+
+    @Column(name = "search_text", length = 500)
+    private String searchText;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -69,7 +75,9 @@ public class Member extends TimeBaseEntity {
             .build();
 
         member.setMemberProfile(mentorProfile);
-
+        if (mentorProfile != null) {
+            member.updateSearchText(mentorProfile.getCompany(), mentorProfile.getJobPosition());
+        }
         return member;
     }
 
@@ -108,6 +116,17 @@ public class Member extends TimeBaseEntity {
         if (profileImageUrl != null) {
             this.profileImageUrl = profileImageUrl;
         }
+    }
+    public void updateSearchText(String company, String jobPosition) {
+        if (!this.isMentor()) {
+            return;
+        }
+
+        this.searchText = String.join(" ",
+                this.name != null ? this.name : "",
+                company != null ? company : "",
+                jobPosition != null ? jobPosition : ""
+        ).trim();
     }
 
     public boolean isMentor() {

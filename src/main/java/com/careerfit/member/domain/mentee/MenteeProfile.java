@@ -4,9 +4,12 @@ import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.MemberProfile;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "mentee_profile")
@@ -27,11 +30,13 @@ public class MenteeProfile implements MemberProfile {
 
     private Integer graduationYear;
 
-    @OneToMany(mappedBy = "menteeProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "menteeProfile", cascade = {CascadeType.PERSIST,CascadeType.MERGE}, orphanRemoval = true)
+    @BatchSize(size=200)
     @Builder.Default
     private List<MenteeWishCompany> wishCompanies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "menteeProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "menteeProfile", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @BatchSize(size=200)
     @Builder.Default
     private List<MenteeWishPosition> wishPositions = new ArrayList<>();
 
@@ -78,13 +83,44 @@ public class MenteeProfile implements MemberProfile {
         if (graduationYear != null) this.graduationYear = graduationYear;
 
         if (wishCompanies != null) {
-            this.wishCompanies.clear();
-            wishCompanies.forEach(this::addWishCompany);
+            updateWishCompanies(wishCompanies);
         }
 
         if (wishPositions != null) {
-            this.wishPositions.clear();
-            wishPositions.forEach(this::addWishPosition);
+            updateWishPositions(wishPositions);
         }
+    }
+
+    private void updateWishCompanies(List<MenteeWishCompany> newCompanies) {
+
+        Set<String> existing = this.wishCompanies.stream()
+                .map(MenteeWishCompany::getCompanyName)
+                .collect(Collectors.toSet());
+
+        Set<String> incoming = newCompanies.stream()
+                .map(MenteeWishCompany::getCompanyName)
+                .collect(Collectors.toSet());
+
+        this.wishCompanies.removeIf(company -> !incoming.contains(company.getCompanyName()));
+
+        newCompanies.stream()
+                .filter(newCompany -> !existing.contains(newCompany.getCompanyName()))
+                .forEach(this::addWishCompany);
+    }
+
+    private void updateWishPositions(List<MenteeWishPosition> newPositions) {
+        Set<String> existing = this.wishPositions.stream()
+                .map(MenteeWishPosition::getPositionName)
+                .collect(Collectors.toSet());
+
+        Set<String> incoming = newPositions.stream()
+                .map(MenteeWishPosition::getPositionName)
+                .collect(Collectors.toSet());
+
+        this.wishPositions.removeIf(position -> !incoming.contains(position.getPositionName()));
+
+        newPositions.stream()
+                .filter(newPosition -> !existing.contains(newPosition.getPositionName()))
+                .forEach(this::addWishPosition);
     }
 }
