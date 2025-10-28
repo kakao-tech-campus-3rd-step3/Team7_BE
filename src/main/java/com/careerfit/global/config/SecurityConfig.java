@@ -1,8 +1,11 @@
 package com.careerfit.global.config;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.careerfit.auth.filter.JwtValidationFilter;
+import com.careerfit.auth.handler.CustomLogoutSuccessHandler;
+import com.careerfit.auth.handler.JwtLogoutHandler;
+import com.careerfit.auth.handler.OAuth2LoginSuccessHandler;
+import com.careerfit.auth.service.CustomOAuth2UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -23,13 +26,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.careerfit.auth.filter.JwtValidationFilter;
-import com.careerfit.auth.handler.CustomLogoutSuccessHandler;
-import com.careerfit.auth.handler.JwtLogoutHandler;
-import com.careerfit.auth.handler.OAuth2LoginSuccessHandler;
-import com.careerfit.auth.service.CustomOAuth2UserService;
-
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity

@@ -1,17 +1,5 @@
 package com.careerfit.coverletter.controller;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.careerfit.coverletter.dto.CoverLetterDetailResponse;
 import com.careerfit.coverletter.dto.CoverLetterInfoResponse;
 import com.careerfit.coverletter.dto.CoverLetterRegisterRequest;
@@ -19,9 +7,13 @@ import com.careerfit.coverletter.service.CoverLetterCommandService;
 import com.careerfit.coverletter.service.CoverLetterQueryService;
 import com.careerfit.global.dto.ApiResponse;
 import com.careerfit.global.dto.PagedResponse;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/applications/{applicationId}/cover-letters")

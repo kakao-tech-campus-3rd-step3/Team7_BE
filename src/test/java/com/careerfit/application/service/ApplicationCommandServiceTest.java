@@ -1,21 +1,22 @@
 package com.careerfit.application.service;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-
 import com.careerfit.application.domain.Application;
 import com.careerfit.application.dto.ApplicationRegisterRequest;
 import com.careerfit.application.repository.ApplicationJpaRepository;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.service.MemberFinder;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDateTime;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ApplicationCommandService 단위 테스트")

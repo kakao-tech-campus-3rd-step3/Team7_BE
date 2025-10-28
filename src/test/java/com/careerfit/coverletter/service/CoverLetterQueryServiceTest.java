@@ -1,13 +1,12 @@
 package com.careerfit.coverletter.service;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-
-import java.util.List;
-
+import com.careerfit.coverletter.domain.CoverLetter;
+import com.careerfit.coverletter.domain.CoverLetterItem;
+import com.careerfit.coverletter.dto.CoverLetterDetailResponse;
+import com.careerfit.coverletter.dto.CoverLetterInfoResponse;
+import com.careerfit.coverletter.repository.CoverLetterJpaRepository;
+import com.careerfit.global.dto.PagedResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,12 +18,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import com.careerfit.coverletter.domain.CoverLetter;
-import com.careerfit.coverletter.domain.CoverLetterItem;
-import com.careerfit.coverletter.dto.CoverLetterDetailResponse;
-import com.careerfit.coverletter.dto.CoverLetterInfoResponse;
-import com.careerfit.coverletter.repository.CoverLetterJpaRepository;
-import com.careerfit.global.dto.PagedResponse;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CoverLetterQueryServiceTest {
