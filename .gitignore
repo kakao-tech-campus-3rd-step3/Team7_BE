@@ -38,6 +38,4 @@ out/
 
 ### env ###
 *.env*
-
-### Performance Test ###
-k6-tests/
+/k6-tests
