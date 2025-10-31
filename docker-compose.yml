@@ -58,8 +58,10 @@ services:
     container_name: career-fit-mysql-exporter
     ports:
       - "9104:9104"
+    environment:
+      - MYSQLD_EXPORTER_PASSWORD=${DB_PASSWORD}
     command:
-      - "--mysqld.username=${DB_USER}:${DB_PASSWORD}"
+      - "--mysqld.username=${DB_USER}"
       - "--mysqld.address=career-fit-mysql:3306"
     networks:
       - career-fit-net
