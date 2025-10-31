@@ -89,6 +89,9 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.external-url=https://api.kareer-fit.com/prometheus'
     networks:
       - career-fit-net
 
@@ -98,6 +101,7 @@ services:
     ports:
       - "3000:3000"
     environment:
+      - GF_SERVER_ROOT_URL=https://api.kareer-fit.com/grafana
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
       - GF_INSTALL_PLUGINS=
