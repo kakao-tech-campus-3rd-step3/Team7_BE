@@ -13,8 +13,8 @@ scrape_configs:
 
   - job_name: 'redis'
     static_configs:
-      - targets: [ 'redis-exporter:9121' ]
+      - targets: [ 'career-fit-redis-exporter:9121' ]
 
   - job_name: 'mysql'
     static_configs:
-      - targets: [ 'mysql-exporter:9104' ]
+      - targets: [ 'career-fit-mysql-exporter:9104' ]
