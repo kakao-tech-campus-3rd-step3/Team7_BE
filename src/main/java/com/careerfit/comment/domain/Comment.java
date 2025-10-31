@@ -1,10 +1,20 @@
 package com.careerfit.comment.domain;
 
 import com.careerfit.comment.dto.CommentCreateRequest;
+import com.careerfit.comment.dto.CommentUpdateRequest;
 import com.careerfit.document.domain.Document;
 import com.careerfit.global.entity.TimeBaseEntity;
 import com.careerfit.member.domain.Member;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +34,9 @@ public class Comment extends TimeBaseEntity {
     private String content;
 
     @Column(nullable = false)
+    private Integer page;
+
+    @Column(nullable = false)
     @Embedded
     private Coordinate coordinate;
 
@@ -39,12 +52,20 @@ public class Comment extends TimeBaseEntity {
         return Comment.builder()
             .content(request.content())
             .coordinate(request.coordinate())
+            .page(request.page())
             .member(member)
             .document(document)
             .build();
     }
 
-    public void updateContent(String content) {
-        this.content = content;
+    public void updateContent(CommentUpdateRequest request) {
+        // update 로직이 수정
+        // CommentUpdateRequest에서 content, page에 null이 아닌 값을 전달한 경우에만 update
+        if (request.content() != null) {
+            this.content = request.content();
+        }
+        if (request.page() != null) {
+            this.page = request.page();
+        }
     }
 }

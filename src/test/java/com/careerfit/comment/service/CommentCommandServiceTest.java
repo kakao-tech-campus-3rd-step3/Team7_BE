@@ -73,7 +73,7 @@ class CommentCommandServiceTest {
         application.addDocument(document);
 
         Coordinate coordinate = new Coordinate(10.0, 20.0, 30.0, 40.0);
-        CommentCreateRequest request = new CommentCreateRequest("기존 댓글 내용", coordinate);
+        CommentCreateRequest request = new CommentCreateRequest("기존 댓글 내용", coordinate, 1);
         comment = Comment.of(document, mentee, request);
     }
 
@@ -84,7 +84,7 @@ class CommentCommandServiceTest {
         Long documentId = 1L;
         Long memberId = 1L;
         Coordinate coordinate = new Coordinate(10.0, 20.0, 30.0, 40.0);
-        CommentCreateRequest request = new CommentCreateRequest("새로운 댓글 내용", coordinate);
+        CommentCreateRequest request = new CommentCreateRequest("새로운 댓글 내용", coordinate, 1);
 
         when(documentFinder.findDocumentOrThrow(documentId)).thenReturn(document);
         when(memberFinder.getMemberOrThrow(memberId)).thenReturn(mentee);
@@ -109,7 +109,7 @@ class CommentCommandServiceTest {
         // given
         Long commentId = 1L;
         Long memberId = 1L;
-        CommentUpdateRequest request = new CommentUpdateRequest("수정된 댓글 내용");
+        CommentUpdateRequest request = new CommentUpdateRequest("수정된 댓글 내용", null);
 
         when(commentFinder.findCommentOrThrow(commentId)).thenReturn(comment);
 
