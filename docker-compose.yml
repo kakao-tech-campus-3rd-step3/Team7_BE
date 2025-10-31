@@ -17,7 +17,7 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: mysql-db
+    container_name: career-fit-mysql
     ports:
       - "3306:3306"
     environment:
@@ -40,7 +40,7 @@ services:
 
   redis:
     image: redis:latest
-    container_name: redis-cache
+    container_name: career-fit-redis
     ports:
       - "6379:6379"
     volumes:
@@ -53,6 +53,55 @@ services:
       timeout: 5s
       retries: 5
 
+  mysql-exporter:
+    image: prom/mysqld-exporter:latest
+    container_name: career-fit-mysql-exporter
+    ports:
+      - "9104:9104"
+    command:
+      - "--mysqld.username=${DB_USER}:${DB_PASSWORD}"
+      - "--mysqld.address=career-fit-mysql:3306"
+    networks:
+      - career-fit-net
+    depends_on:
+      - db
+    restart: always
+
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    container_name: career-fit-redis-exporter
+    environment:
+      - REDIS_ADDR=redis://career-fit-redis:6379
+    ports:
+      - "9121:9121"
+    networks:
+      - career-fit-net
+    depends_on:
+      - redis
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: career-fit-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - career-fit-net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: career-fit-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - career-fit-net
+    depends_on:
+      - prometheus
+
 networks:
   career-fit-net:
     driver: bridge
@@ -60,3 +109,4 @@ networks:
 volumes:
   db-data:
   redis-data:
+  grafana-storage:
