@@ -1,8 +1,8 @@
 package com.careerfit.coverletter.dto;
 
-import java.util.List;
-
 import com.careerfit.coverletter.domain.CoverLetterItem;
+
+import java.util.List;
 
 public record CoverLetterDetailResponse(
     String title,

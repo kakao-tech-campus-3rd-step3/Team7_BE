@@ -1,17 +1,15 @@
 package com.careerfit.coverletter.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.careerfit.coverletter.domain.CoverLetter;
 import com.careerfit.coverletter.dto.CoverLetterDetailResponse;
 import com.careerfit.coverletter.dto.CoverLetterInfoResponse;
 import com.careerfit.coverletter.repository.CoverLetterJpaRepository;
 import com.careerfit.global.dto.PagedResponse;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
