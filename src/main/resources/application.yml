@@ -10,7 +10,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -42,15 +42,18 @@ cloud:
 kareer-fit:
   dummy:
     enabled: ${DUMMY_ENABLED:false}
+  oauth:
+    redirect-url: ${OAUTH_REDIRECT_URL:https://kareer-fit.com/auth/redirect}
 
 management:
   endpoints:
     web:
       base-path: /
       exposure:
-        include: health
+        include: "health, prometheus"
       path-mapping:
         health: health
+        prometheus: actuator/prometheus
 
 server:
   forward-headers-strategy: native

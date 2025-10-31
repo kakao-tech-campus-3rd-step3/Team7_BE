@@ -1,7 +1,19 @@
 package com.careerfit.auth.service;
 
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import com.careerfit.auth.domain.OAuthProvider;
-import com.careerfit.auth.dto.*;
+import com.careerfit.auth.dto.CommonSignUpRequest;
+import com.careerfit.auth.dto.MenteeSignUpRequest;
+import com.careerfit.auth.dto.MentorSignUpRequest;
+import com.careerfit.auth.dto.ReissueTokenRequest;
+import com.careerfit.auth.dto.SignUpResponse;
+import com.careerfit.auth.dto.TokenInfo;
 import com.careerfit.auth.exception.AuthErrorCode;
 import com.careerfit.auth.utils.JwtParser;
 import com.careerfit.auth.utils.JwtProvider;
@@ -11,16 +23,15 @@ import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.mentee.MenteeProfile;
 import com.careerfit.member.domain.mentee.MenteeWishCompany;
 import com.careerfit.member.domain.mentee.MenteeWishPosition;
-import com.careerfit.member.domain.mentor.*;
+import com.careerfit.member.domain.mentor.MentorCareer;
+import com.careerfit.member.domain.mentor.MentorCertification;
+import com.careerfit.member.domain.mentor.MentorEducation;
+import com.careerfit.member.domain.mentor.MentorExpertise;
+import com.careerfit.member.domain.mentor.MentorProfile;
 import com.careerfit.member.repository.MemberJpaRepository;
 import com.careerfit.member.service.MemberFinder;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-import java.util.Set;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -58,11 +69,10 @@ public class AuthService {
             wishPositions
         );
 
-
         Member mentee = Member.mentee(
-            commonInfo.name(),
             commonInfo.email(),
             commonInfo.phoneNumber(),
+            commonInfo.name(),
             commonInfo.profileImage(),
             oAuthProvider,
             commonInfo.oauthId(),
@@ -95,7 +105,6 @@ public class AuthService {
             .map(e -> MentorEducation.of(e.schoolName(), e.major(), e.startYear(), e.endYear()))
             .toList();
 
-
         List<MentorExpertise> expertises = dto.expertises().stream()
             .map(e -> MentorExpertise.of(e.expertiseName()))
             .toList();
@@ -114,9 +123,9 @@ public class AuthService {
         );
 
         Member mentor = Member.mentor(
-            commonInfo.name(),
             commonInfo.email(),
             commonInfo.phoneNumber(),
+            commonInfo.name(),
             commonInfo.profileImage(),
             oAuthProvider,
             commonInfo.oauthId(),
@@ -128,11 +137,11 @@ public class AuthService {
         return SignUpResponse.of(mentor.getId(), tokenInfo);
     }
 
-    public TokenInfo issueTokens(Member mentor) {
-        String accessToken = jwtProvider.createAccessToken(mentor.getId(),
-            Set.of(mentor.getMemberRole().getRole()));
-        String refreshToken = jwtProvider.createRefreshToken(mentor.getId());
-        refreshTokenService.cacheRefreshToken(mentor.getId(), refreshToken);
+    public TokenInfo issueTokens(Member member) {
+        String accessToken = jwtProvider.createAccessToken(member.getId(),
+            Set.of(member.getMemberRole().getRole()));
+        String refreshToken = jwtProvider.createRefreshToken(member.getId());
+        refreshTokenService.cacheRefreshToken(member.getId(), refreshToken);
 
         return TokenInfo.of(jwtProvider.getTokenType(), accessToken, refreshToken,
             jwtProvider.getAccessTokenExpiration(), jwtProvider.getRefreshTokenExpiration());
@@ -140,7 +149,8 @@ public class AuthService {
 
     public TokenInfo reissueTokens(ReissueTokenRequest reissueTokenRequest) {
         String refreshToken = reissueTokenRequest.refreshToken();
-        if (!jwtValidator.validateToken(refreshToken) || !refreshTokenService.existsByRefreshToken(refreshToken)) {
+        if (!jwtValidator.validateToken(refreshToken) || !refreshTokenService.existsByRefreshToken(
+            refreshToken)) {
             throw new ApplicationException(AuthErrorCode.INVALID_REFRESH_TOKEN);
         }
 

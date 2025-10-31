@@ -1,17 +1,18 @@
 package com.careerfit.application.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import com.careerfit.application.dto.ApplicationContentUpdateRequest;
 import com.careerfit.application.dto.ApplicationRegisterRequest;
 import com.careerfit.document.domain.Document;
 import com.careerfit.member.domain.Member;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("Application 도메인 단위 테스트")
 class ApplicationTest {

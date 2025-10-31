@@ -1,25 +1,14 @@
 package com.careerfit.application.controller;
 
-import com.careerfit.application.dto.ApplicationContentUpdateRequest;
-import com.careerfit.application.dto.ApplicationDetailHeaderResponse;
-import com.careerfit.application.dto.ApplicationListResponse;
-import com.careerfit.application.dto.ApplicationRegisterRequest;
-import com.careerfit.application.dto.ApplicationStatusUpdateRequest;
-import com.careerfit.application.dto.JobPostingAnalysisResponse;
-import com.careerfit.application.dto.JobPostingUrlRequest;
+import com.careerfit.application.dto.*;
 import com.careerfit.global.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.time.LocalDateTime;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @Tag(name = "지원서 관리 API", description = "채용 공고 분석부터 지원서 등록, 조회, 수정, 삭제까지 지원서와 관련된 모든 기능을 다루는 API")
 public interface ApplicationControllerDocs {

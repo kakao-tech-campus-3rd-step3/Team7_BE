@@ -1,9 +1,5 @@
 package com.careerfit.comment.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.careerfit.application.domain.Application;
 import com.careerfit.application.domain.ApplicationStatus;
 import com.careerfit.auth.domain.OAuthProvider;
@@ -22,8 +18,6 @@ import com.careerfit.member.domain.mentee.MenteeProfile;
 import com.careerfit.member.domain.mentee.MenteeWishCompany;
 import com.careerfit.member.domain.mentee.MenteeWishPosition;
 import com.careerfit.member.service.MemberFinder;
-import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +26,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CommentCommandService 테스트")
@@ -73,7 +74,7 @@ class CommentCommandServiceTest {
         application.addDocument(document);
 
         Coordinate coordinate = new Coordinate(10.0, 20.0, 30.0, 40.0);
-        CommentCreateRequest request = new CommentCreateRequest("기존 댓글 내용", coordinate);
+        CommentCreateRequest request = new CommentCreateRequest("기존 댓글 내용", coordinate, 1);
         comment = Comment.of(document, mentee, request);
     }
 
@@ -84,7 +85,7 @@ class CommentCommandServiceTest {
         Long documentId = 1L;
         Long memberId = 1L;
         Coordinate coordinate = new Coordinate(10.0, 20.0, 30.0, 40.0);
-        CommentCreateRequest request = new CommentCreateRequest("새로운 댓글 내용", coordinate);
+        CommentCreateRequest request = new CommentCreateRequest("새로운 댓글 내용", coordinate, 1);
 
         when(documentFinder.findDocumentOrThrow(documentId)).thenReturn(document);
         when(memberFinder.getMemberOrThrow(memberId)).thenReturn(mentee);
@@ -109,7 +110,7 @@ class CommentCommandServiceTest {
         // given
         Long commentId = 1L;
         Long memberId = 1L;
-        CommentUpdateRequest request = new CommentUpdateRequest("수정된 댓글 내용");
+        CommentUpdateRequest request = new CommentUpdateRequest("수정된 댓글 내용", null);
 
         when(commentFinder.findCommentOrThrow(commentId)).thenReturn(comment);
 

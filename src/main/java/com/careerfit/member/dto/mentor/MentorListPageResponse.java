@@ -2,6 +2,7 @@ package com.careerfit.member.dto.mentor;
 
 import java.util.List;
 
+
 public record MentorListPageResponse(
     PageInfo pageInfo,
     List<MentorListResponse> mentors

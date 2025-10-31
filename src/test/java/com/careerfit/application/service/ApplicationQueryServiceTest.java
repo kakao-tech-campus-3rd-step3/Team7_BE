@@ -1,11 +1,5 @@
 package com.careerfit.application.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-
 import com.careerfit.application.domain.Application;
 import com.careerfit.application.domain.ApplicationStatus;
 import com.careerfit.application.dto.ApplicationDetailHeaderResponse;
@@ -13,7 +7,6 @@ import com.careerfit.application.exception.ApplicationErrorCode;
 import com.careerfit.application.repository.ApplicationJpaRepository;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.member.domain.Member;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -21,6 +14,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ApplicationQueryService 단위 테스트")

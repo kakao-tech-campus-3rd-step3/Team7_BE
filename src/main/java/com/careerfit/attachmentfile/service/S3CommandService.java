@@ -1,19 +1,10 @@
 package com.careerfit.attachmentfile.service;
 
-import static com.careerfit.global.util.DocumentUtil.APPLICATION_PREFIX;
-import static com.careerfit.global.util.DocumentUtil.NAME_SEPARATOR;
-import static com.careerfit.global.util.DocumentUtil.PATH_SEPARATOR;
-import static com.careerfit.global.util.DocumentUtil.PORTFOLIO_PREFIX;
-import static com.careerfit.global.util.DocumentUtil.RESUME_PREFIX;
-
 import com.careerfit.attachmentfile.domain.AttachmentFile;
 import com.careerfit.attachmentfile.domain.AttachmentFileType;
 import com.careerfit.attachmentfile.dto.FileUploadRequest;
 import com.careerfit.attachmentfile.dto.PutPresignedUrlResponse;
 import com.careerfit.global.config.AwsProperties;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +13,12 @@ import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import static com.careerfit.global.util.DocumentUtil.*;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +37,7 @@ public class S3CommandService {
         AttachmentFileType attachmentFileType,
         FileUploadRequest fileUploadRequest
     ) {
-        Duration expiryTime = Duration.ofMinutes(awsProperties.s3().expiryTime());
+        Duration expiryTime = Duration.ofMillis(awsProperties.s3().expiryTime());
 
         String uniqueFileName = generateUniqueFileName(applicationId, attachmentFileType,
             fileUploadRequest.documentTitle(), fileUploadRequest.fileName());

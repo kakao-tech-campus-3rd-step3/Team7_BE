@@ -2,10 +2,7 @@ package com.careerfit.member.service.mentor;
 
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.mentor.MentorProfile;
-import com.careerfit.member.dto.mentor.MentorHeaderResponse;
-import com.careerfit.member.dto.mentor.MentorIntroductionResponse;
-import com.careerfit.member.dto.mentor.MentorListPageResponse;
-import com.careerfit.member.dto.mentor.MentorReviewResponse;
+import com.careerfit.member.dto.mentor.*;
 import com.careerfit.member.service.MemberFinder;
 import com.careerfit.review.domain.Review;
 import com.careerfit.review.repository.ReviewJpaRepository;
@@ -77,18 +74,31 @@ class MentorQueryServiceTest {
     @Test
     void getMentors_success() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "mentorProfile.averageRating"));
-        Page<Member> page = new PageImpl<>(List.of(mentor), pageable, 1);
+        Page<MentorListResponse> page = new PageImpl<>(List.of(
+                new MentorListResponse(
+                        1L,
+                        "멘토",
+                        null,
+                        "삼성전자",
+                        "Backend Developer",
+                        10,
+                        4.5,
+                        0,
+                        0,
+                        0
+                )
+        ), pageable, 1);
 
         when(memberFinder.getMentorPage(nullable(String.class), any(Pageable.class)))
-            .thenReturn(page);
+                .thenReturn(page);
 
-
-        MentorListPageResponse result = queryService.getMentors(null, 0, 10, null, null);
+        MentorListPageResponse result = queryService.getMentors(null, 0, 10,null,null);
 
         assertThat(result.pageInfo().totalElements()).isEqualTo(1);
         assertThat(result.mentors()).hasSize(1);
         assertThat(result.mentors().get(0).name()).isEqualTo("멘토");
     }
+
 
     @Test
     void getMentorHeader_success() {

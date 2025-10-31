@@ -6,7 +6,6 @@ import com.careerfit.application.service.ApplicationFinder;
 import com.careerfit.attachmentfile.domain.AttachmentFile;
 import com.careerfit.attachmentfile.domain.AttachmentFileType;
 import com.careerfit.attachmentfile.repository.AttachmentFileRepository;
-import com.careerfit.document.exception.DocumentErrorCode;
 import com.careerfit.global.exception.ApplicationException;
 import com.careerfit.global.util.DocumentUtil;
 import lombok.RequiredArgsConstructor;

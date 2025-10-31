@@ -9,11 +9,11 @@ public record MentorListResponse(
     String profileImageUrl,
     String company,
     String jobPosition,
-    int careerYears,
-    double averageRating,
-    int reviewCount,
-    int menteesCount,
-    double pricePerSession
+    Integer careerYears,
+    Double averageRating,
+    Integer reviewCount,
+    Integer menteeCount,
+    Integer pricePerSession
 ) {
 
     public static MentorListResponse from(Member member) {

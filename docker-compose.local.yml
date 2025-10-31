@@ -60,3 +60,4 @@ networks:
 volumes:
   db-data:
   redis-data:
+  grafana-storage:

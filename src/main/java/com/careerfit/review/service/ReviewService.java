@@ -13,10 +13,11 @@ import com.careerfit.review.dto.ReviewPostResponse;
 import com.careerfit.review.dto.ReviewUpdateResponse;
 import com.careerfit.review.exception.ReviewErrorCode;
 import com.careerfit.review.repository.ReviewJpaRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional

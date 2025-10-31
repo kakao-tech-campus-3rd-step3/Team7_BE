@@ -8,14 +8,17 @@ import com.careerfit.member.dto.MemberInfoResponse;
 public record CommentInfoResponse(
     Long id,
     String content,
+    Integer page,
     Coordinate coordinate,
     MemberInfoResponse writerInfo,
     DocumentInfoResponse documentInfo
 ) {
+
     public static CommentInfoResponse from(Comment comment) {
         return new CommentInfoResponse(
             comment.getId(),
             comment.getContent(),
+            comment.getPage(),
             comment.getCoordinate(),
             MemberInfoResponse.from(comment.getMember()),
             DocumentInfoResponse.from(comment.getDocument())
