@@ -1,12 +1,15 @@
 package com.careerfit.application.repository;
 
 import com.careerfit.application.domain.Application;
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ApplicationJpaRepository extends JpaRepository<Application, Long> {
 
-    List<Application> findAllByMemberId(Long memberId);
+    List<Application> findByMemberIdOrderByUpdatedDateDesc(Long memberId, Pageable pageable);
 
+    List<Application> findByMemberIdAndUpdatedDateBeforeOrderByUpdatedDateDesc(Long memberId,
+        LocalDateTime updatedDate, Pageable pageable);
 }

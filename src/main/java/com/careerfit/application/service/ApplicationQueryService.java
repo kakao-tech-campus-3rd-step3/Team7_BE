@@ -7,9 +7,12 @@ import com.careerfit.application.dto.ApplicationSummaryResponse;
 import com.careerfit.application.exception.ApplicationErrorCode;
 import com.careerfit.application.repository.ApplicationJpaRepository;
 import com.careerfit.global.exception.ApplicationException;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,14 +23,34 @@ public class ApplicationQueryService {
 
     private final ApplicationJpaRepository applicationJpaRepository;
 
-    public ApplicationListResponse getList(Long memberId) {
-        List<ApplicationSummaryResponse> summaries = applicationJpaRepository.findAllByMemberId(
-                memberId)
-            .stream()
-            .map(ApplicationSummaryResponse::from)
-            .collect(Collectors.toList());
+    public ApplicationListResponse getList(Long memberId, LocalDateTime lastUpdatedDate, int size) {
+        Pageable pageable = PageRequest.of(0, size + 1, Sort.by("updatedDate").descending());
 
-        return ApplicationListResponse.from(summaries);
+        List<Application> applications;
+
+        if (lastUpdatedDate == null) {
+            // 첫 페이지 조회
+            applications = applicationJpaRepository.findByMemberIdOrderByUpdatedDateDesc(memberId,
+                pageable);
+        } else {
+            // 다음 페이지 조회
+            applications = applicationJpaRepository.findByMemberIdAndUpdatedDateBeforeOrderByUpdatedDateDesc(
+                memberId, lastUpdatedDate, pageable);
+        }
+
+        boolean hasNext = applications.size() > size;
+
+        List<ApplicationSummaryResponse> summaries = applications.stream()
+            .limit(size)
+            .map(ApplicationSummaryResponse::from)
+            .toList();
+
+        LocalDateTime nextCursor = null;
+        if (hasNext) {
+            nextCursor = applications.get(size - 1).getUpdatedDate();
+        }
+
+        return new ApplicationListResponse(summaries, nextCursor, hasNext);
     }
 
     public ApplicationDetailHeaderResponse getDetailHeader(Long applicationId) {

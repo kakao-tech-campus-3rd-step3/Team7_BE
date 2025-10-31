@@ -1,14 +1,14 @@
 services:
   app:
     image: ${DOCKER_IMAGE_NAME}:${IMAGE_TAG:-latest}
-    container_name: career-fit-app
+    container_name: ${CONTAINER_NAME}
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "${PORT_MAPPING}"
     env_file:
       - .env
     networks:
@@ -43,6 +43,8 @@ services:
     container_name: redis-cache
     ports:
       - "6379:6379"
+    volumes:
+      - redis-data:/data
     networks:
       - career-fit-net
     healthcheck:
@@ -57,3 +59,4 @@ networks:
 
 volumes:
   db-data:
+  redis-data:

@@ -43,7 +43,8 @@ public class SecurityConfig {
         "/error",
         "/v3/api-docs/**",
         "/swagger-ui/**",
-        "/swagger-ui.html"
+        "/swagger-ui.html",
+        "/health"
     };
     private static final List<String> clients =
         List.of(
