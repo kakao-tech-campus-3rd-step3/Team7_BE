@@ -37,7 +37,7 @@ public class S3CommandService {
         AttachmentFileType attachmentFileType,
         FileUploadRequest fileUploadRequest
     ) {
-        Duration expiryTime = Duration.ofMinutes(awsProperties.s3().expiryTime());
+        Duration expiryTime = Duration.ofMillis(awsProperties.s3().expiryTime());
 
         String uniqueFileName = generateUniqueFileName(applicationId, attachmentFileType,
             fileUploadRequest.documentTitle(), fileUploadRequest.fileName());

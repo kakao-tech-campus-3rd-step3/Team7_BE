@@ -7,9 +7,8 @@ import com.careerfit.comment.service.CommentCommandService;
 import com.careerfit.comment.service.CommentQueryService;
 import com.careerfit.global.dto.ApiResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,14 +52,13 @@ public class CommentApiController implements CommentApiDocs {
     // comment 리스트 조회: document에 작성된 comment 리스트 조회(member 검증 로직은 아직 추가 x)
     @GetMapping("/list")
     @Override
-    public ResponseEntity<ApiResponse<Page<CommentInfoResponse>>> getCommentList(
+    public ResponseEntity<ApiResponse<List<CommentInfoResponse>>> getCommentList(
         @PathVariable Long documentId,
         // TODO: 로그인 적용 시 @AuthenticationPrincipal로 변경 예정
-        @RequestParam Long memberId,
-        Pageable pageable
+        @RequestParam Long memberId
     ) {
-        Page<CommentInfoResponse> response = commentQueryService.findAllComment(documentId,
-            memberId, pageable);
+        List<CommentInfoResponse> response = commentQueryService.findAllComment(documentId,
+            memberId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
