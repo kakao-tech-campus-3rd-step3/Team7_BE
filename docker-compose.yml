@@ -61,7 +61,7 @@ services:
     environment:
       - MYSQLD_EXPORTER_PASSWORD=${DB_PASSWORD}
     command:
-      - "--mysqld.username=${DB_USER}"
+      - "--mysqld.username=root"
       - "--mysqld.address=career-fit-mysql:3306"
     networks:
       - career-fit-net
