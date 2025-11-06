@@ -55,6 +55,7 @@ class MenteeProfileTestUpdateServiceTest {
             "김영희",
             "mentee1@gmail.com",
             "010-5678-1234",
+            null,
             "연세대",
             "소프트웨어학과",
             2026,
@@ -80,7 +81,7 @@ class MenteeProfileTestUpdateServiceTest {
     void updateMenteeProfile_partialNullFields_keepsOldValues() {
         when(memberFinder.getMenteeOrThrow(1L)).thenReturn(mentee);
 
-        MenteeProfileUpdateRequest request = new MenteeProfileUpdateRequest(
+        MenteeProfileUpdateRequest request = new MenteeProfileUpdateRequest(null,
             null, null, null, null, null, null, null, null
         );
 
@@ -106,7 +107,7 @@ class MenteeProfileTestUpdateServiceTest {
 
         when(memberFinder.getMenteeOrThrow(2L)).thenReturn(menteeWithoutProfile);
 
-        MenteeProfileUpdateRequest request = new MenteeProfileUpdateRequest(
+        MenteeProfileUpdateRequest request = new MenteeProfileUpdateRequest(null,
             "김철수", null, null, null, null, null, null, null
         );
 
