@@ -33,6 +33,7 @@ public class MentorProfileUpdateService {
         }
 
         if (request.name() != null) mentor.setName(request.name());
+        if (request.profileImageUrl()!=null) mentor.setProfileImageUrl(request.profileImageUrl());
         if (request.email() != null) mentor.setEmail(request.email());
         if (request.phoneNumber() != null) mentor.setPhoneNumber(request.phoneNumber());
 
