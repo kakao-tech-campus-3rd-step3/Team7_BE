@@ -95,7 +95,8 @@ public class MentorQueryService {
                 p.getAverageRating(),
                 p.getReviewCount(),
                 p.getCareerYears(),
-                p.getMenteeCount()
+                p.getMenteeCount(),
+                p.getPricePerSession()
         );
     }
 
