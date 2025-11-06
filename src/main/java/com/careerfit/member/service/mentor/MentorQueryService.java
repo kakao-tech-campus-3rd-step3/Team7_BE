@@ -1,11 +1,22 @@
 package com.careerfit.member.service.mentor;
 
+import com.careerfit.document.repository.DocumentRepository;
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.mentor.MentorProfile;
-import com.careerfit.member.dto.mentor.*;
+import com.careerfit.member.dto.mentor.MentorCareerResponse;
+import com.careerfit.member.dto.mentor.MentorCertificationResponse;
+import com.careerfit.member.dto.mentor.MentorDashboardItem;
+import com.careerfit.member.dto.mentor.MentorEducationResponse;
+import com.careerfit.member.dto.mentor.MentorExpertiseResponse;
+import com.careerfit.member.dto.mentor.MentorHeaderResponse;
+import com.careerfit.member.dto.mentor.MentorIntroductionResponse;
+import com.careerfit.member.dto.mentor.MentorListPageResponse;
+import com.careerfit.member.dto.mentor.MentorListResponse;
+import com.careerfit.member.dto.mentor.MentorReviewResponse;
 import com.careerfit.member.service.MemberFinder;
 import com.careerfit.review.domain.Review;
 import com.careerfit.review.repository.ReviewJpaRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -15,8 +26,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -24,6 +33,7 @@ public class MentorQueryService {
 
     private final MemberFinder memberFinder;
     private final ReviewJpaRepository reviewRepository;
+    private final DocumentRepository documentRepository;
 
     @Cacheable(
             value = "mentorList",
@@ -124,5 +134,11 @@ public class MentorQueryService {
                 .orElse(0.0);
 
         return new MentorReviewResponse(reviews.size(), avgRating, reviewDetails);
+    }
+
+    // mentor dashboard 조회
+    public List<MentorDashboardItem> getMentorDashboardItems(Long mentorId) {
+        memberFinder.getMemberOrThrow(mentorId);
+        return documentRepository.findMentorDashboardItems(mentorId);
     }
 }
