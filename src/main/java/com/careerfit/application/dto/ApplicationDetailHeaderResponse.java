@@ -2,7 +2,6 @@ package com.careerfit.application.dto;
 
 import com.careerfit.application.domain.Application;
 import com.careerfit.application.domain.ApplicationStatus;
-
 import java.time.LocalDateTime;
 
 public record ApplicationDetailHeaderResponse(
@@ -13,7 +12,8 @@ public record ApplicationDetailHeaderResponse(
     String location,
     String employmentType,
     Integer careerRequirement,
-    ApplicationStatus applicationStatus
+    ApplicationStatus applicationStatus,
+    String url
 ) {
 
     public static ApplicationDetailHeaderResponse from(Application application) {
@@ -25,7 +25,8 @@ public record ApplicationDetailHeaderResponse(
             application.getLocation(),
             application.getEmploymentType(),
             application.getCareerRequirement(),
-            application.getApplicationStatus()
+            application.getApplicationStatus(),
+            application.getUrl()
         );
     }
 }
