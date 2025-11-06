@@ -6,10 +6,11 @@ public record MentorHeaderResponse(
     String profileImageUrl,
     String company,
     String jobPosition,
-    double averageRating,
-    int reviewsCount,
-    int experience,
-    int menteesCount
+    Double averageRating,
+    Integer reviewsCount,
+    Integer experience,
+    Integer menteesCount,
+    Integer pricePerSession
 ) {
 
 }

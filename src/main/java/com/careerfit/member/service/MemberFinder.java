@@ -52,14 +52,24 @@ public class MemberFinder {
     public Page<MentorListResponse> getMentorPage(String search, Pageable pageable) {
         boolean hasSearch = search != null && !search.isBlank();
 
-        Sort sort = pageable.getSort().isSorted() ? pageable.getSort() : Sort.by(Sort.Direction.DESC, "averageRating");
-        Pageable unsortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        Sort sort;
+        if (pageable.getSort().isSorted()) {
+            sort = pageable.getSort();
+        } else {
+            sort = Sort.by(Sort.Direction.DESC, "averageRating");
+        }
 
+        Pageable unsortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
         String nativeSortBy = extractNativeSortProperty(sort);
         String sortOrder = extractSortOrder(sort);
 
         if (!hasSearch) {
-            return memberJpaRepository.findTopMentors(MemberRole.MENTOR.name(), nativeSortBy, sortOrder, unsortedPageable);
+            return memberJpaRepository.findTopMentors(
+                    MemberRole.MENTOR.name(),
+                    nativeSortBy,
+                    sortOrder,
+                    unsortedPageable
+            );
         }
 
         return memberJpaRepository.searchMentorsByRoleAndKeyword(
@@ -70,6 +80,7 @@ public class MemberFinder {
                 unsortedPageable
         );
     }
+
 
     private String extractNativeSortProperty(Sort sort) {
         Sort.Order order = sort.stream().findFirst()

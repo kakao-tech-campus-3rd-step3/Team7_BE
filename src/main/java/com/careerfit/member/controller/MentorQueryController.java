@@ -31,7 +31,7 @@ public class MentorQueryController implements MentorQueryControllerDocs {
         @RequestParam(required = false) String sortBy,
         @RequestParam(required = false) String sortOrder,
         @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "20") int size
+        @RequestParam(defaultValue = "9") int size
     ) {
         MentorListPageResponse result = mentorQueryService.getMentors(search, page, size, sortBy,
             sortOrder);

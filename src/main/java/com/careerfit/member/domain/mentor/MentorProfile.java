@@ -2,6 +2,7 @@ package com.careerfit.member.domain.mentor;
 
 import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.MemberProfile;
+import com.careerfit.member.util.DomainListUpdater;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
@@ -172,45 +173,30 @@ public class MentorProfile implements MemberProfile {
     }
 
     private void updateCertifications(List<MentorCertification> newCertifications) {
-        Set<String> existing = this.certifications.stream()
-                .map(MentorCertification::getCertificateName)
-                .collect(Collectors.toSet());
-        Set<String> incoming = newCertifications.stream()
-                .map(MentorCertification::getCertificateName)
-                .collect(Collectors.toSet());
-
-        this.certifications.removeIf(c -> !incoming.contains(c.getCertificateName()));
-        newCertifications.stream()
-                .filter(c -> !existing.contains(c.getCertificateName()))
-                .forEach(this::addCertification);
+        DomainListUpdater.updateList(
+                this.certifications,
+                newCertifications,
+                MentorCertification::getCertificateName,
+                this::addCertification
+        );
     }
 
     private void updateEducations(List<MentorEducation> newEducations) {
-        Set<String> existing = this.educations.stream()
-                .map(MentorEducation::getSchoolName)
-                .collect(Collectors.toSet());
-        Set<String> incoming = newEducations.stream()
-                .map(MentorEducation::getSchoolName)
-                .collect(Collectors.toSet());
-
-        this.educations.removeIf(e -> !incoming.contains(e.getSchoolName()));
-        newEducations.stream()
-                .filter(e -> !existing.contains(e.getSchoolName()))
-                .forEach(this::addEducation);
+        DomainListUpdater.updateList(
+                this.educations,
+                newEducations,
+                MentorEducation::getSchoolName,
+                this::addEducation
+        );
     }
 
     private void updateExpertises(List<MentorExpertise> newExpertises) {
-        Set<String> existing = this.expertises.stream()
-                .map(MentorExpertise::getExpertiseName)
-                .collect(Collectors.toSet());
-        Set<String> incoming = newExpertises.stream()
-                .map(MentorExpertise::getExpertiseName)
-                .collect(Collectors.toSet());
-
-        this.expertises.removeIf(e -> !incoming.contains(e.getExpertiseName()));
-        newExpertises.stream()
-                .filter(e -> !existing.contains(e.getExpertiseName()))
-                .forEach(this::addExpertise);
+        DomainListUpdater.updateList(
+                this.expertises,
+                newExpertises,
+                MentorExpertise::getExpertiseName,
+                this::addExpertise
+        );
     }
 
     public void updateReviewStats(int reviewCount, Double averageRating) {
