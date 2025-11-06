@@ -1,16 +1,19 @@
 package com.careerfit.member.dto.mentor;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.List;
 
 public record MentorProfileUpdateRequest(
-    String name,
-    String email,
-    String phoneNumber,
+    @NotBlank String name,
+    @Email String email,
+    @NotBlank String phoneNumber,
     String profileImageUrl,
     Integer careerYears,
     String company,
     String jobPosition,
-    String employmentCertificate,
+    @NotBlank String employmentCertificate,
     List<MentorEducationRequest> educations,
     List<MentorCertificationRequest> certifications,
     List<MentorExpertiseRequest> expertises,

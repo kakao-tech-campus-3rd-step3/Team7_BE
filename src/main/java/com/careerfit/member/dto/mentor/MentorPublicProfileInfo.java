@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public record MentorPublicProfileInfo(
     String name,
     String profileImageUrl,
-    int careerYears,
+    Integer careerYears,
     String company,
     String jobPosition,
     List<MentorEducationResponse> educations,
@@ -16,7 +16,7 @@ public record MentorPublicProfileInfo(
     List<MentorExpertiseResponse> expertises,
     String introduction,
     Double averageRating,
-    int reviewCount
+    Integer reviewCount
 ) {
     public static MentorPublicProfileInfo from(MentorProfile profile) {
         return new MentorPublicProfileInfo(

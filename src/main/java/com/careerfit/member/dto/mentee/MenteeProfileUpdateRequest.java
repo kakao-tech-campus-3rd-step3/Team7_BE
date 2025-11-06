@@ -10,6 +10,7 @@ public record MenteeProfileUpdateRequest(
     @NotBlank String name,
     @Email String email,
     @NotBlank String phoneNumber,
+    String profileImageUrl,
     @NotBlank String university,
     @NotBlank String major,
     @NotNull Integer graduationYear,

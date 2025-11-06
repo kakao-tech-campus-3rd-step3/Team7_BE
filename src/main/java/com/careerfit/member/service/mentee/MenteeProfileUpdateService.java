@@ -34,7 +34,7 @@ public class MenteeProfileUpdateService {
         if (request.name() != null) mentee.setName(request.name());
         if (request.email() != null) mentee.setEmail(request.email());
         if (request.phoneNumber() != null) mentee.setPhoneNumber(request.phoneNumber());
-
+        if (request.profileImageUrl() != null) mentee.setProfileImageUrl(request.profileImageUrl());
         List<MenteeWishCompany> wishCompanies = null;
         if (request.wishCompanies() != null) {
             wishCompanies = request.wishCompanies().stream()
