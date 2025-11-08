@@ -4,12 +4,22 @@ import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.MemberProfile;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "mentor_profile")
+@Table(name = "mentor_profile", indexes = {
+        @Index(name = "idx_avg_rating", columnList = "average_rating DESC"),
+        @Index(name = "idx_career_years", columnList = "career_years DESC"),
+        @Index(name = "idx_review_count", columnList = "review_count DESC"),
+        @Index(name = "idx_mentee_count", columnList = "mentee_count DESC"),
+        @Index(name = "idx_company", columnList = "company"),
+        @Index(name = "idx_job_position", columnList = "job_position")
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
@@ -33,28 +43,32 @@ public class MentorProfile implements MemberProfile {
 
     private String introduction;
     private Double averageRating;
-    private int reviewCount;
-    private int menteeCount;
-    private Double pricePerSession;
+    private Integer reviewCount;
+    private Integer menteeCount;
+    private Integer pricePerSession;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "mentorProfile", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @BatchSize(size=200)
     @Builder.Default
     private List<MentorCertification> certifications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "mentorProfile", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @BatchSize(size=200)
     @Builder.Default
     private List<MentorEducation> educations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "mentorProfile", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @BatchSize(size=200)
     @Builder.Default
     private List<MentorExpertise> expertises = new ArrayList<>();
 
-    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "mentorProfile", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @BatchSize(size=200)
     @Builder.Default
     private List<MentorCareer> mentorCareers = new ArrayList<>();
 
@@ -79,7 +93,7 @@ public class MentorProfile implements MemberProfile {
             .averageRating(averageRating)
             .reviewCount(0)
             .menteeCount(0)
-            .pricePerSession(0.0)
+            .pricePerSession(0)
             .build();
 
         if (certifications != null) certifications.forEach(profile::addCertification);
@@ -122,24 +136,81 @@ public class MentorProfile implements MemberProfile {
                               List<MentorExpertise> expertises,
                               String introduction) {
 
-        if (careerYears != null) this.careerYears = careerYears;
-        if (company != null) this.company = company;
-        if (jobPosition != null) this.jobPosition = jobPosition;
-        if (employmentCertificate != null) this.employmentCertificate = employmentCertificate;
-        if (introduction != null) this.introduction = introduction;
+        boolean needsSearchTextUpdate=false;
+
+        if (careerYears != null) {
+            this.careerYears = careerYears;
+        }
+        if (company != null) {
+            this.company = company;
+            needsSearchTextUpdate=true;
+        }
+        if (jobPosition != null) {
+            this.jobPosition = jobPosition;
+            needsSearchTextUpdate=true;
+        }
+        if (employmentCertificate != null) {
+            this.employmentCertificate = employmentCertificate;
+        }
+
+        if (introduction != null) {
+            this.introduction = introduction;
+        }
 
         if (certifications != null) {
-            this.certifications.clear();
-            certifications.forEach(this::addCertification);
+            updateCertifications(certifications);
         }
         if (educations != null) {
-            this.educations.clear();
-            educations.forEach(this::addEducation);
+            updateEducations(educations);
         }
         if (expertises != null) {
-            this.expertises.clear();
-            expertises.forEach(this::addExpertise);
+            updateExpertises(expertises);
         }
+        if (needsSearchTextUpdate && this.member != null) {
+            this.member.updateSearchText(this.company, this.jobPosition);
+        }
+    }
+
+    private void updateCertifications(List<MentorCertification> newCertifications) {
+        Set<String> existing = this.certifications.stream()
+                .map(MentorCertification::getCertificateName)
+                .collect(Collectors.toSet());
+        Set<String> incoming = newCertifications.stream()
+                .map(MentorCertification::getCertificateName)
+                .collect(Collectors.toSet());
+
+        this.certifications.removeIf(c -> !incoming.contains(c.getCertificateName()));
+        newCertifications.stream()
+                .filter(c -> !existing.contains(c.getCertificateName()))
+                .forEach(this::addCertification);
+    }
+
+    private void updateEducations(List<MentorEducation> newEducations) {
+        Set<String> existing = this.educations.stream()
+                .map(MentorEducation::getSchoolName)
+                .collect(Collectors.toSet());
+        Set<String> incoming = newEducations.stream()
+                .map(MentorEducation::getSchoolName)
+                .collect(Collectors.toSet());
+
+        this.educations.removeIf(e -> !incoming.contains(e.getSchoolName()));
+        newEducations.stream()
+                .filter(e -> !existing.contains(e.getSchoolName()))
+                .forEach(this::addEducation);
+    }
+
+    private void updateExpertises(List<MentorExpertise> newExpertises) {
+        Set<String> existing = this.expertises.stream()
+                .map(MentorExpertise::getExpertiseName)
+                .collect(Collectors.toSet());
+        Set<String> incoming = newExpertises.stream()
+                .map(MentorExpertise::getExpertiseName)
+                .collect(Collectors.toSet());
+
+        this.expertises.removeIf(e -> !incoming.contains(e.getExpertiseName()));
+        newExpertises.stream()
+                .filter(e -> !existing.contains(e.getExpertiseName()))
+                .forEach(this::addExpertise);
     }
 
     public void updateReviewStats(int reviewCount, Double averageRating) {

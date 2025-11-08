@@ -1,15 +1,5 @@
 package com.careerfit.global.initializer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.careerfit.application.domain.Application;
 import com.careerfit.application.domain.ApplicationStatus;
 import com.careerfit.application.repository.ApplicationJpaRepository;
@@ -32,9 +22,16 @@ import com.careerfit.member.domain.mentor.MentorEducation;
 import com.careerfit.member.domain.mentor.MentorExpertise;
 import com.careerfit.member.domain.mentor.MentorProfile;
 import com.careerfit.member.repository.MemberJpaRepository;
-
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile({"local", "prod"})
@@ -208,29 +205,29 @@ public class DataInitializer implements CommandLineRunner {
         // 6. Comment 생성 및 저장
         List<Comment> comments = new ArrayList<>();
         comments.add(Comment.of(cl1, mento1,
-            new CommentCreateRequest("댓글1", new Coordinate(10.0, 10.0, 20.0, 20.0))));
+            new CommentCreateRequest("댓글1", new Coordinate(10.0, 10.0, 20.0, 20.0), 1)));
         comments.add(Comment.of(cl1, mentee1,
-            new CommentCreateRequest("댓글2", new Coordinate(10.0, 10.0, 20.0, 20.0))));
+            new CommentCreateRequest("댓글2", new Coordinate(10.0, 10.0, 20.0, 20.0), 2)));
         comments.add(Comment.of(cl2, mento2,
-            new CommentCreateRequest("댓글3", new Coordinate(15.0, 15.0, 25.0, 25.0))));
+            new CommentCreateRequest("댓글3", new Coordinate(15.0, 15.0, 25.0, 25.0), 1)));
         comments.add(Comment.of(cl2, mentee2,
-            new CommentCreateRequest("댓글4", new Coordinate(15.0, 15.0, 25.0, 25.0))));
+            new CommentCreateRequest("댓글4", new Coordinate(15.0, 15.0, 25.0, 25.0), 2)));
         comments.add(Comment.of(resume1, mento1,
-            new CommentCreateRequest("댓글5", new Coordinate(20.0, 20.0, 30.0, 30.0))));
+            new CommentCreateRequest("댓글5", new Coordinate(20.0, 20.0, 30.0, 30.0), 1)));
         comments.add(Comment.of(resume1, mentee1,
-            new CommentCreateRequest("댓글6", new Coordinate(20.0, 20.0, 30.0, 30.0))));
+            new CommentCreateRequest("댓글6", new Coordinate(20.0, 20.0, 30.0, 30.0), 2)));
         comments.add(Comment.of(portfolio1, mento1,
-            new CommentCreateRequest("댓글7", new Coordinate(25.0, 25.0, 35.0, 35.0))));
+            new CommentCreateRequest("댓글7", new Coordinate(25.0, 25.0, 35.0, 35.0), 1)));
         comments.add(Comment.of(portfolio1, mentee1,
-            new CommentCreateRequest("댓글8", new Coordinate(25.0, 25.0, 35.0, 35.0))));
+            new CommentCreateRequest("댓글8", new Coordinate(25.0, 25.0, 35.0, 35.0), 2)));
         comments.add(Comment.of(resume2, mento2,
-            new CommentCreateRequest("댓글9", new Coordinate(30.0, 30.0, 40.0, 40.0))));
+            new CommentCreateRequest("댓글9", new Coordinate(30.0, 30.0, 40.0, 40.0), 1)));
         comments.add(Comment.of(resume2, mentee2,
-            new CommentCreateRequest("댓글10", new Coordinate(30.0, 30.0, 40.0, 40.0))));
+            new CommentCreateRequest("댓글10", new Coordinate(30.0, 30.0, 40.0, 40.0), 2)));
         comments.add(Comment.of(portfolio2, mento2,
-            new CommentCreateRequest("댓글11", new Coordinate(35.0, 35.0, 45.0, 45.0))));
+            new CommentCreateRequest("댓글11", new Coordinate(35.0, 35.0, 45.0, 45.0), 1)));
         comments.add(Comment.of(portfolio2, mentee2,
-            new CommentCreateRequest("댓글12", new Coordinate(35.0, 35.0, 45.0, 45.0))));
+            new CommentCreateRequest("댓글12", new Coordinate(35.0, 35.0, 45.0, 45.0), 2)));
         commentRepository.saveAll(comments);
 
         System.out.println("====== 더미 데이터 생성 완료 ======");

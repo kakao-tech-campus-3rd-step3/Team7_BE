@@ -1,8 +1,5 @@
 package com.careerfit.comment.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
 import com.careerfit.application.domain.Application;
 import com.careerfit.application.domain.ApplicationStatus;
 import com.careerfit.auth.domain.OAuthProvider;
@@ -18,8 +15,6 @@ import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.mentee.MenteeProfile;
 import com.careerfit.member.domain.mentee.MenteeWishCompany;
 import com.careerfit.member.domain.mentee.MenteeWishPosition;
-import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,10 +22,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Comment Query Service 테스트")
@@ -67,11 +64,11 @@ class CommentQueryServiceTest {
         document.setApplication(application);
 
         Coordinate coordinate1 = new Coordinate(10.0, 20.0, 30.0, 40.0);
-        CommentCreateRequest request1 = new CommentCreateRequest("첫번째 댓글", coordinate1);
+        CommentCreateRequest request1 = new CommentCreateRequest("첫번째 댓글", coordinate1, 1);
         comment1 = Comment.of(document, mentee, request1);
 
         Coordinate coordinate2 = new Coordinate(50.0, 60.0, 70.0, 80.0);
-        CommentCreateRequest request2 = new CommentCreateRequest("두번째 댓글", coordinate2);
+        CommentCreateRequest request2 = new CommentCreateRequest("두번째 댓글", coordinate2, 2);
         comment2 = Comment.of(document, mentee, request2);
     }
 
@@ -93,27 +90,23 @@ class CommentQueryServiceTest {
     }
 
     @Test
-    @DisplayName("문서의 댓글 목록 조회에 성공한다.")
+    @DisplayName("문서의 댓글 목록 조회에 성공한다. (페이지네이션 x)")
     void findAllComment() {
         // given
         Long documentId = 1L;
         Long memberId = 1L;
-        Pageable pageable = PageRequest.of(0, 10);
-        List<Comment> comments = List.of(comment1, comment2);
-        Page<Comment> commentPage = new PageImpl<>(comments, pageable, comments.size());
+        List<Comment> commentList = List.of(comment1, comment2);
 
-        when(commentRepository.findAllByDocumentId(documentId, pageable)).thenReturn(commentPage);
+        when(commentRepository.findAllByDocumentId(documentId)).thenReturn(commentList);
 
         // when
-        Page<CommentInfoResponse> result = commentQueryService.findAllComment(documentId, memberId,
-            pageable);
+        List<CommentInfoResponse> result = commentQueryService.findAllComment(documentId, memberId);
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.getTotalElements()).isEqualTo(2);
-        assertThat(result.getContent()).hasSize(2);
-        assertThat(result.getContent()).extracting(CommentInfoResponse::content)
-            .containsExactly("첫번째 댓글", "두번째 댓글");
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0).content()).isEqualTo(comment1.getContent());
+        assertThat(result.get(1).content()).isEqualTo(comment2.getContent());
     }
 
     private Application createApplication(Long id, String company, String position, Member mentee,

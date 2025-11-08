@@ -3,9 +3,8 @@ package com.careerfit.comment.service;
 import com.careerfit.comment.domain.Comment;
 import com.careerfit.comment.dto.CommentInfoResponse;
 import com.careerfit.comment.repository.CommentRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,11 +24,12 @@ public class CommentQueryService {
         return CommentInfoResponse.from(comment);
     }
 
-    public Page<CommentInfoResponse> findAllComment(Long documentId, Long memberId,
-        Pageable pageable) {
+    public List<CommentInfoResponse> findAllComment(Long documentId, Long memberId) {
         // 멘토나, 해당 문서를 소유한 멘티만 해당 코멘트 리스트를 조회할 수 있도록 검증 로직 추가 필요: 이후 추가 예정
 
-        return commentRepository.findAllByDocumentId(documentId, pageable)
-            .map(CommentInfoResponse::from);
+        return commentRepository.findAllByDocumentId(documentId)
+            .stream()
+            .map(CommentInfoResponse::from)
+            .toList();
     }
 }

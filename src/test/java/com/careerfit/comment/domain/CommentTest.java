@@ -1,8 +1,5 @@
 package com.careerfit.comment.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import com.careerfit.application.domain.Application;
 import com.careerfit.application.domain.ApplicationStatus;
 import com.careerfit.auth.domain.OAuthProvider;
@@ -14,11 +11,15 @@ import com.careerfit.member.domain.Member;
 import com.careerfit.member.domain.mentee.MenteeProfile;
 import com.careerfit.member.domain.mentee.MenteeWishCompany;
 import com.careerfit.member.domain.mentee.MenteeWishPosition;
-import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class CommentTest {
 
@@ -44,7 +45,7 @@ class CommentTest {
         application.addDocument(document);
 
         Coordinate coordinate = new Coordinate(10.0, 20.0, 30.0, 40.0);
-        commentCreateRequest = new CommentCreateRequest("테스트 댓글 내용입니다.", coordinate);
+        commentCreateRequest = new CommentCreateRequest("테스트 댓글 내용입니다.", coordinate, 1);
     }
 
     @Test
