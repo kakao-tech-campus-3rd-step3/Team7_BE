@@ -41,7 +41,7 @@ cloud:
 
 kareer-fit:
   dummy:
-    enabled: ${DUMMY_ENABLED:false}
+    enabled: ${DUMMY_ENABLED:true}
   oauth:
     redirect-url: ${OAUTH_REDIRECT_URL:https://kareer-fit.com/auth/redirect}
 

@@ -10,7 +10,7 @@ public record MentorOwnProfileInfo(
     String email,
     String phoneNumber,
     String profileImageUrl,
-    int careerYears,
+    Integer careerYears,
     String company,
     String jobPosition,
     String employmentCertificate,
