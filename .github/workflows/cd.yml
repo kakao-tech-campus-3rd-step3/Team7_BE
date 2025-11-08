@@ -73,6 +73,24 @@ jobs:
           source: "prometheus.yml"
           target: "/home/ubuntu/career-fit"
 
+      - name: Copy loki-config.yml to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "loki-config.yml"
+          target: "/home/ubuntu/career-fit"
+
+      - name: Copy promtail-config.yml to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "promtail-config.yml"
+          target: "/home/ubuntu/career-fit"
+
       - name: Copy deploy.sh to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
