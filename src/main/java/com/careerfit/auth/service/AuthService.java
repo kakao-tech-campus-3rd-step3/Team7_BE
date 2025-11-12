@@ -28,6 +28,7 @@ import com.careerfit.member.domain.mentor.MentorCertification;
 import com.careerfit.member.domain.mentor.MentorEducation;
 import com.careerfit.member.domain.mentor.MentorExpertise;
 import com.careerfit.member.domain.mentor.MentorProfile;
+import com.careerfit.member.exception.MemberErrorCode;
 import com.careerfit.member.repository.MemberJpaRepository;
 import com.careerfit.member.service.MemberFinder;
 
@@ -135,6 +136,18 @@ public class AuthService {
         TokenInfo tokenInfo = issueTokens(mentor);
 
         return SignUpResponse.of(mentor.getId(), tokenInfo);
+    }
+
+    public TokenInfo loginDummyMentor() {
+        Member dummyMentor = memberFinder.getMemberWithOptional("mento1@naver.com").orElseThrow(
+            () -> new ApplicationException(MemberErrorCode.MENTOR_NOT_FOUND));
+        return issueTokens(dummyMentor);
+    }
+
+    public TokenInfo loginDummyMentee() {
+        Member dummyMentee = memberFinder.getMemberWithOptional("mentee1@gmail.com").orElseThrow(
+            () -> new ApplicationException(MemberErrorCode.MENTEE_NOT_FOUND));
+        return issueTokens(dummyMentee);
     }
 
     public TokenInfo issueTokens(Member member) {
